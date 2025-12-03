@@ -1,13 +1,33 @@
-Sustainability Log is a web application that helps ethical organisations create a self-verifiable, timestamped, and easily shareable digital record of their sustainability journey.
+TrainingAPI is an API-driven aggregator platform that standardises and exposes professional training course data from multiple providers, enabling easy integration with corporate Learning Management Systems (LMS). Its goal is to simplify the discovery, enrolment, and tracking of external courses in a reliable, structured, and real-time way. The technology stack is React frontend, PHP backend, MySQL database.
 
-The aim is not to rate organisations but to empower them to build trust through transparency, focusing on the timeline of progress.
+Core MVP Features
 
-The application is built with React (frontend), PHP (backend), MySQL (database), and Solidity smart contract (blockchain).
+1. Provider Course Feed
+    * Training providers can register and submit their courses to the platform.
+ 	* Each course includes structured metadata: title, description, skills taught, format (online, live, hybrid), duration, accreditation/certification, availability, and price.
+2. Standardised API Access
+   	* Exposes all registered courses in a consistent, machine-readable format.
+   	* Supports filtering and searching by skills, industry, format, or provider.
+   	* Simple endpoints for course listing and detailed course information.
+3. Basic Integration Support
+   	* Corporate LMS platforms can pull course data via the API.
+   	* Minimal authentication and access control to allow test integrations.
+4. Admin Interface
+   	* For providers to manage courses, update availability, and correct metadata.
+   	* For platform administrators to approve provider access and ensure data quality.
 
-It allows an organisation to enter data related to its sustainability efforts; the application logs this data to the blockchain by emitting events and provides a publicly accessible timeline of sustainability logs over time, demonstrating the organisation’s progress on its sustainability journey.
+Target Clients for MVP
 
-Organisations can link their suppliers into the same timeline, creating a verifiable record of their broader supply chain or market impact.
+1. Corporate LMS systems
+    * Integrate external courses into employee learning pathways and internal catalogues.
 
-Each timeline is automatically converted into a dedicated URL and QR code, allowing it to be easily shared or displayed. In addition, an organisation can generate a unique URL and QR code for any individual product or service within its timeline, making it simple to communicate specific sustainability achievements directly to customers and partners.
+Value Proposition
 
-The value lies in enabling organisations to demonstrate, in a verifiable and transparent way, their sustainability journey to their stakeholders - from customers and suppliers to the wider community.
+    * For Providers: Easy exposure to corporate learning platforms without building multiple bespoke integrations.
+    * For Corporates: Seamless external course integration into the LMS, enabling unified learning pathways, simplified procurement, and centralised reporting.
+
+MVP Goals
+
+    * Demonstrate the feasibility of aggregating provider courses into a single, standardised API.
+    * Enable a basic, functional integration with at least one corporate LMS platform.
+    * Prove value in reducing friction for both training providers and corporate learning teams.
