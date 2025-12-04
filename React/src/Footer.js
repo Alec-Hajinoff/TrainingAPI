@@ -11,8 +11,8 @@ function Footer() {
           <em>
             &copy; Copyright 2024 - {currentYear}. Company address: 4 Bridge
             Gate, London, N21 2AH, United Kingdom. Email address:<span> </span>
-            <a href="mailto:team@sustainabilitylog.com">
-              team@sustainabilitylog.com
+            <a href="mailto:team@trainingapi.com">
+              team@trainingapi.com
             </a>
           </em>
         </p>

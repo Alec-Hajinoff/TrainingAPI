@@ -11,7 +11,7 @@ function RegisteredPage() {
             Thank you for registering! Please log in using your credentials.
           </p>
         </div>
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-3">
           <p className="footer">Registered user login:</p>
           <UserLogin />
         </div>
