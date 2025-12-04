@@ -35,8 +35,7 @@
         "php": ">=5.5.0",
         "ext-ctype": "*",
         "ext-filter": "*",
-        "ext-hash": "*",
-        "endroid/qr-code": "^6.0"
+        "ext-hash": "*"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
