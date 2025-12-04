@@ -1,11 +1,7 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-
 require_once 'session_config.php';
-
-use Endroid\QrCode\Builder\Builder;
-use Endroid\QrCode\Writer\PngWriter;
 
 $allowed_origins = [
     'http://localhost:3000'
@@ -67,40 +63,14 @@ try {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $slug = strtolower(trim($name));
-    $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
-    $slug = preg_replace('/[\s-]+/', '-', $slug);
-    $timelineUrl = 'http://localhost:3000/timeline/' . $slug;
-
-    // QR code filename and paths
-    $qrFilename = $slug . '.png';
-    $qrRelativePath = '/uploads/qrcodes/' . $qrFilename;
-    $qrFullPath = __DIR__ . '/uploads/qrcodes/' . $qrFilename;
-
-    // Ensure directory exists
-    if (!is_dir(__DIR__ . '/uploads/qrcodes')) {
-        mkdir(__DIR__ . '/uploads/qrcodes', 0777, true);
-    }
-
-    // Generate QR code PNG
-    $result = (new Builder(
-        writer: new PngWriter(),
-        data: $timelineUrl,
-        size: 300,
-        margin: 10
-    ))->build();
-
-    $result->saveToFile($qrFullPath);
-
-    $sql = 'INSERT INTO users (email, password, name, timeline_url, qr_code) 
-            VALUES (:email, :password, :name, :timeline_url, :qr_code)';
+    $sql = 'INSERT INTO users (email, password, name)
+            VALUES (:email, :password, :name)';
     $stmt = $conn->prepare($sql);
     if ($stmt) {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':timeline_url', $timelineUrl);
-        $stmt->bindParam(':qr_code', $qrRelativePath);
+
         $stmt->execute();
 
         $conn->commit();
