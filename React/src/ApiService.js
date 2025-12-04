@@ -3,7 +3,7 @@
 export const registerUser = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/Sustainability_Log_Development/form_capture.php",
+      "http://localhost:8001/TrainingAPI/form_capture.php",
       {
         method: "POST",
         headers: {
@@ -25,7 +25,7 @@ export const registerUser = async (formData) => {
 export const loginUser = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/Sustainability_Log_Development/login_capture.php",
+      "http://localhost:8001/TrainingAPI/login_capture.php",
       {
         method: "POST",
         headers: {
