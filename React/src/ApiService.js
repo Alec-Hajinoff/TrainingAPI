@@ -49,7 +49,7 @@ export const loginUser = async (formData) => {
 export const createActionFunction = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/Sustainability_Log_Development/create_action.php",
+      "http://localhost:8001/TrainingAPI/create_action.php",
       {
         method: "POST",
         body: formData,

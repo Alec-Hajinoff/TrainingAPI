@@ -288,117 +288,15 @@ function CreateAction() {
               showSuggestions ? "mention-suggestions" : undefined
             }
           />
-          {showSuggestions && suggestions.length > 0 && (
-            <ul
-              id="mention-suggestions"
-              className="list-group mention-suggestions"
-              role="listbox"
-              aria-label="Company suggestions"
-            >
-              {suggestions.map((s, idx) => {
-                const label = s.name || "Unknown";
-                return (
-                  <li
-                    key={idx}
-                    className="list-group-item list-group-item-action"
-                    role="option"
-                    aria-selected={false}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      selectSuggestion(s);
-                    }}
-                  >
-                    {label}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </div>
-
-        <div className="form-group mb-3">
-          <label htmlFor="fileUpload">
-            Upload a supporting document (e.g. an invoice or certificate):
-          </label>
-          <input
-            type="file"
-            id="fileUpload"
-            className="form-control"
-            onChange={handleFileChange}
-          />
-        </div>
-
-        <div className="form-group mb-3">
-          <label>Select the category this action relates to:</label>
-          <div>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="category"
-                value="Sourcing"
-                checked={formData.category === "Sourcing"}
-                onChange={handleChange}
-                required
-              />
-              <label className="form-check-label">
-                Sourcing
-                <span
-                  className="ms-1 text-primary fw-bold"
-                  data-bs-toggle="tooltip"
-                  title="Actions taken by your suppliers to improve sustainability (e.g., switching to recycled inputs)"
-                >
-                  ?
-                </span>
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="category"
-                value="Operations"
-                checked={formData.category === "Operations"}
-                onChange={handleChange}
-              />
-              <label className="form-check-label">
-                Operations
-                <span
-                  className="ms-1 text-primary fw-bold"
-                  data-bs-toggle="tooltip"
-                  title="Internal company actions like reducing waste, donations, or volunteering"
-                >
-                  ?
-                </span>
-              </label>
-            </div>
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="category"
-                value="Impact"
-                checked={formData.category === "Impact"}
-                onChange={handleChange}
-              />
-              <label className="form-check-label">
-                Impact
-                <span
-                  className="ms-1 text-primary fw-bold"
-                  data-bs-toggle="tooltip"
-                  title="Your products or services that help customers become more sustainable"
-                >
-                  ?
-                </span>
-              </label>
-            </div>
-          </div>
         </div>
 
         {/* Display hash if available */}
         {textHash && (
           <div className="alert alert-info">
-            <strong>The hash for your action is shown below. You can now refresh this page.</strong>
+            <strong>
+              The hash for your action is shown below. You can now refresh this
+              page.
+            </strong>
             <br />
             <code>{textHash}</code>
           </div>
@@ -428,76 +326,6 @@ function CreateAction() {
           </button>
         </div>
       </form>
-      {agreements.length > 0 && (
-        <div className="row">
-          <div className="col">
-            {agreements.length > 0 && (
-              <div className="row">
-                <div className="col">
-                  <TimelineUrlQrDisplay />
-                </div>
-              </div>
-            )}
-            <div className="form-group mb-3">
-              <label>
-                See your full timeline of submissions below, securely anchored
-                to the blockchain:
-              </label>
-            </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Files</th>
-                  <th>Timestamp</th>
-                  <th>Hash</th>
-                </tr>
-              </thead>
-              <tbody>
-                {agreements.map((agreement, index) => (
-                  <tr key={index}>
-                    <td>
-                      {getCategoryLabel(agreement.category)}
-                      {ParseMentions(agreement.description, companyMap)}
-                    </td>
-                    <td>
-                      {agreement.files ? (
-                        <button
-                          className="btn btn-link"
-                          onClick={() =>
-                            handleFileDownload(
-                              agreement.files,
-                              `agreement_${agreement.hash}.pdf`
-                            )
-                          }
-                        >
-                          Download PDF
-                        </button>
-                      ) : (
-                        <span className="text-muted">No file uploaded</span>
-                      )}
-                    </td>
-
-                    <td>{new Date(agreement.timestamp).toLocaleString()}</td>
-                    <td>{agreement.hash}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="mt-3">
-              <a
-                href="https://sepolia.explorer.zksync.io/address/0x82c086a29C39Cf184050A0687652f4e16b392014#events"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-              >
-                To verify an entry, click to open the blockchain explorer and
-                search using the hash.
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
