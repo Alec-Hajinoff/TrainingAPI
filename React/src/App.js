@@ -8,7 +8,6 @@ import Footer from "./Footer";
 import RegisteredPage from "./RegisteredPage";
 import CreateAction from "./CreateAction";
 import LogoutComponent from "./LogoutComponent";
-import PublicTimeline from "./PublicTimeline";
 
 function App() {
   return (
@@ -20,8 +19,6 @@ function App() {
           <Route path="RegisteredPage" element={<RegisteredPage />} />
           <Route path="CreateAction" element={<CreateAction />} />
           <Route path="LogoutComponent" element={<LogoutComponent />} />
-          {/*PublicTimeline the page that does not require sign in and is a view when URL is typed in the browser*/}
-          <Route path="timeline/:slug" element={<PublicTimeline />} />
         </Routes>
         <Footer />
       </Router>
