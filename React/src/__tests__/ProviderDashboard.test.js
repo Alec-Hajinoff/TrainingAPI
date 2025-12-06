@@ -7,7 +7,7 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
-import CreateAction from "../CreateAction";
+import CreateAction from "../ProviderDashboard";
 import {
   createActionFunction,
   userDashboard,

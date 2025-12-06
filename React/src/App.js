@@ -6,7 +6,7 @@ import Header from "./Header";
 import MainRegLog from "./MainRegLog";
 import Footer from "./Footer";
 import RegisteredPage from "./RegisteredPage";
-import CreateAction from "./CreateAction";
+import ProviderDashboard from "./ProviderDashboard";
 import LogoutComponent from "./LogoutComponent";
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainRegLog />} />
           <Route path="RegisteredPage" element={<RegisteredPage />} />
-          <Route path="CreateAction" element={<CreateAction />} />
+          <Route path="ProviderDashboard" element={<ProviderDashboard />} />
           <Route path="LogoutComponent" element={<LogoutComponent />} />
         </Routes>
         <Footer />

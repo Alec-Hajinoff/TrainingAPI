@@ -26,7 +26,7 @@ function UserLogin() {
     try {
       const data = await loginUser(formData);
       if (data.status === "success") {
-          navigate("/CreateAction");
+          navigate("/ProviderDashboard");
       } else {
         setErrorMessage("Sign in failed. Please try again.");
       }

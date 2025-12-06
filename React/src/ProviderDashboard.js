@@ -1,11 +1,11 @@
 // When a user inputs text into the text box & uploads a file - this is the file that is responsible.
 
 import React, { useState } from "react";
-import "./CreateAction.css";
+import "./ProviderDashboard.css";
 import LogoutComponent from "./LogoutComponent";
 import { createActionFunction } from "./ApiService";
 
-function CreateAction() {
+function ProviderDashboard() {
   const [agreementText, setAgreementText] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -118,4 +118,4 @@ function CreateAction() {
   );
 }
 
-export default CreateAction;
+export default ProviderDashboard;
