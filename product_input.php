@@ -54,7 +54,7 @@ if (!$product_name) {
 try {
     $conn->beginTransaction();
 
-    $sql = 'INSERT INTO products (product_name, user_id) VALUES (?, ?)';
+    $sql = 'INSERT INTO products (product_name, provider_users_id) VALUES (?, ?)';
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception('Failed to prepare product insert statement');

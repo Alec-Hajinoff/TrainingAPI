@@ -63,7 +63,7 @@ try {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = 'INSERT INTO users (email, password, name)
+    $sql = 'INSERT INTO provider_users (email, password, name)
             VALUES (:email, :password, :name)';
     $stmt = $conn->prepare($sql);
     if ($stmt) {

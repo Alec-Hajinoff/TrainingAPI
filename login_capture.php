@@ -41,7 +41,7 @@ if (isset($input['email'], $input['password'])) {
 
         $pdo->beginTransaction();
 
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
+        $stmt = $pdo->prepare('SELECT * FROM provider_users WHERE email = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
