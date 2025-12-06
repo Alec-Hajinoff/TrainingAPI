@@ -1,6 +1,6 @@
 <?php
 
-// This file accepts agreement text from the frontend and stores it in the database.
+// This file accepts input data from provider sent from the frontend and stores it in the database.
 
 require_once 'session_config.php';
 
@@ -39,28 +39,28 @@ try {
 }
 
 $id = $_SESSION['id'] ?? null;
-$agreement_text = isset($_POST['agreement_text']) ? trim($_POST['agreement_text']) : null;
+$product_name = isset($_POST['product_name']) ? trim($_POST['product_name']) : null;
 
 if (!$id) {
     echo json_encode(['success' => false, 'message' => 'Session expired or invalid']);
     exit;
 }
 
-if (!$agreement_text) {
-    echo json_encode(['success' => false, 'message' => 'Agreement text is required']);
+if (!$product_name) {
+    echo json_encode(['success' => false, 'message' => 'Product name is required']);
     exit;
 }
 
 try {
     $conn->beginTransaction();
 
-    $sql = 'INSERT INTO actions (action_text, user_id) VALUES (?, ?)';
+    $sql = 'INSERT INTO products (product_name, user_id) VALUES (?, ?)';
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        throw new Exception('Failed to prepare agreement insert statement');
+        throw new Exception('Failed to prepare product insert statement');
     }
 
-    $stmt->execute([$agreement_text, $id]);
+    $stmt->execute([$product_name, $id]);
 
     $conn->commit();
 

@@ -1,19 +1,17 @@
-// When a user inputs text into the text box & uploads a file - this is the file that is responsible.
-
 import React, { useState } from "react";
 import "./ProviderDashboard.css";
 import LogoutComponent from "./LogoutComponent";
-import { createActionFunction } from "./ApiService";
+import { inputDataFunction } from "./ApiService";
 
 function ProviderDashboard() {
-  const [agreementText, setAgreementText] = useState("");
+  const [inputData, setInputData] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { value } = e.target;
-    setAgreementText(value);
+    setInputData(value);
     setSuccessMessage("");
   };
 
@@ -24,13 +22,13 @@ function ProviderDashboard() {
     setSuccessMessage("");
 
     const submitData = new FormData();
-    submitData.append("agreement_text", agreementText);
+    submitData.append("product_name", inputData);
 
     try {
-      const data = await createActionFunction(submitData);
+      const data = await inputDataFunction(submitData);
 
       if (data && data.success) {
-        setAgreementText("");
+        setInputData("");
 
         setSuccessMessage("Submission saved");
 
@@ -60,17 +58,17 @@ function ProviderDashboard() {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group mb-3">
-          <label htmlFor="agreementText">
+          <label htmlFor="inputData">
             For example: 'We installed solar panels' or 'We reduced waste by
             switching to recyclable packaging.'
           </label>
 
           <textarea
-            id="agreementText"
+            id="inputData"
             className="form-control"
             rows="10"
-            name="agreement_text"
-            value={agreementText}
+            name="product_name"
+            value={inputData}
             onChange={handleChange}
             required
           />

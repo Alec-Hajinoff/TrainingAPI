@@ -44,12 +44,12 @@ export const loginUser = async (formData) => {
   }
 };
 
-// createActionFunction() is the API call to send to the backend the agreement text + the file submitted by the user.
+// inputDataFunction() is the API call to send to the backend, data submitted by provider.
 
-export const createActionFunction = async (formData) => {
+export const inputDataFunction = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/create_action.php",
+      "http://localhost:8001/TrainingAPI/product_input.php",
       {
         method: "POST",
         body: formData,
@@ -60,7 +60,7 @@ export const createActionFunction = async (formData) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error in createActionFunction:", error);
+    console.error("Error in inputDataFunction:", error);
     throw new Error(`Failed to create agreement: ${error.message}`);
   }
 };
