@@ -9,9 +9,16 @@ function UserRegistration() {
     name: "",
     email: "",
     password: "",
+    userType: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const userTypeTooltips = {
+    provider: "Submit and manage training courses",
+    developer: "Integrate API with LMS systems",
+    admin: "Manage platform and providers",
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,10 +30,17 @@ function UserRegistration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.userType) {
+      setErrorMessage("Please select a user type");
+      return;
+    }
+
     if (formData.password.length < 8) {
       setErrorMessage("Password must be at least 8 characters long");
       return;
     }
+
     setLoading(true);
     try {
       const data = await registerUser(formData);
@@ -44,6 +58,33 @@ function UserRegistration() {
 
   return (
     <form className="row g-2" onSubmit={handleSubmit}>
+      <div className="radio-group-simple mb-3">
+        {["provider", "developer", "admin"].map((type) => (
+          <div key={type} className="radio-simple">
+            <label className="radio-label-simple">
+              <input
+                type="radio"
+                name="userType"
+                value={type}
+                checked={formData.userType === type}
+                onChange={handleChange}
+                required
+                className="radio-input-simple"
+              />
+              <span className="radio-text-simple">
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </span>
+              <span
+                className="question-mark-simple"
+                title={userTypeTooltips[type]}
+              >
+                ?
+              </span>
+            </label>
+          </div>
+        ))}
+      </div>
+
       <div className="form-group">
         <input
           autoComplete="off"
@@ -54,7 +95,7 @@ function UserRegistration() {
           value={formData.name}
           onChange={handleChange}
           required
-          placeholder="Company name"
+          placeholder="Organisation name"
         />
       </div>
       <div className="form-group">

@@ -47,9 +47,15 @@ if ($input === null) {
 $name = $input['name'] ?? null;
 $email = filter_var($input['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $password = $input['password'] ?? null;
+$userType = $input['userType'] ?? null;
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     echo json_encode(['success' => false, 'message' => 'Invalid email format']);
+    exit;
+}
+
+if (!in_array($userType, ['provider', 'developer', 'admin'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid user type']);
     exit;
 }
 
@@ -63,8 +69,23 @@ try {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = 'INSERT INTO provider_users (email, password, name)
-            VALUES (:email, :password, :name)';
+    switch ($userType) {
+        case 'provider':
+            $tableName = 'provider_users';
+            break;
+        case 'developer':
+            $tableName = 'developer_users';
+            break;
+        case 'admin':
+            $tableName = 'admin_users';
+            break;
+        default:
+            throw new Exception('Invalid user type');
+    }
+
+    $sql = "INSERT INTO $tableName (email, password, name)
+            VALUES (:email, :password, :name)";
+
     $stmt = $conn->prepare($sql);
     if ($stmt) {
         $stmt->bindParam(':email', $email);
