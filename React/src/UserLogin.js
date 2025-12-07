@@ -26,7 +26,17 @@ function UserLogin() {
     try {
       const data = await loginUser(formData);
       if (data.status === "success") {
-          navigate("/ProviderDashboard");
+        switch (data.user_type) {
+          case "provider":
+            navigate("/ProviderDashboard");
+            break;
+          case "developer":
+            navigate("/DeveloperDashboard");
+            break;
+          case "admin":
+            navigate("/AdminDashboard");
+            break;
+        }
       } else {
         setErrorMessage("Sign in failed. Please try again.");
       }

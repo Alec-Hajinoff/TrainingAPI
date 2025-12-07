@@ -1,4 +1,3 @@
-//import logo from './logo.svg';
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -7,6 +6,8 @@ import MainRegLog from "./MainRegLog";
 import Footer from "./Footer";
 import RegisteredPage from "./RegisteredPage";
 import ProviderDashboard from "./ProviderDashboard";
+import DeveloperDashboard from "./DeveloperDashboard";
+import AdminDashboard from "./AdminDashboard";
 import LogoutComponent from "./LogoutComponent";
 
 function App() {
@@ -16,9 +17,11 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<MainRegLog />} />
-          <Route path="RegisteredPage" element={<RegisteredPage />} />
-          <Route path="ProviderDashboard" element={<ProviderDashboard />} />
-          <Route path="LogoutComponent" element={<LogoutComponent />} />
+          <Route path="/RegisteredPage" element={<RegisteredPage />} />
+          <Route path="/ProviderDashboard" element={<ProviderDashboard />} />
+          <Route path="/DeveloperDashboard" element={<DeveloperDashboard />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/LogoutComponent" element={<LogoutComponent />} />
         </Routes>
         <Footer />
       </Router>
