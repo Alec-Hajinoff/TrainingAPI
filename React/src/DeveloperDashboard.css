@@ -37,3 +37,14 @@
     transform: rotate(360deg);
   }
 }
+
+.api-key-section {
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  background-color: #f8f9fa;
+}
+
+.api-key-section h4 {
+  margin-bottom: 1rem;
+}

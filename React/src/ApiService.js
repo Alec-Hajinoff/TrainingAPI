@@ -83,3 +83,24 @@ export const logoutUser = async () => {
     throw new Error("An error occurred during logout.");
   }
 };
+
+export const generateApiKey = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/generate_api_key.php",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error generating API key:", error);
+    throw new Error("Failed to generate API key");
+  }
+};
