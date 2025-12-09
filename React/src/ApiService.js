@@ -49,7 +49,7 @@ export const loginUser = async (formData) => {
 export const inputDataFunction = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/product_input.php",
+      "http://localhost:8001/TrainingAPI/course_input.php",
       {
         method: "POST",
         body: formData,
