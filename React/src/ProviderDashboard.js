@@ -22,7 +22,7 @@ function ProviderDashboard() {
     setSuccessMessage("");
 
     const submitData = new FormData();
-    submitData.append("product_name", inputData);
+    submitData.append("course_title", inputData);
 
     try {
       const data = await inputDataFunction(submitData);
@@ -67,7 +67,7 @@ function ProviderDashboard() {
             id="inputData"
             className="form-control"
             rows="10"
-            name="product_name"
+            name="course_title"
             value={inputData}
             onChange={handleChange}
             required

@@ -1,7 +1,7 @@
 <?php
 
 // RESTful endpoint to get all product names
-// Usage: GET /api/products with Authorization: Bearer <api_key>
+// Usage: GET /api/courses with Authorization: Bearer <api_key>
 
 header('Content-Type: application/json');
 
@@ -62,22 +62,22 @@ try {
 }
 
 try {
-    $stmt = $conn->prepare('SELECT product_name FROM products ORDER BY id ASC');
+    $stmt = $conn->prepare('SELECT course_title FROM courses ORDER BY id ASC');
     $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    $courses = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-    if (empty($products)) {
-        echo json_encode(['success' => false, 'message' => 'No products found']);
+    if (empty($courses)) {
+        echo json_encode(['success' => false, 'message' => 'No courses found']);
         exit;
     }
 
     echo json_encode([
         'success' => true,
-        'products' => $products,
-        'count' => count($products)
+        'courses' => $courses,
+        'count' => count($courses)
     ]);
 } catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Failed to fetch products: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Failed to fetch courses: ' . $e->getMessage()]);
     exit;
 } finally {
     $conn = null;

@@ -39,14 +39,14 @@ try {
 }
 
 $id = $_SESSION['id'] ?? null;
-$product_name = isset($_POST['product_name']) ? trim($_POST['product_name']) : null;
+$course_title = isset($_POST['course_title']) ? trim($_POST['course_title']) : null;
 
 if (!$id) {
     echo json_encode(['success' => false, 'message' => 'Session expired or invalid']);
     exit;
 }
 
-if (!$product_name) {
+if (!$course_title) {
     echo json_encode(['success' => false, 'message' => 'Product name is required']);
     exit;
 }
@@ -54,13 +54,13 @@ if (!$product_name) {
 try {
     $conn->beginTransaction();
 
-    $sql = 'INSERT INTO products (product_name, provider_users_id) VALUES (?, ?)';
+    $sql = 'INSERT INTO courses (course_title, provider_users_id) VALUES (?, ?)';
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception('Failed to prepare product insert statement');
     }
 
-    $stmt->execute([$product_name, $id]);
+    $stmt->execute([$course_title, $id]);
 
     $conn->commit();
 
