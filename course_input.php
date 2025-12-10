@@ -1,6 +1,6 @@
 <?php
 
-// This file accepts input data from provider sent from the frontend and stores it in the database.
+// This file accepts course data from a provider sent from the frontend and inserts it into the database.
 
 require_once 'session_config.php';
 
@@ -39,28 +39,55 @@ try {
 }
 
 $id = $_SESSION['id'] ?? null;
-$course_title = isset($_POST['course_title']) ? trim($_POST['course_title']) : null;
+
+$course_title = $_POST['course_title'] ?? null;
+$description = $_POST['description'] ?? null;
+$learning_outcomes = $_POST['learning_outcomes'] ?? null;
+$subject_area = $_POST['subject_area'] ?? null;
+$subject = $_POST['subject'] ?? null;
+$delivery_type = $_POST['delivery_type'] ?? null;
+$country_of_delivery = $_POST['country_of_delivery'] ?? null;
+$duration = $_POST['duration'] ?? null;
+$total_price = $_POST['total_price'] ?? null;
 
 if (!$id) {
     echo json_encode(['success' => false, 'message' => 'Session expired or invalid']);
     exit;
 }
 
-if (!$course_title) {
-    echo json_encode(['success' => false, 'message' => 'Product name is required']);
-    exit;
-}
-
 try {
     $conn->beginTransaction();
 
-    $sql = 'INSERT INTO courses (course_title, provider_users_id) VALUES (?, ?)';
+    $sql = 'INSERT INTO courses (
+        course_title, 
+        description, 
+        learning_outcomes, 
+        subject_area, 
+        subject, 
+        delivery_type, 
+        country_of_delivery, 
+        duration, 
+        total_price, 
+        provider_users_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
-        throw new Exception('Failed to prepare product insert statement');
+        throw new Exception('Failed to prepare course insert statement');
     }
 
-    $stmt->execute([$course_title, $id]);
+    $stmt->execute([
+        $course_title,
+        $description,
+        $learning_outcomes,
+        $subject_area,
+        $subject,
+        $delivery_type,
+        $country_of_delivery,
+        $duration,
+        $total_price,
+        $id
+    ]);
 
     $conn->commit();
 

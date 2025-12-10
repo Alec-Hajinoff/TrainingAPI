@@ -1,6 +1,6 @@
 <?php
 
-// RESTful endpoint to get all product names
+// RESTful endpoint to get all courses data
 // Usage: GET /api/courses with Authorization: Bearer <api_key>
 
 header('Content-Type: application/json');
@@ -62,9 +62,23 @@ try {
 }
 
 try {
-    $stmt = $conn->prepare('SELECT course_title FROM courses ORDER BY id ASC');
+    $sql = 'SELECT 
+                id,
+                course_title,
+                description,
+                learning_outcomes,
+                subject_area,
+                subject,
+                delivery_type,
+                country_of_delivery,
+                duration,
+                total_price
+            FROM courses 
+            ORDER BY id ASC';
+
+    $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $courses = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($courses)) {
         echo json_encode(['success' => false, 'message' => 'No courses found']);
