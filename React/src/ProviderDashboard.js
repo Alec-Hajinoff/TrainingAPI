@@ -23,12 +23,10 @@ function ProviderDashboard() {
 
   const countryOptions = [
     "Global",
-    "United States",
-    "Canada",
-
     "Austria",
     "Belgium",
     "Bulgaria",
+    "Canada",
     "Croatia",
     "Cyprus",
     "Czech Republic",
@@ -53,6 +51,7 @@ function ProviderDashboard() {
     "Slovenia",
     "Spain",
     "Sweden",
+    "United States",
   ];
 
   const subjectOptions = {
