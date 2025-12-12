@@ -104,3 +104,68 @@ export const generateApiKey = async () => {
     throw new Error("Failed to generate API key");
   }
 };
+
+// fetchUserCourses() fetches all courses from the database to be displayed in the UI.
+
+export const fetchUserCourses = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/fetch_courses.php",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    throw new Error("Failed to fetch courses");
+  }
+};
+
+// updateCourse() allows a provider to make changes to an existing course.
+
+export const updateCourse = async (formData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/update_course.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating course:", error);
+    throw new Error("Failed to update course");
+  }
+};
+
+// deleteCourse() allows a provider to delete an existing course.
+
+export const deleteCourse = async (courseId) => {
+  try {
+    const formData = new FormData();
+    formData.append("course_id", courseId);
+
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/delete_course.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    throw new Error("Failed to delete course");
+  }
+};
