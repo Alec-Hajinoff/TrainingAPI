@@ -69,6 +69,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
     "Slovenia",
     "Spain",
     "Sweden",
+    "United Kingdom",
     "United States",
   ];
 
