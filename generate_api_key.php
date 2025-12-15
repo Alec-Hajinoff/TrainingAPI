@@ -18,6 +18,7 @@ if (in_array($origin, $allowed_origins)) {
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Access-Control-Allow-Credentials: true');
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
@@ -33,7 +34,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
-    die('Connection failed: ' . $e->getMessage());
+    die(json_encode(['success' => false, 'message' => 'Connection failed: ' . $e->getMessage()]));
 }
 
 $id = $_SESSION['id'] ?? null;
@@ -54,13 +55,28 @@ $hashedKey = hash('sha256', $apiKey);
 try {
     $conn->beginTransaction();
 
-    $sql = 'INSERT INTO api_keys (api_key, developer_users_id) VALUES (?, ?)';
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        throw new Exception('Failed to prepare API key insert statement');
-    }
+    $checkSql = 'SELECT id FROM api_keys WHERE developer_users_id = ?';
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->execute([$id]);
+    $existingKey = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
-    $stmt->execute([$hashedKey, $id]);
+    if ($existingKey) {
+        $sql = 'UPDATE api_keys SET api_key = ? WHERE developer_users_id = ?';
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            throw new Exception('Failed to prepare API key update statement');
+        }
+        $stmt->execute([$hashedKey, $id]);
+
+        error_log("API key regenerated for developer ID: $id");
+    } else {
+        $sql = 'INSERT INTO api_keys (api_key, developer_users_id) VALUES (?, ?)';
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            throw new Exception('Failed to prepare API key insert statement');
+        }
+        $stmt->execute([$hashedKey, $id]);
+    }
 
     $conn->commit();
 

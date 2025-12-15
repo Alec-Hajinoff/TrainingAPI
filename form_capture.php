@@ -67,6 +67,31 @@ if (!$name || !$email || !$password) {
 try {
     $conn->beginTransaction();
 
+    $email = trim($email);
+    $email = strtolower($email);
+
+    $tablesToCheck = ['provider_users', 'developer_users', 'admin_users'];
+    $emailExists = false;
+
+    foreach ($tablesToCheck as $table) {
+        $checkSql = "SELECT COUNT(*) as email_count FROM $table WHERE email = :email";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bindParam(':email', $email);
+        $checkStmt->execute();
+
+        $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+        if ($result['email_count'] > 0) {
+            $emailExists = true;
+            break;
+        }
+    }
+
+    if ($emailExists) {
+        $conn->rollBack();
+        echo json_encode(['success' => false, 'message' => 'This email cannot be used for registration. Please try another email.']);
+        exit;
+    }
+
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     switch ($userType) {

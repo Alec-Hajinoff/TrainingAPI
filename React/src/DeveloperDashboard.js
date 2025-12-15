@@ -7,14 +7,21 @@ function DeveloperDashboard() {
   const [apiKey, setApiKey] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleGenerateApiKey = async () => {
+    if (!showConfirmation) {
+      setShowConfirmation(true);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const result = await generateApiKey();
       if (result.success) {
         setApiKey(result.apiKey);
+        setShowConfirmation(false);
       } else {
         setError(result.message || "Failed to generate API key");
       }
@@ -23,6 +30,11 @@ function DeveloperDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancelGeneration = () => {
+    setShowConfirmation(false);
+    setError(null);
   };
 
   return (
@@ -67,18 +79,57 @@ function DeveloperDashboard() {
                 Make a note of the key — it will{" "}
                 <strong>not be shown again</strong>.
               </li>
-              <li>If you lose your key, simply generate a new one.</li>
+              <li>
+                <strong>IMPORTANT:</strong> If you already have an API key,
+                generating a new one will{" "}
+                <strong>immediately invalidate</strong> your previous key.
+              </li>
             </ol>
 
             <div className="api-key-section mt-4 mb-4 p-4 border rounded bg-light">
               <h5>Generate Your API Key Here:</h5>
-              <button
-                className="btn btn-primary mb-3"
-                onClick={handleGenerateApiKey}
-                disabled={loading}
-              >
-                {loading ? "Generating..." : "Generate New API Key"}
-              </button>
+
+              {showConfirmation && (
+                <div className="alert alert-warning mb-3">
+                  <h5 className="alert-heading">⚠️ Important Warning</h5>
+                  <p>
+                    <strong>
+                      Generating a new API key will immediately invalidate your
+                      previous key.
+                    </strong>
+                  </p>
+                  <p>
+                    Any existing integrations using your old key will stop
+                    working. This action cannot be undone.
+                  </p>
+                  <div className="mt-3">
+                    <button
+                      className="btn btn-danger me-2"
+                      onClick={handleGenerateApiKey}
+                      disabled={loading}
+                    >
+                      {loading ? "Generating..." : "Yes, Generate New Key"}
+                    </button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={handleCancelGeneration}
+                      disabled={loading}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {!showConfirmation && (
+                <button
+                  className="btn btn-primary mb-3"
+                  onClick={handleGenerateApiKey}
+                  disabled={loading}
+                >
+                  {loading ? "Generating..." : "Generate New API Key"}
+                </button>
+              )}
 
               {error && <div className="alert alert-danger">{error}</div>}
 
@@ -90,6 +141,10 @@ function DeveloperDashboard() {
                   </div>
                   <small className="text-muted d-block mt-2">
                     Store this key securely. You won't be able to see it again.
+                  </small>
+                  <small className="text-danger d-block mt-2">
+                    ⚠️ <strong>Note:</strong> Your previous API key (if any) is
+                    now invalid. Update all your integrations with this new key.
                   </small>
                 </div>
               )}
