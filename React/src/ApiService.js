@@ -169,3 +169,26 @@ export const deleteCourse = async (courseId) => {
     throw new Error("Failed to delete course");
   }
 };
+
+// checkAdminExists() calls the PHP app to query the database to see if an admin account already exists. We then use this to show the appropriate radio buttons on user sign up.
+
+export const checkAdminExists = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/check_admin_exists.php",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error checking admin existence:", error);
+    throw new Error("Failed to check admin account status");
+  }
+};

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./UserRegistration.css";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "./ApiService";
+import { registerUser, checkAdminExists } from "./ApiService";
 
 function UserRegistration() {
   const navigate = useNavigate();
@@ -13,6 +13,8 @@ function UserRegistration() {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [adminExists, setAdminExists] = useState(false);
+  const [checkingAdmin, setCheckingAdmin] = useState(true);
 
   const userTypeTooltips = {
     provider: "Submit and manage training courses",
@@ -20,12 +22,37 @@ function UserRegistration() {
     admin: "Manage platform and providers",
   };
 
+  useEffect(() => {
+    checkAdminStatus();
+  }, []);
+
+  const checkAdminStatus = async () => {
+    try {
+      setCheckingAdmin(true);
+      const data = await checkAdminExists();
+      if (data.success) {
+        setAdminExists(data.adminExists);
+      }
+    } catch (error) {
+      console.error("Failed to check admin status:", error);
+
+      setAdminExists(true);
+    } finally {
+      setCheckingAdmin(false);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
     });
+
+    if (name === "userType") {
+      setErrorMessage("");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -47,7 +74,9 @@ function UserRegistration() {
       if (data.success) {
         navigate("/RegisteredPage");
       } else {
-        setErrorMessage("Registration failed. Please try again.");
+        setErrorMessage(
+          data.message || "Registration failed. Please try again."
+        );
       }
     } catch (error) {
       setErrorMessage(error.message);
@@ -56,10 +85,24 @@ function UserRegistration() {
     }
   };
 
+  const getUserTypesToShow = () => {
+    if (checkingAdmin) {
+      return ["provider", "developer", "admin"];
+    }
+
+    if (adminExists) {
+      return ["provider", "developer"];
+    } else {
+      return ["provider", "developer", "admin"];
+    }
+  };
+
+  const userTypesToShow = getUserTypesToShow();
+
   return (
     <form className="row g-2" onSubmit={handleSubmit}>
       <div className="radio-group-simple mb-3">
-        {["provider", "developer", "admin"].map((type) => (
+        {userTypesToShow.map((type) => (
           <div key={type} className="radio-simple">
             <label className="radio-label-simple">
               <input
@@ -70,9 +113,16 @@ function UserRegistration() {
                 onChange={handleChange}
                 required
                 className="radio-input-simple"
+                disabled={type === "admin" && checkingAdmin}
               />
               <span className="radio-text-simple">
                 {type.charAt(0).toUpperCase() + type.slice(1)}
+                {checkingAdmin && type === "admin" && (
+                  <span
+                    className="spinner-border spinner-border-sm ms-2"
+                    role="status"
+                  ></span>
+                )}
               </span>
               <span
                 className="question-mark-simple"
@@ -127,13 +177,12 @@ function UserRegistration() {
       <div id="error-message" className="error" aria-live="polite">
         {errorMessage}
       </div>
-      <button type="submit" className="btn btn-secondary">
+      <button type="submit" className="btn btn-secondary" disabled={loading}>
         Register
         <span
           className="spinner-border spinner-border-sm"
           role="status"
           aria-hidden="true"
-          id="spinnerRegister"
           style={{ display: loading ? "inline-block" : "none" }}
         ></span>
       </button>
