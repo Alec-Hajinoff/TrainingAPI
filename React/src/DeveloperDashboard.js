@@ -79,28 +79,17 @@ function DeveloperDashboard() {
                 Make a note of the key — it will{" "}
                 <strong>not be shown again</strong>.
               </li>
-              <li>
-                <strong>IMPORTANT:</strong> If you already have an API key,
-                generating a new one will{" "}
-                <strong>immediately invalidate</strong> your previous key.
-              </li>
             </ol>
 
             <div className="api-key-section mt-4 mb-4 p-4 border rounded bg-light">
               <h5>Generate Your API Key Here:</h5>
 
               {showConfirmation && (
-                <div className="alert alert-warning mb-3">
-                  <h5 className="alert-heading">⚠️ Important Warning</h5>
-                  <p>
+                <div className="mb-3 p-3 border rounded">
+                  <p className="mb-3">
                     <strong>
-                      Generating a new API key will immediately invalidate your
-                      previous key.
+                      Generating a new API key invalidates your previous key.
                     </strong>
-                  </p>
-                  <p>
-                    Any existing integrations using your old key will stop
-                    working. This action cannot be undone.
                   </p>
                   <div className="mt-3">
                     <button
@@ -141,10 +130,6 @@ function DeveloperDashboard() {
                   </div>
                   <small className="text-muted d-block mt-2">
                     Store this key securely. You won't be able to see it again.
-                  </small>
-                  <small className="text-danger d-block mt-2">
-                    ⚠️ <strong>Note:</strong> Your previous API key (if any) is
-                    now invalid. Update all your integrations with this new key.
                   </small>
                 </div>
               )}
