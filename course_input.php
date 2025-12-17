@@ -49,6 +49,10 @@ $delivery_type = $_POST['delivery_type'] ?? null;
 $country_of_delivery = $_POST['country_of_delivery'] ?? null;
 $duration = $_POST['duration'] ?? null;
 $total_price = $_POST['total_price'] ?? null;
+$provider_name = $_POST['provider_name'] ?? null;
+$contact_email = $_POST['contact_email'] ?? null;
+$contact_phone = $_POST['contact_phone'] ?? null;
+$provider_website = $_POST['provider_website'] ?? null;
 
 if (!$id) {
     echo json_encode(['success' => false, 'message' => 'Session expired or invalid']);
@@ -67,9 +71,13 @@ try {
         delivery_type, 
         country_of_delivery, 
         duration, 
-        total_price, 
+        total_price,
+        provider_name,
+        contact_email,
+        contact_phone,
+        provider_website,
         provider_users_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -86,6 +94,10 @@ try {
         $country_of_delivery,
         $duration,
         $total_price,
+        $provider_name,
+        $contact_email,
+        $contact_phone,
+        $provider_website,
         $id
     ]);
 

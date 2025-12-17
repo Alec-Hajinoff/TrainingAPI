@@ -13,6 +13,10 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
     country_of_delivery: "",
     duration: "",
     total_price: "",
+    provider_name: "",
+    contact_email: "",
+    contact_phone: "",
+    provider_website: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -32,6 +36,10 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
         country_of_delivery: "",
         duration: "",
         total_price: "",
+        provider_name: "",
+        contact_email: "",
+        contact_phone: "",
+        provider_website: "",
       });
       setErrors({});
       setSuccessMessage("");
@@ -292,6 +300,36 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
       (isNaN(formData.total_price) || parseFloat(formData.total_price) <= 0)
     ) {
       newErrors.total_price = "Please enter a valid positive number";
+    }
+
+    // Email validation
+    if (
+      formData.contact_email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.contact_email)
+    ) {
+      newErrors.contact_email = "Please enter a valid email address";
+    }
+
+    // URL validation (accepts https://www.example.com, www.example.com, example.com)
+
+    if (formData.provider_website) {
+      const url = formData.provider_website.trim();
+
+      const urlPattern =
+        /^(https?:\/\/)?(www\.)?[a-zA-Z0-9][a-zA-Z0-9-]*(\.[a-zA-Z]{2,})+(\/[^\s]*)?$/;
+
+      if (!urlPattern.test(url)) {
+        newErrors.provider_website =
+          "Please enter a valid URL (e.g., example.com, www.example.com, or https://example.com)";
+      }
+    }
+
+    // Phone number validation (basic - allows numbers, spaces, dashes, parentheses)
+    if (formData.contact_phone) {
+      const phonePattern = /^[\d\s\-()+]{10,}$/;
+      if (!phonePattern.test(formData.contact_phone)) {
+        newErrors.contact_phone = "Please enter a valid phone number";
+      }
     }
 
     setErrors(newErrors);
@@ -565,6 +603,88 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
         />
         {errors.total_price && (
           <div className="invalid-feedback">{errors.total_price}</div>
+        )}
+      </div>
+
+      <div className="form-group mb-3">
+        <label htmlFor="provider_name" className="form-label">
+          Provider Name *
+        </label>
+        <input
+          type="text"
+          id="provider_name"
+          className={`form-control ${errors.provider_name ? "is-invalid" : ""}`}
+          name="provider_name"
+          value={formData.provider_name}
+          onChange={handleChange}
+          required
+          maxLength="255"
+          placeholder="e.g., ABC Training Ltd"
+        />
+        {errors.provider_name && (
+          <div className="invalid-feedback">{errors.provider_name}</div>
+        )}
+      </div>
+
+      <div className="form-group mb-3">
+        <label htmlFor="contact_email" className="form-label">
+          Contact Email *
+        </label>
+        <input
+          type="email"
+          id="contact_email"
+          className={`form-control ${errors.contact_email ? "is-invalid" : ""}`}
+          name="contact_email"
+          value={formData.contact_email}
+          onChange={handleChange}
+          required
+          maxLength="255"
+          placeholder="e.g., contact@example.com"
+        />
+        {errors.contact_email && (
+          <div className="invalid-feedback">{errors.contact_email}</div>
+        )}
+      </div>
+
+      <div className="form-group mb-3">
+        <label htmlFor="contact_phone" className="form-label">
+          Contact Phone *
+        </label>
+        <input
+          type="tel"
+          id="contact_phone"
+          className={`form-control ${errors.contact_phone ? "is-invalid" : ""}`}
+          name="contact_phone"
+          value={formData.contact_phone}
+          onChange={handleChange}
+          required
+          maxLength="50"
+          placeholder="e.g., +44 20 7123 4567"
+        />
+        {errors.contact_phone && (
+          <div className="invalid-feedback">{errors.contact_phone}</div>
+        )}
+      </div>
+
+      <div className="form-group mb-3">
+        <label htmlFor="provider_website" className="form-label">
+          Provider Website *
+        </label>
+        <input
+          type="text"
+          id="provider_website"
+          className={`form-control ${
+            errors.provider_website ? "is-invalid" : ""
+          }`}
+          name="provider_website"
+          value={formData.provider_website}
+          onChange={handleChange}
+          required
+          maxLength="1024"
+          placeholder="e.g., https://www.example.com"
+        />
+        {errors.provider_website && (
+          <div className="invalid-feedback">{errors.provider_website}</div>
         )}
       </div>
 
