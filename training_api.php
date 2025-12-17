@@ -72,7 +72,11 @@ try {
                 delivery_type,
                 country_of_delivery,
                 duration,
-                total_price
+                total_price,
+                provider_name,
+                contact_email,
+                contact_phone,
+                provider_website
             FROM courses 
             ORDER BY id ASC';
 

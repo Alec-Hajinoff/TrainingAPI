@@ -225,7 +225,11 @@ function DeveloperDashboard() {
       "delivery_type": "In-person",
       "country_of_delivery": "United States",
       "duration": "8.0",
-      "total_price": "3650.00"
+      "total_price": "3650.00",
+      "provider_name": "Clearly Financial Markets",
+      "contact_email": "mike.smith@clearlytraining.com",
+      "contact_phone": "+442076482253",
+      "provider_website": "www.clearlytraining.com"
     }
   ],
   "count": 1
