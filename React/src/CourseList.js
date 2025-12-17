@@ -526,6 +526,73 @@ function CourseList({ refreshTrigger }) {
                           />
                         </div>
                       </div>
+
+                      {/* New Provider Information Fields in Edit Mode */}
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group mb-2">
+                            <label className="form-label">
+                              Provider Name *
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="provider_name"
+                              value={editFormData.provider_name || ""}
+                              onChange={handleEditChange}
+                              required
+                              maxLength="255"
+                            />
+                          </div>
+
+                          <div className="form-group mb-2">
+                            <label className="form-label">
+                              Contact Email *
+                            </label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              name="contact_email"
+                              value={editFormData.contact_email || ""}
+                              onChange={handleEditChange}
+                              required
+                              maxLength="255"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-md-6">
+                          <div className="form-group mb-2">
+                            <label className="form-label">
+                              Contact Phone *
+                            </label>
+                            <input
+                              type="tel"
+                              className="form-control"
+                              name="contact_phone"
+                              value={editFormData.contact_phone || ""}
+                              onChange={handleEditChange}
+                              required
+                              maxLength="50"
+                            />
+                          </div>
+
+                          <div className="form-group mb-2">
+                            <label className="form-label">
+                              Provider Website *
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="provider_website"
+                              value={editFormData.provider_website || ""}
+                              onChange={handleEditChange}
+                              required
+                              maxLength="1024"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     {updateMessage.text && (
@@ -610,6 +677,41 @@ function CourseList({ refreshTrigger }) {
                       <p className="text-muted small">
                         {course.learning_outcomes}
                       </p>
+                    </div>
+
+                    {/* New Provider Information in Display Mode */}
+                    <div className="mt-3 pt-3 border-top">
+                      <h6 className="mb-2">Provider Information</h6>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <p className="mb-1">
+                            <strong>Provider:</strong> {course.provider_name}
+                          </p>
+                          <p className="mb-1">
+                            <strong>Email:</strong> {course.contact_email}
+                          </p>
+                        </div>
+                        <div className="col-md-6">
+                          <p className="mb-1">
+                            <strong>Phone:</strong> {course.contact_phone}
+                          </p>
+                          <p className="mb-1">
+                            <strong>Website:</strong>{" "}
+                            <a
+                              href={
+                                course.provider_website &&
+                                course.provider_website.startsWith("http")
+                                  ? course.provider_website
+                                  : `https://${course.provider_website}`
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {course.provider_website}
+                            </a>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </>
                 )}
