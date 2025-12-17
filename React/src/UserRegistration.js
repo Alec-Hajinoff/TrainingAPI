@@ -17,9 +17,14 @@ function UserRegistration() {
   const [checkingAdmin, setCheckingAdmin] = useState(true);
 
   const userTypeTooltips = {
-    provider: "Submit and manage training courses",
-    developer: "Integrate API with LMS systems",
-    admin: "Manage platform and providers",
+    provider:
+      "For training companies. Use this account to submit, manage, and update your course catalogue so it can be discovered and consumed by corporate LMS platforms via the TrainingApi.",
+
+    developer:
+      "For corporate LMS or HR system developers. Use this account to access the API, explore course data, test endpoints, and integrate external training courses into your organisation’s LMS.",
+
+    admin:
+      "For TrainingApi platform administrators. Manage provider onboarding, approve and monitor course data quality, and oversee API access and platform operations.",
   };
 
   useEffect(() => {
