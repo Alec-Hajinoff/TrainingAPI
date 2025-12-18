@@ -391,7 +391,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.course_title}
           onChange={handleChange}
           required
-          placeholder="For example: 'We installed solar panels' or 'We reduced waste by switching to recyclable packaging.'"
+          placeholder="For example: Introduction to Asset Management"
         />
         {errors.course_title && (
           <div className="invalid-feedback">{errors.course_title}</div>
@@ -410,6 +410,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.description}
           onChange={handleChange}
           required
+          placeholder="For example: This financial training course is designed to give delegates a thorough grounding in the themes, calculations, and practices behind the investment management industry, specifically from the perspective of..."
         />
         {errors.description && (
           <div className="invalid-feedback">{errors.description}</div>
@@ -430,6 +431,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.learning_outcomes}
           onChange={handleChange}
           required
+          placeholder="For example: * To demystify the jargon associated with the financial services industry * To review the key functions and players within financial services * To equip delegates with a broad understanding of the investment management industry..."
         />
         {errors.learning_outcomes && (
           <div className="invalid-feedback">{errors.learning_outcomes}</div>
@@ -577,7 +579,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           min="0.1"
           max="999.9"
           step="0.1"
-          placeholder="e.g., 2.5"
+          placeholder="e.g., 8"
         />
         {errors.duration && (
           <div className="invalid-feedback">{errors.duration}</div>
@@ -599,7 +601,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           min="0.01"
           max="99999999.99"
           step="0.01"
-          placeholder="e.g., 99.99"
+          placeholder="e.g., 4000"
         />
         {errors.total_price && (
           <div className="invalid-feedback">{errors.total_price}</div>
@@ -639,7 +641,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="255"
-          placeholder="e.g., contact@example.com"
+          placeholder="e.g., mike.smith@abctraining.com"
         />
         {errors.contact_email && (
           <div className="invalid-feedback">{errors.contact_email}</div>
@@ -681,7 +683,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="1024"
-          placeholder="e.g., https://www.example.com"
+          placeholder="e.g., https://www.abctraining.com"
         />
         {errors.provider_website && (
           <div className="invalid-feedback">{errors.provider_website}</div>
