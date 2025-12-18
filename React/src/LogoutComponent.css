@@ -1,3 +1,49 @@
+/* Unified body styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Logout button styling */
+.logout-button {
+  background-color: #e74c3c;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logout-button:hover {
+  background-color: #c0392b;
+}
+
+.logout-button:before {
+  content: "\f08b"; /* Font Awesome sign-out icon */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+
+/* Alternative if Font Awesome is not available */
+.logout-button:not(:before) {
+  padding-left: 1rem;
+}
+
+.logout-button:not(:before):after {
+  content: "→";
+  margin-left: 0.5rem;
+}
+
+
+/*
 input:valid {
   background-color: ivory;
   border: none;
@@ -19,3 +65,4 @@ body {
 #logo {
   height: 150px;
 }
+*/
