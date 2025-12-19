@@ -43,22 +43,13 @@ function DeveloperDashboard() {
         <LogoutComponent />
       </div>
       <div className="dashboard-content">
-        <h2>Developer Dashboard</h2>
-
-        <div className="welcome-section mb-4">
-          <p>
-            Welcome to the developer dashboard. Here you can integrate API with
-            LMS systems and manage your integrations.
-          </p>
-        </div>
-
         <div className="getting-started-section mb-5">
-          <h3 className="mb-4">Getting Started with TrainingAPI</h3>
+          <h3 className="mb-4">Getting Started with TrainingApi</h3>
 
           <div className="card mb-4">
             <div className="card-body">
               <p className="card-text">
-                Welcome to <strong>TrainingAPI</strong> — a standardised API for
+                Welcome to <strong>TrainingApi</strong> — a standardised API for
                 discovering and retrieving professional training courses from
                 multiple providers. This API allows you to integrate external
                 courses directly into your Learning Management System (LMS) or
@@ -72,8 +63,7 @@ function DeveloperDashboard() {
             <p>To access the API, you need an API key:</p>
             <ol>
               <li>
-                Click <strong>Generate New API Key</strong> in the developer
-                dashboard (see below).
+                Click <strong>Generate New API Key</strong> below.
               </li>
               <li>
                 Make a note of the key — it will{" "}
@@ -82,8 +72,6 @@ function DeveloperDashboard() {
             </ol>
 
             <div className="api-key-section mt-4 mb-4 p-4 border rounded bg-light">
-              <h5>Generate Your API Key Here:</h5>
-
               {showConfirmation && (
                 <div className="mb-3 p-3 border rounded">
                   <p className="mb-3">
@@ -92,20 +80,22 @@ function DeveloperDashboard() {
                     </strong>
                   </p>
                   <div className="mt-3">
-                    <button
-                      className="btn btn-danger me-2"
-                      onClick={handleGenerateApiKey}
-                      disabled={loading}
-                    >
-                      {loading ? "Generating..." : "Yes, Generate New Key"}
-                    </button>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={handleCancelGeneration}
-                      disabled={loading}
-                    >
-                      Cancel
-                    </button>
+                    <div className="api-key-btn-group">
+                      <button
+                        className="btn api-key-btn api-key-btn-primary"
+                        onClick={handleGenerateApiKey}
+                        disabled={loading}
+                      >
+                        {loading ? "Generating..." : "Yes, Generate New Key"}
+                      </button>
+                      <button
+                        className="btn api-key-btn api-key-btn-primary"
+                        onClick={handleCancelGeneration}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -167,7 +157,7 @@ function DeveloperDashboard() {
               <div className="card-body">
                 <pre className="mb-0">
                   <code>
-                    https://trainingapi.com/TrainingAPI/training_api.php
+                    https://trainingapi.com/TrainingAPI/courses.php
                   </code>
                 </pre>
               </div>
@@ -181,7 +171,7 @@ function DeveloperDashboard() {
               <div className="card-body">
                 <pre className="mb-0">
                   <code>{`curl -H "Authorization: Bearer YOUR_API_KEY" \\
-  https://trainingapi.com/TrainingAPI/training_api.php`}</code>
+  https://trainingapi.com/TrainingAPI/courses.php`}</code>
                 </pre>
               </div>
             </div>
@@ -193,7 +183,7 @@ function DeveloperDashboard() {
               <div className="card-header bg-light">JavaScript Example</div>
               <div className="card-body">
                 <pre className="mb-0">
-                  <code>{`fetch('https://trainingapi.com/TrainingAPI/training_api.php', {
+                  <code>{`fetch('https://trainingapi.com/TrainingAPI/courses.php', {
   headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
 })
 .then(response => response.json())
