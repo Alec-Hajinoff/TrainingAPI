@@ -1,19 +1,16 @@
-/**
- * @fileoverview Ensures the API helpers issue the right fetch calls and handle success/error paths.
- */
 import {
   registerUser,
   loginUser,
-  createActionFunction,
+  inputDataFunction,
   logoutUser,
-  userDashboard,
-  searchCompanyNames,
-  fetchTimeline,
-  fetchCompanyMap,
-  fetchUserTimelineUrlQr,
+  generateApiKey,
+  fetchUserCourses,
+  updateCourse,
+  deleteCourse,
+  checkAdminExists,
 } from "../ApiService";
 
-describe("ApiService helpers", () => {
+describe("TrainingApiService helpers", () => {
   const originalFetch = global.fetch;
   let consoleErrorSpy;
 
@@ -31,12 +28,8 @@ describe("ApiService helpers", () => {
     global.fetch = originalFetch;
   });
 
-  test("registerUser posts JSON payload and returns parsed data", async () => {
-    const formData = {
-      name: "ACME",
-      email: "test@example.com",
-      password: "secret",
-    };
+  test("registerUser posts JSON and returns parsed data", async () => {
+    const formData = { name: "Alec", email: "test@example.com" };
     const mockBody = { success: true };
 
     global.fetch.mockResolvedValue({
@@ -46,7 +39,7 @@ describe("ApiService helpers", () => {
     const result = await registerUser(formData);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/form_capture.php",
+      "http://localhost:8001/TrainingAPI/form_capture.php",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,16 +50,16 @@ describe("ApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("registerUser converts fetch rejection into a generic error", async () => {
+  test("registerUser throws generic error on failure", async () => {
     global.fetch.mockRejectedValue(new Error("Network down"));
 
     await expect(registerUser({})).rejects.toThrow("An error occurred.");
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
-  test("loginUser posts credentials and returns parsed payload", async () => {
+  test("loginUser posts credentials and returns parsed data", async () => {
     const formData = { email: "user@example.com", password: "Password123" };
-    const mockBody = { status: "success" };
+    const mockBody = { status: "ok" };
 
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockBody),
@@ -75,7 +68,7 @@ describe("ApiService helpers", () => {
     const result = await loginUser(formData);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/login_capture.php",
+      "http://localhost:8001/TrainingAPI/login_capture.php",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,26 +79,27 @@ describe("ApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("loginUser rethrows generic error on failure", async () => {
+  test("loginUser throws generic error on failure", async () => {
     global.fetch.mockRejectedValue(new Error("Server offline"));
 
     await expect(loginUser({})).rejects.toThrow("An error occurred.");
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
-  test("createActionFunction posts form data and returns parsed JSON", async () => {
+  test("inputDataFunction posts FormData and returns parsed JSON", async () => {
     const formData = new FormData();
-    formData.append("key", "value");
+    formData.append("course", "React Basics");
+
     const mockBody = { success: true };
 
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockBody),
     });
 
-    const result = await createActionFunction(formData);
+    const result = await inputDataFunction(formData);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/create_action.php",
+      "http://localhost:8001/TrainingAPI/course_input.php",
       {
         method: "POST",
         body: formData,
@@ -115,10 +109,10 @@ describe("ApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("createActionFunction forwards detailed error message", async () => {
+  test("inputDataFunction forwards detailed error message", async () => {
     global.fetch.mockRejectedValue(new Error("Upload failed"));
 
-    await expect(createActionFunction(new FormData())).rejects.toThrow(
+    await expect(inputDataFunction(new FormData())).rejects.toThrow(
       "Failed to create agreement: Upload failed"
     );
     expect(consoleErrorSpy).toHaveBeenCalled();
@@ -128,8 +122,9 @@ describe("ApiService helpers", () => {
     global.fetch.mockResolvedValue({ ok: true });
 
     await expect(logoutUser()).resolves.toBeUndefined();
+
     expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/logout_component.php",
+      "http://localhost:8001/TrainingAPI/logout_component.php",
       {
         method: "POST",
         credentials: "include",
@@ -146,146 +141,149 @@ describe("ApiService helpers", () => {
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
-  test("userDashboard posts request and returns parsed data", async () => {
-    const mockBody = { stats: {} };
+  test("generateApiKey posts request and returns parsed JSON", async () => {
+    const mockBody = { apiKey: "abc123" };
 
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockBody),
     });
 
-    const result = await userDashboard();
+    const result = await generateApiKey();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/user_dashboard.php",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      }
-    );
-    expect(result).toEqual(mockBody);
-  });
-
-  test("userDashboard wraps fetch rejection into dashboard-specific error", async () => {
-    global.fetch.mockRejectedValue(new Error("Connection reset"));
-
-    await expect(userDashboard()).rejects.toThrow(
-      "Failed to fetch dashboard data"
-    );
-  });
-
-  test("searchCompanyNames posts search term and returns results", async () => {
-    const mockBody = { suggestions: ["Acme Corp"] };
-
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockBody),
-    });
-
-    const result = await searchCompanyNames("Acme");
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/company_name_search.php",
+      "http://localhost:8001/TrainingAPI/generate_api_key.php",
       {
         method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("generateApiKey throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Keygen error"));
+
+    await expect(generateApiKey()).rejects.toThrow(
+      "Failed to generate API key"
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("fetchUserCourses fetches courses and returns parsed JSON", async () => {
+    const mockBody = { courses: [] };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await fetchUserCourses();
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/fetch_courses.php",
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("fetchUserCourses throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("DB error"));
+
+    await expect(fetchUserCourses()).rejects.toThrow("Failed to fetch courses");
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("updateCourse posts FormData and returns parsed JSON", async () => {
+    const formData = new FormData();
+    formData.append("title", "Updated Course");
+
+    const mockBody = { success: true };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await updateCourse(formData);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/update_course.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      }
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("updateCourse throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Update failed"));
+
+    await expect(updateCourse(new FormData())).rejects.toThrow(
+      "Failed to update course"
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("deleteCourse posts courseId and returns parsed JSON", async () => {
+    const mockBody = { deleted: true };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await deleteCourse("123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/delete_course.php",
+      expect.objectContaining({
+        method: "POST",
+        credentials: "include",
+        body: expect.any(FormData),
+      })
+    );
+
+    expect(result).toEqual(mockBody);
+  });
+
+  test("deleteCourse throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Delete failed"));
+
+    await expect(deleteCourse("123")).rejects.toThrow(
+      "Failed to delete course"
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("checkAdminExists fetches admin status and returns parsed JSON", async () => {
+    const mockBody = { exists: true };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await checkAdminExists();
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/check_admin_exists.php",
+      {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ searchTerm: "Acme" }),
       }
     );
     expect(result).toEqual(mockBody);
   });
 
-  test("searchCompanyNames throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Search failed"));
+  test("checkAdminExists throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Query failed"));
 
-    await expect(searchCompanyNames("Acme")).rejects.toThrow(
-      "Failed to search for companies"
+    await expect(checkAdminExists()).rejects.toThrow(
+      "Failed to check admin account status"
     );
-  });
-
-  test("fetchTimeline gets timeline data by slug", async () => {
-    const mockBody = { timeline: [] };
-
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockBody),
-    });
-
-    const result = await fetchTimeline("acme-corp");
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/get_timeline.php?slug=acme-corp",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      }
-    );
-    expect(result).toEqual(mockBody);
-  });
-
-  test("fetchTimeline throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Timeline error"));
-
-    await expect(fetchTimeline("acme-corp")).rejects.toThrow(
-      "Failed to load timeline"
-    );
-  });
-
-  test("fetchCompanyMap fetches company URLs", async () => {
-    const mockBody = { urls: { acme: "https://acme.com" } };
-
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockBody),
-    });
-
-    const result = await fetchCompanyMap();
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/get_company_urls.php",
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    expect(result).toEqual(mockBody);
-  });
-
-  test("fetchUserTimelineUrlQr fetches timeline URL and QR code", async () => {
-    const mockBody = {
-      status: "success",
-      timeline_url: "https://example.com/timeline",
-      qr_code: "/qr/example.png",
-    };
-
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockBody),
-    });
-
-    const result = await fetchUserTimelineUrlQr();
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      "http://localhost:8001/Sustainability_Log_Development/get_user_company_url_qr.php",
-      {
-        method: "GET",
-        credentials: "include",
-      }
-    );
-    expect(result).toEqual(mockBody);
-  });
-
-  test("fetchUserTimelineUrlQr throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Timeline QR error"));
-
-    await expect(fetchUserTimelineUrlQr()).rejects.toThrow(
-      "Failed to fetch user timeline URL and QR code"
-    );
-  });
-
-  test("fetchCompanyMap throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Map error"));
-
-    await expect(fetchCompanyMap()).rejects.toThrow(
-      "Failed to fetch company URLs"
-    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
