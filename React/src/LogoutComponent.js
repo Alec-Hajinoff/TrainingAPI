@@ -11,7 +11,7 @@ const LogoutComponent = () => {
       await logoutUser();
       navigate("/");
     } catch (error) {
-      console.error(error.message);
+      console.error(error?.message || "An unknown error occurred during logout");
     }
   };
 
