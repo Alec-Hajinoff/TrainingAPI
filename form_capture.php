@@ -4,8 +4,8 @@ require __DIR__ . '/vendor/autoload.php';
 require_once 'session_config.php';
 
 $allowed_origins = [
-    'https://trainingapi.com.com',
-    'https://www.trainingapi.com.com'
+    'https://trainingapi.com',
+    'https://www.trainingapi.com'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';

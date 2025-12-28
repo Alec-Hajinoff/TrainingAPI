@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 3600,
         'path' => '/',
-        'domain' => 'trainingapi.com.com',  // Use 'climatebind.com' in production
+        'domain' => 'trainingapi.com',  // Use 'climatebind.com' in production
         'secure' => true,  // Change to true when using HTTPS
         'httponly' => true,
         'samesite' => 'Strict'

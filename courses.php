@@ -6,8 +6,8 @@
 header('Content-Type: application/json');
 
 $allowed_origins = [
-    'https://trainingapi.com.com',
-    'https://www.trainingapi.com.com'
+    'https://trainingapi.com',
+    'https://www.trainingapi.com'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
