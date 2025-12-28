@@ -3,13 +3,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 3600,
         'path' => '/',
-        'domain' => 'localhost',    // Use 'climatebind.com' in production
-        'secure' => false,          // Change to true when using HTTPS
+        'domain' => 'trainingapi.com.com',  // Use 'climatebind.com' in production
+        'secure' => true,  // Change to true when using HTTPS
         'httponly' => true,
         'samesite' => 'Strict'
     ]);
 
-    session_name('climate_session');
+    session_name('trainingapi_session');
     session_start();
 }
 
@@ -27,4 +27,3 @@ if (!isset($_SESSION['CREATED'])) {
     session_regenerate_id(true);
     $_SESSION['CREATED'] = time();
 }
-?>

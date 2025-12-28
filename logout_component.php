@@ -4,7 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $allowed_origins = [
-    "http://localhost:3000"
+    'https://trainingapi.com.com',
+    'https://www.trainingapi.com.com'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
