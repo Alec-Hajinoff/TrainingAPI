@@ -66,7 +66,7 @@ function Courses() {
                   <div>
                     <h5 className="card-title">{course.course_title}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">
-                      {course.subject_area} > {course.subject}
+                      {course.subject_area} &gt; {course.subject}
                     </h6>
                   </div>
                 </div>
@@ -99,9 +99,7 @@ function Courses() {
                   <p className="mb-1">
                     <strong>Learning Outcomes:</strong>
                   </p>
-                  <p className="text-muted small">
-                    {course.learning_outcomes}
-                  </p>
+                  <p className="text-muted small">{course.learning_outcomes}</p>
                 </div>
 
                 <div className="mt-3 pt-3 border-top">

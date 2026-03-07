@@ -1,7 +1,6 @@
 <?php
 
 // Public RESTful endpoint to get all courses data for the UI
-// Usage: GET /api/courses_ui.php
 
 header('Content-Type: application/json');
 
@@ -35,8 +34,6 @@ try {
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit;
 }
-
-// Public access: API key validation removed
 
 try {
     $sql = 'SELECT 

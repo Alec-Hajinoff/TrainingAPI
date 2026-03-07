@@ -193,7 +193,7 @@ export const checkAdminExists = async () => {
   }
 };
 
-// Add this to the end of ApiService.js
+// coursesGet() fetches all courses from the database for the display in the UI.
 
 export const coursesGet = async () => {
   try {
