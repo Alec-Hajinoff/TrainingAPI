@@ -192,3 +192,26 @@ export const checkAdminExists = async () => {
     throw new Error("Failed to check admin account status");
   }
 };
+
+// Add this to the end of ApiService.js
+
+export const coursesGet = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/courses_ui.php",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in coursesGet:", error);
+    throw new Error(`Failed to fetch courses: ${error.message}`);
+  }
+};
+
