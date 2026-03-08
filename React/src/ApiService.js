@@ -11,7 +11,7 @@ export const registerUser = async (formData) => {
         },
         body: JSON.stringify(formData),
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -33,7 +33,7 @@ export const loginUser = async (formData) => {
         },
         credentials: "include",
         body: JSON.stringify(formData),
-      }
+      },
     );
 
     const data = await response.json();
@@ -54,7 +54,7 @@ export const inputDataFunction = async (formData) => {
         method: "POST",
         body: formData,
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -72,7 +72,7 @@ export const logoutUser = async () => {
       {
         method: "POST",
         credentials: "include",
-      }
+      },
     );
 
     if (!response.ok) {
@@ -94,7 +94,7 @@ export const generateApiKey = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const data = await response.json();
@@ -114,7 +114,7 @@ export const fetchUserCourses = async () => {
       {
         method: "GET",
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -135,7 +135,7 @@ export const updateCourse = async (formData) => {
         method: "POST",
         body: formData,
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -159,7 +159,7 @@ export const deleteCourse = async (courseId) => {
         method: "POST",
         body: formData,
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -182,7 +182,7 @@ export const checkAdminExists = async () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-      }
+      },
     );
 
     const data = await response.json();
@@ -204,7 +204,7 @@ export const coursesGet = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     const data = await response.json();
@@ -215,3 +215,23 @@ export const coursesGet = async () => {
   }
 };
 
+// workshopRequests() sends custom training request data to the backend.
+
+export const workshopRequests = async (formData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/workshop_requests.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in workshopRequests:", error);
+    throw new Error(`Failed to submit request: ${error.message}`);
+  }
+};

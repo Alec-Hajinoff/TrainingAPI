@@ -4,6 +4,7 @@ import Main from "./Main.js";
 import UserRegistration from "./UserRegistration.js";
 import UserLogin from "./UserLogin.js";
 import Courses from "./Courses.js";
+import WorkshopRequests from "./WorkshopRequests.js";
 
 function MainRegLog() {
   return (
@@ -12,6 +13,8 @@ function MainRegLog() {
         <div className="col-12 col-md-9">
           <Main />
           <Courses />
+
+          <WorkshopRequests />
         </div>
         <div className="col-12 col-md-3">
           <p className="footer">New user? Please register:</p>
