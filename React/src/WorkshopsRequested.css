@@ -1,0 +1,39 @@
+.workshops-requested-container h4 {
+  color: #1a5276;
+  font-weight: 600;
+  border-left: 4px solid #3498db;
+  padding-left: 10px;
+}
+
+.request-list .card {
+  border: 1px solid #dee2e6;
+  transition: transform 0.2s ease;
+}
+
+.request-list .card:hover {
+  transform: scale(1.01);
+  border-color: #3498db;
+}
+
+.request-list .card-title {
+  margin-bottom: 0.25rem;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.5em 0.8em;
+}
+
+@media (max-width: 768px) {
+  .col-md-5.border-start {
+    border-left: none !important;
+
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+}

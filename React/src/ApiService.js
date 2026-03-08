@@ -235,3 +235,26 @@ export const workshopRequests = async (formData) => {
     throw new Error(`Failed to submit request: ${error.message}`);
   }
 };
+
+// workshopsRequested() fetches all custom training requests for admin review.
+
+export const workshopsRequested = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/workshops_requested.php",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in workshopsRequested:", error);
+    throw new Error(`Failed to fetch workshop requests: ${error.message}`);
+  }
+};

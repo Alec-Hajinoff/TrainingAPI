@@ -1,6 +1,7 @@
 import React from "react";
 import "./AdminDashboard.css";
 import LogoutComponent from "./LogoutComponent";
+import WorkshopsRequested from "./WorkshopsRequested";
 
 function AdminDashboard() {
   return (
@@ -26,6 +27,8 @@ function AdminDashboard() {
             <li className="list-group-item">Approval Workflows</li>
           </ul>
         </div>
+
+        <WorkshopsRequested />
       </div>
     </div>
   );
