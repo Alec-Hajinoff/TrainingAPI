@@ -9,7 +9,7 @@ function Main() {
         <div className="col-12">
           <div className="value-proposition">
             <p className="main-description">
-              TrainingAPI delivers virtual instructor-led technology workshops
+              TrainingApi delivers virtual instructor-led technology workshops
               designed to help teams develop practical skills and adopt new
               tools and workflows.
             </p>
