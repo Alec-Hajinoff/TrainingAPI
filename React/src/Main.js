@@ -19,7 +19,7 @@ function Main() {
 
       <div className="row mb-5">
         <div className="col-12">
-          <h2 className="section-title">Why TrainingAPI?</h2>
+          <h3 className="section-title">Why TrainingAPI?</h3>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ function Main() {
 
       <div className="row mb-5">
         <div className="col-12">
-          <h2 className="section-title">How it works</h2>
+          <h3 className="section-title">How it works</h3>
         </div>
       </div>
 
