@@ -177,7 +177,7 @@ export const checkAdminExists = async () => {
 export const coursesGet = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/courses_ui.php",
+      "http://localhost:8001/TrainingAPI/courses.php",
       {
         method: "GET",
         headers: {
