@@ -1,42 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./DeveloperDashboard.css";
 import LogoutComponent from "./LogoutComponent";
-import { generateApiKey } from "./ApiService";
 
 function DeveloperDashboard() {
-  const [apiKey, setApiKey] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
-  const handleGenerateApiKey = async () => {
-    if (!showConfirmation) {
-      setShowConfirmation(true);
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await generateApiKey();
-      if (result.success) {
-        setApiKey(result.apiKey);
-        setShowConfirmation(false);
-      } else {
-        setError(result.message || "Failed to generate API key");
-      }
-    } catch (err) {
-      setError("An error occurred while generating the API key");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCancelGeneration = () => {
-    setShowConfirmation(false);
-    setError(null);
-  };
-
   return (
     <div className="container">
       <div className="d-flex justify-content-end mb-3">
@@ -59,106 +25,33 @@ function DeveloperDashboard() {
           </div>
 
           <div className="mb-4">
-            <h4>1. Generate Your API Key</h4>
-            <p>To access the API, you need an API key:</p>
-            <ol>
-              <li>
-                Click <strong>Generate New API Key</strong> below.
-              </li>
-              <li>
-                Make a note of the key — it will{" "}
-                <strong>not be shown again</strong>.
-              </li>
-            </ol>
+            <h4>1. API Access Information</h4>
 
-            <div className="api-key-section mt-4 mb-4 p-4 border rounded bg-light">
-              {showConfirmation && (
-                <div className="mb-3 p-3 border rounded">
-                  <p className="mb-3">
-                    <strong>
-                      Generating a new API key invalidates your previous key.
-                    </strong>
-                  </p>
-                  <div className="mt-3">
-                    <div className="api-key-btn-group">
-                      <button
-                        className="btn api-key-btn api-key-btn-primary"
-                        onClick={handleGenerateApiKey}
-                        disabled={loading}
-                      >
-                        {loading ? "Generating..." : "Yes, Generate New Key"}
-                      </button>
-                      <button
-                        className="btn api-key-btn api-key-btn-primary"
-                        onClick={handleCancelGeneration}
-                        disabled={loading}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+            <p>
+              The TrainingApi endpoint is now publicly accessible. No API key is
+              required to retrieve course data.
+            </p>
 
-              {!showConfirmation && (
-                <button
-                  className="btn btn-primary mb-3"
-                  onClick={handleGenerateApiKey}
-                  disabled={loading}
-                >
-                  {loading ? "Generating..." : "Generate New API Key"}
-                </button>
-              )}
-
-              {error && <div className="alert alert-danger">{error}</div>}
-
-              {apiKey && (
-                <div className="alert alert-success">
-                  <strong>Your new API Key:</strong>
-                  <div className="mt-2 p-2 bg-white border rounded">
-                    <code>{apiKey}</code>
-                  </div>
-                  <small className="text-muted d-block mt-2">
-                    Store this key securely. You won't be able to see it again.
-                  </small>
-                </div>
-              )}
+            <div className="alert alert-info mt-4 mb-4">
+              <strong>✨ Public API Access:</strong> The courses endpoint is now
+              open to the public. You can access course data without any
+              authentication.
             </div>
           </div>
 
           <div className="mb-4">
-            <h4>2. Include Your API Key in Requests</h4>
-            <p>
-              All requests to the API must include your API key in the{" "}
-              <strong>Authorization header</strong>:
-            </p>
-
-            <div className="card mb-3">
-              <div className="card-header bg-light">Authorization Header</div>
-              <div className="card-body">
-                <pre className="mb-0">
-                  <code>Authorization: Bearer YOUR_API_KEY</code>
-                </pre>
-              </div>
-            </div>
+            <h4>2. Making Requests to the API</h4>
 
             <p>
-              This ensures that only authenticated developers can access the
-              course data.
+              All requests to the API can be made without authentication. Simply
+              make a GET request to the endpoint:
             </p>
-          </div>
-
-          <div className="mb-4">
-            <h4>3. Your First Request</h4>
-            <p>To retrieve a list of all courses, make a GET request to:</p>
 
             <div className="card mb-3">
               <div className="card-header bg-light">API Endpoint</div>
               <div className="card-body">
                 <pre className="mb-0">
-                  <code>
-                    https://trainingapi.com/TrainingAPI/courses.php
-                  </code>
+                  <code>https://trainingapi.com/TrainingAPI/courses.php</code>
                 </pre>
               </div>
             </div>
@@ -170,8 +63,7 @@ function DeveloperDashboard() {
               <div className="card-header bg-light">cURL Example</div>
               <div className="card-body">
                 <pre className="mb-0">
-                  <code>{`curl -H "Authorization: Bearer YOUR_API_KEY" \\
-  https://trainingapi.com/TrainingAPI/courses.php`}</code>
+                  <code>{`curl https://trainingapi.com/TrainingAPI/courses.php`}</code>
                 </pre>
               </div>
             </div>
@@ -183,19 +75,18 @@ function DeveloperDashboard() {
               <div className="card-header bg-light">JavaScript Example</div>
               <div className="card-body">
                 <pre className="mb-0">
-                  <code>{`fetch('https://trainingapi.com/TrainingAPI/courses.php', {
-  headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
-})
-.then(response => response.json())
-.then(data => console.log(data))
-.catch(error => console.error(error));`}</code>
+                  <code>{`fetch('https://trainingapi.com/TrainingAPI/courses.php')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));`}</code>
                 </pre>
               </div>
             </div>
           </div>
 
           <div className="mb-4">
-            <h4>4. What to Expect in the Response</h4>
+            <h4>3. What to Expect in the Response</h4>
+
             <p>A successful response returns JSON in the following format:</p>
 
             <div className="card mb-3">
@@ -230,36 +121,9 @@ function DeveloperDashboard() {
           </div>
 
           <div className="mb-4">
-            <h4>5. Error Responses</h4>
+            <h4>4. Error Responses</h4>
+
             <p>Common errors include:</p>
-
-            <p className="mb-2">
-              <strong>Missing or malformed API key:</strong>
-            </p>
-            <div className="card mb-3">
-              <div className="card-body">
-                <pre className="mb-0">
-                  <code>{`{
-  "success": false,
-  "message": "Authorization header missing or malformed"
-}`}</code>
-                </pre>
-              </div>
-            </div>
-
-            <p className="mb-2">
-              <strong>Invalid API key:</strong>
-            </p>
-            <div className="card mb-3">
-              <div className="card-body">
-                <pre className="mb-0">
-                  <code>{`{
-  "success": false,
-  "message": "Invalid API key"
-}`}</code>
-                </pre>
-              </div>
-            </div>
 
             <p className="mb-2">
               <strong>No courses found:</strong>
@@ -276,13 +140,14 @@ function DeveloperDashboard() {
             </div>
 
             <p className="mt-3">
-              Always ensure your request includes a valid key and correctly
-              formatted query parameters.
+              Always ensure your request is correctly formatted. Authentication
+              is no longer required.
             </p>
           </div>
 
           <div className="mb-4">
-            <h4>6. Need Help?</h4>
+            <h4>5. Need Help?</h4>
+
             <p>
               If you encounter issues or have questions, contact the{" "}
               <strong>TrainingAPI team</strong> at:
