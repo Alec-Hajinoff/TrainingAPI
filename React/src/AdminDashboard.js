@@ -2,6 +2,7 @@ import React from "react";
 import "./AdminDashboard.css";
 import LogoutComponent from "./LogoutComponent";
 import WorkshopsRequested from "./WorkshopsRequested";
+import CoursesAdmin from "./CoursesAdmin";
 
 function AdminDashboard() {
   return (
@@ -29,6 +30,7 @@ function AdminDashboard() {
         </div>
 
         <WorkshopsRequested />
+        <CoursesAdmin />
       </div>
     </div>
   );

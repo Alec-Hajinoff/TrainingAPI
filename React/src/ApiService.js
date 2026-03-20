@@ -194,6 +194,28 @@ export const coursesGet = async () => {
   }
 };
 
+// coursesGetAdmin() fetches all courses from the database for the display in the damin dashboard.
+
+export const coursesGetAdmin = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/courses_admin.php",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error in coursesGet:", error);
+    throw new Error(`Failed to fetch courses: ${error.message}`);
+  }
+};
+
 // workshopRequests() sends custom training request data to the backend.
 
 export const workshopRequests = async (formData) => {
