@@ -64,19 +64,6 @@ try {
         exit;
     }
 
-    foreach ($courses as &$course) {
-        $course['provider_name'] = 'TrainingApi';
-
-        $course['contact_email'] = 'team@trainingapi.com';
-
-        $course['contact_phone'] = '07549 385 178';
-
-        $course['provider_website'] = 'https://trainingapi.com/';
-
-        $course['total_price'] = $course['total_price'] * 1.5;
-    }
-    unset($course);
-
     echo json_encode([
         'success' => true,
         'courses' => $courses,
