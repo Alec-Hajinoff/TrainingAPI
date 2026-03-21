@@ -93,7 +93,7 @@ function Courses() {
       </div>
 
       {courses.length === 0 ? (
-        <div className="alert alert-info mt-3">
+        <div className="courses-empty-message mt-3">
           No workshops available at the moment. You can request a custom
           programme.
         </div>
