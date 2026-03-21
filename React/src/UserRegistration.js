@@ -27,6 +27,12 @@ function UserRegistration() {
       "For TrainingApi platform administrators. Manage provider onboarding, approve and monitor course data quality, and oversee API access and platform operations.",
   };
 
+  const clearErrorMessageAfterDelay = () => {
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 5000);
+  };
+
   useEffect(() => {
     checkAdminStatus();
   }, []);
@@ -63,13 +69,31 @@ function UserRegistration() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.userType) {
-      setErrorMessage("Please select a user type");
+    const namePattern = /^[a-zA-Z ]+$/;
+    if (!namePattern.test(formData.name)) {
+      setErrorMessage("Name can only contain letters and spaces");
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(formData.email)) {
+      setErrorMessage(
+        "Please enter a valid email address (e.g., name@domain.com)",
+      );
+      clearErrorMessageAfterDelay();
       return;
     }
 
     if (formData.password.length < 8) {
       setErrorMessage("Password must be at least 8 characters long");
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
+    if (!formData.userType) {
+      setErrorMessage("Please select a user type");
+      clearErrorMessageAfterDelay();
       return;
     }
 
@@ -80,11 +104,13 @@ function UserRegistration() {
         navigate("/RegisteredPage");
       } else {
         setErrorMessage(
-          data.message || "Registration failed. Please try again."
+          data.message || "Registration failed. Please try again.",
         );
+        clearErrorMessageAfterDelay();
       }
     } catch (error) {
       setErrorMessage(error.message);
+      clearErrorMessageAfterDelay();
     } finally {
       setLoading(false);
     }
@@ -105,7 +131,7 @@ function UserRegistration() {
   const userTypesToShow = getUserTypesToShow();
 
   return (
-    <form className="row g-2" onSubmit={handleSubmit}>
+    <form className="row g-2" onSubmit={handleSubmit} noValidate>
       <div className="radio-group-simple mb-3">
         {userTypesToShow.map((type) => (
           <div key={type} className="radio-simple">
@@ -144,7 +170,6 @@ function UserRegistration() {
         <input
           autoComplete="off"
           type="text"
-          pattern="[a-zA-Z ]+"
           className="form-control"
           name="name"
           value={formData.name}
@@ -157,7 +182,6 @@ function UserRegistration() {
         <input
           autoComplete="off"
           type="email"
-          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
           className="form-control"
           name="email"
           value={formData.email}
@@ -175,7 +199,6 @@ function UserRegistration() {
           value={formData.password}
           onChange={handleChange}
           required
-          minLength="8"
           placeholder="Choose a strong password"
         />
       </div>
