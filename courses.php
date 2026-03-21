@@ -60,7 +60,7 @@ try {
     $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($courses)) {
-        echo json_encode(['success' => false, 'message' => 'No courses found']);
+        echo json_encode(['success' => false, 'message' => 'No workshops available at the moment. You can request a custom programme.']);
         exit;
     }
 

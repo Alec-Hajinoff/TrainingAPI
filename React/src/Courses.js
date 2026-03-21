@@ -72,20 +72,8 @@ function Courses() {
   if (loading) {
     return (
       <div className="mt-4">
-        <h2>Available Courses</h2>
+        <h2>Available workshops</h2>
         <div className="alert alert-info">Loading catalog...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mt-4">
-        <h2>Available Courses</h2>
-        <div className="alert alert-danger">{error}</div>
-        <button className="btn btn-secondary" onClick={loadCourses}>
-          Try Again
-        </button>
       </div>
     );
   }
@@ -93,7 +81,7 @@ function Courses() {
   return (
     <div className="mt-5 text-start">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Available Courses ({courses.length})</h2>
+        <h2 className="mb-0">Available workshops ({courses.length})</h2>
         <button
           className="btn btn-outline-success btn-sm"
           onClick={handleDownloadCSV}
@@ -106,7 +94,8 @@ function Courses() {
 
       {courses.length === 0 ? (
         <div className="alert alert-info mt-3">
-          No courses are currently available in the directory.
+          No workshops available at the moment. You can request a custom
+          programme.
         </div>
       ) : (
         <div className="mt-3">
