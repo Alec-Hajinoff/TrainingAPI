@@ -140,7 +140,7 @@ const WorkshopRequests = () => {
 
           <div className="col-md-6 mb-3">
             <label htmlFor="email" className="form-label">
-              Email Address *
+              Email address *
             </label>
             <input
               type="email"
@@ -159,7 +159,7 @@ const WorkshopRequests = () => {
 
         <div className="mb-3">
           <label htmlFor="organisation" className="form-label">
-            Organisation Name *
+            Organisation name *
           </label>
           <input
             type="text"
@@ -178,7 +178,7 @@ const WorkshopRequests = () => {
 
         <div className="mb-3">
           <label htmlFor="requirement_description" className="form-label">
-            Training Requirement Description *
+            Training requirement description *
           </label>
           <textarea
             id="requirement_description"
@@ -201,7 +201,7 @@ const WorkshopRequests = () => {
         <div className="row">
           <div className="col-md-4 mb-3">
             <label htmlFor="technology_area" className="form-label">
-              Technology Area *
+              Technology area *
             </label>
             <select
               id="technology_area"
@@ -232,7 +232,7 @@ const WorkshopRequests = () => {
 
           <div className="col-md-4 mb-3">
             <label htmlFor="team_size" className="form-label">
-              Team Size *
+              Team size *
             </label>
             <select
               id="team_size"
@@ -254,7 +254,7 @@ const WorkshopRequests = () => {
 
           <div className="col-md-4 mb-3">
             <label htmlFor="preferred_timing" className="form-label">
-              Preferred Timing *
+              Preferred timing *
             </label>
             <select
               id="preferred_timing"
@@ -279,7 +279,7 @@ const WorkshopRequests = () => {
 
         <div className="mb-3">
           <label htmlFor="additional_details" className="form-label">
-            Additional Context (Optional)
+            Additional context (optional)
           </label>
           <textarea
             id="additional_details"
@@ -293,7 +293,7 @@ const WorkshopRequests = () => {
 
         <div className="text-center mt-4">
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Workshop Request"}
+            {loading ? "Submitting..." : "Submit your workshop request"}
           </button>
         </div>
       </form>
