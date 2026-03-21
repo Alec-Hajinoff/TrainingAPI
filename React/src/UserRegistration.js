@@ -18,13 +18,13 @@ function UserRegistration() {
 
   const userTypeTooltips = {
     provider:
-      "For training companies. Use this account to submit, manage, and update your course catalogue so it can be discovered and consumed by corporate LMS platforms via the TrainingApi.",
+      "For training companies and independent instructors. Use this account to submit, manage, and update your workshop catalogue so it can be discovered and integrated into corporate LMS platforms via TrainingApi.",
 
     developer:
-      "For corporate LMS or HR system developers. Use this account to access the API, explore course data, test endpoints, and integrate external training courses into your organisation’s LMS.",
+      "For corporate LMS or HR system developers. Use this account to access the API, explore workshop catalogue data, test endpoints, and integrate workshops into your organisation’s LMS.",
 
     admin:
-      "For TrainingApi platform administrators. Manage provider onboarding, approve and monitor course data quality, and oversee API access and platform operations.",
+      "For TrainingApi platform administrators. Manage provider onboarding, approve and monitor workshop data quality, and oversee API access and platform operations.",
   };
 
   const clearErrorMessageAfterDelay = () => {
@@ -175,7 +175,7 @@ function UserRegistration() {
           value={formData.name}
           onChange={handleChange}
           required
-          placeholder="Organisation name"
+          placeholder="Full name"
         />
       </div>
       <div className="form-group">
