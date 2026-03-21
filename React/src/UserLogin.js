@@ -12,6 +12,12 @@ function UserLogin() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const clearErrorMessageAfterDelay = () => {
+    setTimeout(() => {
+      setErrorMessage("");
+    }, 5000);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,6 +28,22 @@ function UserLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(formData.email)) {
+      setErrorMessage(
+        "Please enter a valid email address (e.g., name@domain.com)",
+      );
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setErrorMessage("Password must be at least 8 characters long");
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
     setLoading(true);
     try {
       const data = await loginUser(formData);
@@ -36,24 +58,38 @@ function UserLogin() {
           case "admin":
             navigate("/AdminDashboard");
             break;
+          default:
+            navigate("/");
+            break;
         }
       } else {
         setErrorMessage("Sign in failed. Please try again.");
+        clearErrorMessageAfterDelay();
+
+        setFormData({
+          ...formData,
+          password: "",
+        });
       }
     } catch (error) {
       setErrorMessage(error.message);
+      clearErrorMessageAfterDelay();
+
+      setFormData({
+        ...formData,
+        password: "",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form className="row g-2" onSubmit={handleSubmit}>
+    <form className="row g-2" onSubmit={handleSubmit} noValidate>
       <div className="form-group">
         <input
           autoComplete="off"
           type="email"
-          pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
           className="form-control"
           id="yourEmailLogin"
           name="email"
@@ -79,7 +115,12 @@ function UserLogin() {
       <div id="error-message-one" className="error" aria-live="polite">
         {errorMessage}
       </div>
-      <button type="submit" className="btn btn-secondary" id="loginBtn">
+      <button
+        type="submit"
+        className="btn btn-secondary"
+        id="loginBtn"
+        disabled={loading}
+      >
         Login
         <span
           className="spinner-border spinner-border-sm"
