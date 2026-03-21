@@ -279,8 +279,8 @@ function CourseList({ refreshTrigger }) {
           courses.map((course) =>
             course.id === editingCourseId
               ? { ...course, ...editFormData }
-              : course
-          )
+              : course,
+          ),
         );
 
         setTimeout(() => {
@@ -335,8 +335,8 @@ function CourseList({ refreshTrigger }) {
   if (loading) {
     return (
       <div className="mt-4">
-        <h2>Your Courses</h2>
-        <div className="alert alert-info">Loading courses...</div>
+        <h2>Your workshops</h2>
+        <div className="alert alert-info">Loading workshops...</div>
       </div>
     );
   }
@@ -344,7 +344,7 @@ function CourseList({ refreshTrigger }) {
   if (error) {
     return (
       <div className="mt-4">
-        <h2>Your Courses</h2>
+        <h2>Your workshops</h2>
         <div className="alert alert-danger">{error}</div>
         <button className="btn btn-secondary" onClick={loadCourses}>
           Try Again
@@ -355,11 +355,11 @@ function CourseList({ refreshTrigger }) {
 
   return (
     <div className="mt-5">
-      <h2>Your Courses ({courses.length})</h2>
+      <h2>Your workshops ({courses.length})</h2>
 
       {courses.length === 0 ? (
         <div className="alert alert-info mt-3">
-          You haven't created any courses yet.
+          Get started by creating your first workshop.
         </div>
       ) : (
         <div className="mt-3">
@@ -367,7 +367,6 @@ function CourseList({ refreshTrigger }) {
             <div key={course.id} className="card mb-3">
               <div className="card-body">
                 {editingCourseId === course.id ? (
-                  // Edit mode
                   <form onSubmit={handleUpdateSubmit}>
                     <div className="row">
                       <div className="col-md-6">
@@ -422,7 +421,7 @@ function CourseList({ refreshTrigger }) {
                                   <option key={subject} value={subject}>
                                     {subject}
                                   </option>
-                                )
+                                ),
                               )}
                           </select>
                         </div>
@@ -527,7 +526,6 @@ function CourseList({ refreshTrigger }) {
                         </div>
                       </div>
 
-                      {/* New Provider Information Fields in Edit Mode */}
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group mb-2">
@@ -679,7 +677,6 @@ function CourseList({ refreshTrigger }) {
                       </p>
                     </div>
 
-                    {/* New Provider Information in Display Mode */}
                     <div className="mt-3 pt-3 border-top">
                       <h6 className="mb-2">Provider Information</h6>
                       <div className="row">
