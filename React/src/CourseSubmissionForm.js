@@ -277,7 +277,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
     <form onSubmit={handleSubmit}>
       <div className="form-group mb-3">
         <label htmlFor="course_title" className="form-label">
-          Course Title *
+          Workshop title *
         </label>
         <textarea
           id="course_title"
@@ -287,7 +287,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.course_title}
           onChange={handleChange}
           required
-          placeholder="For example: Introduction to Asset Management"
+          placeholder="e.g. Building and Deploying Machine Learning Models with Python"
         />
         {errors.course_title && (
           <div className="invalid-feedback">{errors.course_title}</div>
@@ -306,7 +306,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.description}
           onChange={handleChange}
           required
-          placeholder="For example: This financial training course is designed to give delegates a thorough grounding in the themes, calculations, and practices behind the investment management industry, specifically from the perspective of..."
+          placeholder="e.g. This hands-on workshop introduces participants to building and deploying machine learning models using Python. Through practical exercises, attendees will work with real datasets, develop models using libraries such as scikit-learn, and learn how to evaluate and deploy models into production environments…"
         />
         {errors.description && (
           <div className="invalid-feedback">{errors.description}</div>
@@ -315,7 +315,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="learning_outcomes" className="form-label">
-          Learning Outcomes *
+          Learning outcomes *
         </label>
         <textarea
           id="learning_outcomes"
@@ -327,7 +327,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           value={formData.learning_outcomes}
           onChange={handleChange}
           required
-          placeholder="For example: * To demystify the jargon associated with the financial services industry * To review the key functions and players within financial services * To equip delegates with a broad understanding of the investment management industry..."
+          placeholder="e.g. • Build and train machine learning models using Python • Work with real-world datasets and perform data preprocessing • Evaluate model performance using appropriate metrics • Deploy models into production environments • Apply best practices for scalable and maintainable ML workflows"
         />
         {errors.learning_outcomes && (
           <div className="invalid-feedback">{errors.learning_outcomes}</div>
@@ -336,7 +336,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="subject_area" className="form-label">
-          Subject Area *
+          Subject area *
         </label>
         <select
           id="subject_area"
@@ -391,7 +391,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="delivery_type" className="form-label">
-          Delivery Type *
+          Delivery type *
         </label>
         <select
           id="delivery_type"
@@ -412,7 +412,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="country_of_delivery" className="form-label">
-          Country of Delivery *
+          Country of delivery *
         </label>
         <select
           id="country_of_delivery"
@@ -460,7 +460,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="total_price" className="form-label">
-          Total Price (excluding VAT) *
+          Total price £ (excluding VAT) *
         </label>
         <input
           type="number"
@@ -482,7 +482,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="provider_name" className="form-label">
-          Provider Name *
+          Provider name *
         </label>
         <input
           type="text"
@@ -502,7 +502,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="contact_email" className="form-label">
-          Contact Email *
+          Contact email *
         </label>
         <input
           type="email"
@@ -522,7 +522,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="contact_phone" className="form-label">
-          Contact Phone *
+          Contact phone *
         </label>
         <input
           type="tel"
@@ -542,7 +542,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="provider_website" className="form-label">
-          Provider Website *
+          Provider website *
         </label>
         <input
           type="text"
@@ -592,7 +592,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
         )}
 
         <button type="submit" className="btn btn-secondary" disabled={loading}>
-          Submit
+          Submit your workshop
         </button>
       </div>
     </form>

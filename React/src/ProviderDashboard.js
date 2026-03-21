@@ -22,7 +22,7 @@ function ProviderDashboard() {
         <div className="row">
           <div className="col-12">
             <p className="dashboard-subtitle">
-              Dashboard to create and maintain your corporate training catalogue
+              Dashboard to create and maintain your workshop catalogue
             </p>
           </div>
         </div>
