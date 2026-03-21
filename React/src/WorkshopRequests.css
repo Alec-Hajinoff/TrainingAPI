@@ -23,18 +23,30 @@
   margin-bottom: 0.5rem;
 }
 
-.form-control,
-.form-select {
+.workshop-request-container .form-control,
+.workshop-request-container .form-select {
+  border: none;
   border-radius: 6px;
   padding: 0.75rem;
-  border: 1px solid #ced4da;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
+  outline: none;
+  background-color: #f9f9f9;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+.workshop-request-container input:valid,
+.workshop-request-container textarea:valid {
+  background-color: #f9f9f9;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+}
+
+.workshop-request-container .form-control:focus,
+.workshop-request-container .form-select:focus {
+  border: 1px solid #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  outline: none;
+  background-color: #fff;
 }
 
 .btn-primary {
