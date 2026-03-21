@@ -6,9 +6,9 @@ body {
 }
 
 .logout-button {
-  background-color: #6c757d;
+  background-color: rgb(236, 230, 230);
   border: 1px solid #6c757d;
-  color: #fff;
+  color: #333;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -22,8 +22,9 @@ body {
 }
 
 .logout-button:hover {
-  background-color: #5a6268;
+  background-color: #d4cdcd;
   border-color: #545b62;
+  color: #333;
 }
 
 .logout-button:not(:before) {
