@@ -122,7 +122,7 @@ const WorkshopRequests = () => {
         <div className="row">
           <div className="col-md-6 mb-3">
             <label htmlFor="name" className="form-label">
-              Name *
+              Full name *
             </label>
             <input
               type="text"
@@ -131,7 +131,6 @@ const WorkshopRequests = () => {
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
               value={formData.name}
               onChange={handleChange}
-              placeholder="Your full name"
             />
             {errors.name && (
               <div className="invalid-feedback">{errors.name}</div>
@@ -149,7 +148,6 @@ const WorkshopRequests = () => {
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
               value={formData.email}
               onChange={handleChange}
-              placeholder="name@organisation.com"
             />
             {errors.email && (
               <div className="invalid-feedback">{errors.email}</div>
@@ -189,7 +187,7 @@ const WorkshopRequests = () => {
             }`}
             value={formData.requirement_description}
             onChange={handleChange}
-            placeholder="Example: We want a practical course on deploying internal AI tools using Python and OpenAI APIs for our analytics team."
+            placeholder="For example: We want a practical course on deploying internal AI tools using Python and OpenAI APIs for our analytics team."
           ></textarea>
           {errors.requirement_description && (
             <div className="invalid-feedback">
