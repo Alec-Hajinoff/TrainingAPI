@@ -60,7 +60,7 @@ function Courses() {
     link.setAttribute("href", url);
     link.setAttribute(
       "download",
-      `courses_catalog_${new Date().toISOString().split("T")[0]}.csv`,
+      `catalogue_of_workshops_${new Date().toISOString().split("T")[0]}.csv`,
     );
     link.style.visibility = "hidden";
     document.body.appendChild(link);
