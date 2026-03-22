@@ -60,7 +60,7 @@ function CoursesAdmin() {
     link.setAttribute("href", url);
     link.setAttribute(
       "download",
-      `courses_catalog_${new Date().toISOString().split("T")[0]}.csv`,
+      `catalogue_of_workshops_${new Date().toISOString().split("T")[0]}.csv`,
     );
     link.style.visibility = "hidden";
     document.body.appendChild(link);
@@ -72,7 +72,7 @@ function CoursesAdmin() {
   if (loading) {
     return (
       <div className="mt-4">
-        <h2>Available Courses</h2>
+        <h2>Available workshops</h2>
         <div className="alert alert-info">Loading catalog...</div>
       </div>
     );
@@ -81,7 +81,7 @@ function CoursesAdmin() {
   if (error) {
     return (
       <div className="mt-4">
-        <h2>Available Courses</h2>
+        <h2>Available workshops</h2>
         <div className="alert alert-danger">{error}</div>
         <button className="btn btn-secondary" onClick={loadCourses}>
           Try Again
@@ -93,7 +93,7 @@ function CoursesAdmin() {
   return (
     <div className="mt-5 text-start">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Available Courses ({courses.length})</h2>
+        <h2 className="mb-0">Available workshops ({courses.length})</h2>
         <button
           className="btn btn-outline-success btn-sm"
           onClick={handleDownloadCSV}
@@ -106,7 +106,7 @@ function CoursesAdmin() {
 
       {courses.length === 0 ? (
         <div className="alert alert-info mt-3">
-          No courses are currently available in the directory.
+          No workshops are currently available in the directory.
         </div>
       ) : (
         <div className="mt-3">
