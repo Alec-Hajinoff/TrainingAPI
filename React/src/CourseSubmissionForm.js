@@ -451,7 +451,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           min="0.1"
           max="999.9"
           step="0.1"
-          placeholder="e.g., 8"
         />
         {errors.duration && (
           <div className="invalid-feedback">{errors.duration}</div>
@@ -473,7 +472,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           min="0.01"
           max="99999999.99"
           step="0.01"
-          placeholder="e.g., 4000"
         />
         {errors.total_price && (
           <div className="invalid-feedback">{errors.total_price}</div>
@@ -482,7 +480,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="provider_name" className="form-label">
-          Provider name *
+          Provider or independent instructor name *
         </label>
         <input
           type="text"
@@ -493,7 +491,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="255"
-          placeholder="e.g., ABC Training Ltd"
         />
         {errors.provider_name && (
           <div className="invalid-feedback">{errors.provider_name}</div>
@@ -513,7 +510,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="255"
-          placeholder="e.g., mike.smith@abctraining.com"
         />
         {errors.contact_email && (
           <div className="invalid-feedback">{errors.contact_email}</div>
@@ -533,7 +529,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="50"
-          placeholder="e.g., +44 20 7123 4567"
         />
         {errors.contact_phone && (
           <div className="invalid-feedback">{errors.contact_phone}</div>
@@ -542,7 +537,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
 
       <div className="form-group mb-3">
         <label htmlFor="provider_website" className="form-label">
-          Provider website *
+          Provider or independent instructor website *
         </label>
         <input
           type="text"
@@ -555,7 +550,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           onChange={handleChange}
           required
           maxLength="1024"
-          placeholder="e.g., https://www.abctraining.com"
         />
         {errors.provider_website && (
           <div className="invalid-feedback">{errors.provider_website}</div>
