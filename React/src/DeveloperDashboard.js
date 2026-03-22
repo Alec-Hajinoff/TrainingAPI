@@ -15,11 +15,11 @@ function DeveloperDashboard() {
           <div className="card mb-4">
             <div className="card-body">
               <p className="card-text">
-                Welcome to <strong>TrainingApi</strong> — a standardised API for
-                discovering and retrieving professional training courses from
-                multiple providers. This API allows you to integrate external
-                courses directly into your Learning Management System (LMS) or
-                internal tools with minimal effort.
+                Welcome to <strong>TrainingApi</strong> a standardised API for
+                discovering and retrieving instructor-led technology workshops.
+                This API allows you to integrate workshops directly into your
+                Learning Management System (LMS) or internal tools with minimal
+                effort.
               </p>
             </div>
           </div>
@@ -28,13 +28,13 @@ function DeveloperDashboard() {
             <h4>1. API Access Information</h4>
 
             <p>
-              The TrainingApi endpoint is now publicly accessible. No API key is
-              required to retrieve course data.
+              The TrainingApi endpoint is publicly accessible. No API key is
+              required to retrieve workshop data.
             </p>
 
             <div className="alert alert-info mt-4 mb-4">
-              <strong>✨ Public API Access:</strong> The courses endpoint is now
-              open to the public. You can access course data without any
+              <strong>✨ Public API Access:</strong> The workshops endpoint is
+              open to the public. You can access workshop data without
               authentication.
             </div>
           </div>
@@ -98,19 +98,19 @@ function DeveloperDashboard() {
   "courses": [
     {
       "id": 229,
-      "course_title": "Introduction to Asset Management",
-      "description": "This financial training course is designed to give delegates a thorough grounding in the themes, calculations, and practices behind the investment management industry...",
-      "learning_outcomes": "* To demystify the jargon associated with the financial services industry;\\r\\n* To review the key functions and players within financial services;...",
-      "subject_area": "Wealth & Asset Management",
-      "subject": "Asset Management",
-      "delivery_type": "In-person",
-      "country_of_delivery": "United States",
-      "duration": "8.0",
-      "total_price": "3650.00",
-      "provider_name": "Clearly Financial Markets",
-      "contact_email": "mike.smith@clearlytraining.com",
-      "contact_phone": "+442076482253",
-      "provider_website": "www.clearlytraining.com"
+      "course_title": "Building and Deploying Machine Learning Models with Python",
+      "description": "This hands-on workshop introduces participants to building and deploying machine learning models using Python. Through practical exercises, attendees will work with real datasets, develop models using libraries such as scikit-learn, and learn how to evaluate and deploy models into production environments",
+      "learning_outcomes": "* Build and train machine learning models using Python * Work with real-world datasets and perform data preprocessing * Evaluate model performance using appropriate metrics * Deploy models into production environments * Apply best practices for scalable and maintainable ML workflows",
+      "subject_area": "Artificial Intelligence & Machine Learning",
+      "subject": "Applied Machine Learning",
+      "delivery_type": "Virtual",
+      "country_of_delivery": "Global",
+      "duration": "2.0",
+      "total_price": "1000.00",
+      "provider_name": "TechSkills Academy",
+      "contact_email": "contact@techskillsacademy.com",
+      "contact_phone": "+442071234567",
+      "provider_website": "https://www.techskillsacademy.com"
     }
   ],
   "count": 1
