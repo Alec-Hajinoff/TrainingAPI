@@ -17,18 +17,6 @@ function AdminDashboard() {
         <LogoutComponent />
       </div>
       <div className="dashboard-content">
-        <h2>Admin Dashboard</h2>
-        <div className="features mt-4">
-          <h4>Available Features:</h4>
-          <ul className="list-group">
-            <li className="list-group-item">User & Provider Management</li>
-            <li className="list-group-item">Platform Analytics & Reports</li>
-            <li className="list-group-item">System Configuration & Settings</li>
-            <li className="list-group-item">Content Moderation Tools</li>
-            <li className="list-group-item">Approval Workflows</li>
-          </ul>
-        </div>
-
         <WorkshopsRequested />
         <CoursesAdmin />
       </div>
