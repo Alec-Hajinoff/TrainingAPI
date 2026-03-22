@@ -126,15 +126,15 @@ function DeveloperDashboard() {
             <p>Common errors include:</p>
 
             <p className="mb-2">
-              <strong>No courses found:</strong>
+              <strong>No workshops found:</strong>
             </p>
             <div className="card mb-3">
               <div className="card-body">
                 <pre className="mb-0">
                   <code>{`{
-  "success": false,
-  "message": "No courses found"
-}`}</code>
+                  "success": false,
+                  "message": "No workshops available at the moment. You can request a custom programme."
+                  }`}</code>
                 </pre>
               </div>
             </div>
@@ -150,7 +150,7 @@ function DeveloperDashboard() {
 
             <p>
               If you encounter issues or have questions, contact the{" "}
-              <strong>TrainingAPI team</strong> at:
+              <strong>TrainingApi team</strong> at:
             </p>
             <div className="alert alert-info">
               <strong>Email:</strong>{" "}
