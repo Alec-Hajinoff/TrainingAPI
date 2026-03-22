@@ -47,39 +47,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
     },
   }));
 
-  const countryOptions = [
-    "Global",
-    "Austria",
-    "Belgium",
-    "Bulgaria",
-    "Canada",
-    "Croatia",
-    "Cyprus",
-    "Czech Republic",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "France",
-    "Germany",
-    "Greece",
-    "Hungary",
-    "Ireland",
-    "Italy",
-    "Latvia",
-    "Lithuania",
-    "Luxembourg",
-    "Malta",
-    "Netherlands",
-    "Poland",
-    "Portugal",
-    "Romania",
-    "Slovakia",
-    "Slovenia",
-    "Spain",
-    "Sweden",
-    "United Kingdom",
-    "United States",
-  ];
+  const countryOptions = ["Global"];
 
   const subjectOptions = {
     "Artificial Intelligence & Machine Learning": [
