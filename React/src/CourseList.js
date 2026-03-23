@@ -11,38 +11,7 @@ function CourseList({ refreshTrigger }) {
   const [updateMessage, setUpdateMessage] = useState({ type: "", text: "" });
   const [deleteMessage, setDeleteMessage] = useState({ type: "", text: "" });
 
-  const countryOptions = [
-    "Global",
-    "Austria",
-    "Belgium",
-    "Bulgaria",
-    "Canada",
-    "Croatia",
-    "Cyprus",
-    "Czech Republic",
-    "Denmark",
-    "Estonia",
-    "Finland",
-    "France",
-    "Germany",
-    "Greece",
-    "Hungary",
-    "Ireland",
-    "Italy",
-    "Latvia",
-    "Lithuania",
-    "Luxembourg",
-    "Malta",
-    "Netherlands",
-    "Poland",
-    "Portugal",
-    "Romania",
-    "Slovakia",
-    "Slovenia",
-    "Spain",
-    "Sweden",
-    "United States",
-  ];
+  const countryOptions = ["Global"];
 
   const subjectOptions = {
     "Accounting & Finance": [
