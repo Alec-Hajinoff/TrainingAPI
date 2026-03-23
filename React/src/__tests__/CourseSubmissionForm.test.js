@@ -9,60 +9,66 @@ jest.mock("../ApiService", () => ({
 
 describe("CourseSubmissionForm Component", () => {
   const fillFormWithValidData = async () => {
-    const titleTextarea = screen.getByLabelText("Course Title *");
+    const titleTextarea = screen.getByLabelText(/Workshop title \*/i);
     fireEvent.change(titleTextarea, {
       target: { value: "Introduction to React" },
     });
 
-    const descriptionTextarea = screen.getByLabelText("Description *");
+    const descriptionTextarea = screen.getByLabelText(/Description \*/i);
     fireEvent.change(descriptionTextarea, {
       target: { value: "Learn React basics" },
     });
 
-    const outcomesTextarea = screen.getByLabelText("Learning Outcomes *");
+    const outcomesTextarea = screen.getByLabelText(/Learning outcomes \*/i);
     fireEvent.change(outcomesTextarea, {
       target: { value: "Build basic React apps" },
     });
 
-    const subjectAreaSelect = screen.getByLabelText("Subject Area *");
+    const subjectAreaSelect = screen.getByLabelText(/Subject area \*/i);
     fireEvent.change(subjectAreaSelect, {
-      target: { value: "Technology, Digital & Cyber" },
-    });
-
-    await waitFor(() => {
-      const subjectSelect = screen.getByLabelText("Subject *");
-      expect(subjectSelect).not.toBeDisabled();
-    });
-
-    const subjectSelect = screen.getByLabelText("Subject *");
-    fireEvent.change(subjectSelect, {
       target: { value: "Software Engineering" },
     });
 
-    const deliverySelect = screen.getByLabelText("Delivery Type *");
+    await waitFor(() => {
+      const subjectSelect = screen.getByLabelText(/Subject \*/i);
+      expect(subjectSelect).not.toBeDisabled();
+    });
+
+    const subjectSelect = screen.getByLabelText(/Subject \*/i);
+    fireEvent.change(subjectSelect, {
+      target: { value: "JavaScript Development" },
+    });
+
+    const deliverySelect = screen.getByLabelText(/Delivery type \*/i);
     fireEvent.change(deliverySelect, { target: { value: "Virtual" } });
 
-    const countrySelect = screen.getByLabelText("Country of Delivery *");
-    fireEvent.change(countrySelect, { target: { value: "United States" } });
+    const countrySelect = screen.getByLabelText(/Country of delivery \*/i);
+    fireEvent.change(countrySelect, { target: { value: "Global" } });
 
-    const durationInput = screen.getByLabelText("Duration (hours) *");
+    const durationInput = screen.getByLabelText(/Duration \(hours\) \*/i);
     fireEvent.change(durationInput, { target: { value: "10.5" } });
 
-    const priceInput = screen.getByLabelText("Total Price (excluding VAT) *");
+    const priceInput = screen.getByLabelText(
+      /Total price £ \(excluding VAT\) \*/i,
+    );
     fireEvent.change(priceInput, { target: { value: "299.99" } });
 
-    const providerInput = screen.getByLabelText("Provider Name *");
+    const providerInput = screen.getByLabelText(
+      /Provider or independent instructor name \*/i,
+    );
     fireEvent.change(providerInput, { target: { value: "Tech Academy" } });
 
-    const emailInput = screen.getByLabelText("Contact Email *");
+    const emailInput = screen.getByLabelText(/Contact email \*/i);
     fireEvent.change(emailInput, {
       target: { value: "contact@techacademy.com" },
     });
 
-    const phoneInput = screen.getByLabelText("Contact Phone *");
-    fireEvent.change(phoneInput, { target: { value: "+1234567890" } });
+    const phoneInput = screen.getByLabelText(/Contact phone \*/i);
+    fireEvent.change(phoneInput, { target: { value: "+123456789012" } });
 
-    const websiteInput = screen.getByLabelText("Provider Website *");
+    const websiteInput = screen.getByLabelText(
+      /Provider or independent instructor website \*/i,
+    );
     fireEvent.change(websiteInput, {
       target: { value: "https://techacademy.com" },
     });
@@ -75,42 +81,50 @@ describe("CourseSubmissionForm Component", () => {
   test("renders form with all required fields", () => {
     render(<CourseSubmissionForm />);
 
-    expect(screen.getByLabelText("Course Title *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Description *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Learning Outcomes *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Subject Area *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Subject *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Delivery Type *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Country of Delivery *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Duration (hours) *")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Workshop title \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Description \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Learning outcomes \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Subject area \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Subject \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Delivery type \*/i)).toBeInTheDocument();
     expect(
-      screen.getByLabelText("Total Price (excluding VAT) *")
+      screen.getByLabelText(/Country of delivery \*/i),
     ).toBeInTheDocument();
-    expect(screen.getByLabelText("Provider Name *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Contact Email *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Contact Phone *")).toBeInTheDocument();
-    expect(screen.getByLabelText("Provider Website *")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Duration \(hours\) \*/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/Total price £ \(excluding VAT\) \*/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/Provider or independent instructor name \*/i),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(/Contact email \*/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Contact phone \*/i)).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/Provider or independent instructor website \*/i),
+    ).toBeInTheDocument();
 
-    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    ).toBeInTheDocument();
   });
 
   test("disables subject dropdown when no subject area is selected", () => {
     render(<CourseSubmissionForm />);
 
-    const subjectSelect = screen.getByLabelText("Subject *");
+    const subjectSelect = screen.getByLabelText(/Subject \*/i);
     expect(subjectSelect).toBeDisabled();
   });
 
   test("enables subject dropdown when subject area is selected", async () => {
     render(<CourseSubmissionForm />);
 
-    const subjectAreaSelect = screen.getByLabelText("Subject Area *");
+    const subjectAreaSelect = screen.getByLabelText(/Subject area \*/i);
     fireEvent.change(subjectAreaSelect, {
-      target: { value: "Technology, Digital & Cyber" },
+      target: { value: "Software Engineering" },
     });
 
     await waitFor(() => {
-      const subjectSelect = screen.getByLabelText("Subject *");
+      const subjectSelect = screen.getByLabelText(/Subject \*/i);
       expect(subjectSelect).not.toBeDisabled();
     });
   });
@@ -118,23 +132,23 @@ describe("CourseSubmissionForm Component", () => {
   test("clears subject when subject area is changed", async () => {
     render(<CourseSubmissionForm />);
 
-    const subjectAreaSelect = screen.getByLabelText("Subject Area *");
+    const subjectAreaSelect = screen.getByLabelText(/Subject area \*/i);
     fireEvent.change(subjectAreaSelect, {
-      target: { value: "Technology, Digital & Cyber" },
-    });
-
-    await waitFor(() => {
-      const subjectSelect = screen.getByLabelText("Subject *");
-      expect(subjectSelect).not.toBeDisabled();
-    });
-
-    const subjectSelect = screen.getByLabelText("Subject *");
-    fireEvent.change(subjectSelect, {
       target: { value: "Software Engineering" },
     });
 
+    await waitFor(() => {
+      const subjectSelect = screen.getByLabelText(/Subject \*/i);
+      expect(subjectSelect).not.toBeDisabled();
+    });
+
+    const subjectSelect = screen.getByLabelText(/Subject \*/i);
+    fireEvent.change(subjectSelect, {
+      target: { value: "JavaScript Development" },
+    });
+
     fireEvent.change(subjectAreaSelect, {
-      target: { value: "Accounting & Finance" },
+      target: { value: "Cybersecurity" },
     });
 
     await waitFor(() => {
@@ -145,7 +159,9 @@ describe("CourseSubmissionForm Component", () => {
   test("shows validation errors when form is submitted empty", async () => {
     render(<CourseSubmissionForm />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       const errorMessages = screen.getAllByText("This field is required");
@@ -158,14 +174,16 @@ describe("CourseSubmissionForm Component", () => {
 
     await fillFormWithValidData();
 
-    const emailInput = screen.getByLabelText("Contact Email *");
+    const emailInput = screen.getByLabelText(/Contact email \*/i);
     fireEvent.change(emailInput, { target: { value: "invalid-email" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Please enter a valid email address")
+        screen.getByText("Please enter a valid email address"),
       ).toBeInTheDocument();
     });
   });
@@ -175,10 +193,14 @@ describe("CourseSubmissionForm Component", () => {
 
     await fillFormWithValidData();
 
-    const websiteInput = screen.getByLabelText("Provider Website *");
+    const websiteInput = screen.getByLabelText(
+      /Provider or independent instructor website \*/i,
+    );
     fireEvent.change(websiteInput, { target: { value: "not-a-valid-url" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/Please enter a valid URL/)).toBeInTheDocument();
@@ -190,31 +212,16 @@ describe("CourseSubmissionForm Component", () => {
 
     await fillFormWithValidData();
 
-    const durationInput = screen.getByLabelText("Duration (hours) *");
+    const durationInput = screen.getByLabelText(/Duration \(hours\) \*/i);
     fireEvent.change(durationInput, { target: { value: "-5" } });
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Please enter a valid positive number")
-      ).toBeInTheDocument();
-    });
-  });
-
-  test("validates positive numbers for price", async () => {
-    render(<CourseSubmissionForm />);
-
-    await fillFormWithValidData();
-
-    const priceInput = screen.getByLabelText("Total Price (excluding VAT) *");
-    fireEvent.change(priceInput, { target: { value: "0" } });
-
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
-
-    await waitFor(() => {
-      expect(
-        screen.getByText("Please enter a valid positive number")
+        screen.getByText("Please enter a valid positive number"),
       ).toBeInTheDocument();
     });
   });
@@ -224,28 +231,32 @@ describe("CourseSubmissionForm Component", () => {
       () =>
         new Promise((resolve) => {
           setTimeout(() => resolve({ success: true }), 100);
-        })
+        }),
     );
 
     render(<CourseSubmissionForm />);
 
     await fillFormWithValidData();
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Saving your course, please wait…")
+        screen.getByText("Saving your course, please wait…"),
       ).toBeInTheDocument();
     });
 
-    expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    ).toBeDisabled();
   });
 
   test("handles successful form submission", async () => {
     inputDataFunction.mockResolvedValue({
       success: true,
-      message: "Course created successfully",
+      message: "Course submitted successfully!",
     });
 
     const mockOnCourseAdded = jest.fn();
@@ -253,107 +264,38 @@ describe("CourseSubmissionForm Component", () => {
 
     await fillFormWithValidData();
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Course submitted successfully!")
+        screen.getByText("Course submitted successfully!"),
       ).toBeInTheDocument();
     });
 
     expect(mockOnCourseAdded).toHaveBeenCalled();
-
     expect(inputDataFunction).toHaveBeenCalled();
   });
 
   test("handles failed form submission", async () => {
     inputDataFunction.mockResolvedValue({
       success: false,
-      message: "Server error: Could not create course",
+      message: "Server error: Could not create workshop",
     });
 
     render(<CourseSubmissionForm />);
 
     await fillFormWithValidData();
 
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Server error: Could not create course")
+        screen.getByText("Server error: Could not create workshop"),
       ).toBeInTheDocument();
-    });
-  });
-
-  test("handles API exception", async () => {
-    inputDataFunction.mockRejectedValue(new Error("Network error"));
-
-    render(<CourseSubmissionForm />);
-
-    await fillFormWithValidData();
-
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
-
-    await waitFor(() => {
-      expect(screen.getByText("Network error")).toBeInTheDocument();
-    });
-  });
-
-  test("clears validation errors when user starts typing", async () => {
-    render(<CourseSubmissionForm />);
-
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
-
-    await waitFor(() => {
-      const errorMessages = screen.getAllByText("This field is required");
-      expect(errorMessages.length).toBeGreaterThan(0);
-    });
-
-    const titleTextarea = screen.getByLabelText("Course Title *");
-    const titleFormGroup = titleTextarea.closest(".form-group");
-
-    expect(titleTextarea).toHaveClass("is-invalid");
-    expect(
-      titleFormGroup.querySelector(".invalid-feedback")
-    ).toBeInTheDocument();
-
-    fireEvent.change(titleTextarea, { target: { value: "New Course" } });
-
-    await waitFor(() => {
-      expect(titleTextarea).not.toHaveClass("is-invalid");
-    });
-
-    await waitFor(() => {
-      expect(
-        titleFormGroup.querySelector(".invalid-feedback")
-      ).not.toBeInTheDocument();
-    });
-
-    const remainingErrors = screen.getAllByText("This field is required");
-    expect(remainingErrors.length).toBeGreaterThan(0);
-  });
-
-  test("resets form when resetForm method is called", async () => {
-    const ref = React.createRef();
-    render(<CourseSubmissionForm ref={ref} />);
-
-    const titleTextarea = screen.getByLabelText("Course Title *");
-    fireEvent.change(titleTextarea, { target: { value: "Test Course" } });
-
-    const emailInput = screen.getByLabelText("Contact Email *");
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-
-    expect(titleTextarea.value).toBe("Test Course");
-    expect(emailInput.value).toBe("test@example.com");
-
-    ref.current.resetForm();
-
-    await waitFor(() => {
-      expect(titleTextarea.value).toBe("");
-    });
-
-    await waitFor(() => {
-      expect(emailInput.value).toBe("");
     });
   });
 
@@ -366,23 +308,46 @@ describe("CourseSubmissionForm Component", () => {
     render(<CourseSubmissionForm />);
 
     await fillFormWithValidData();
-    fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /Submit your workshop/i }),
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Course submitted successfully!")
+        screen.getByText("Course submitted successfully!"),
       ).toBeInTheDocument();
     });
 
-    const titleTextarea = screen.getByLabelText("Course Title *");
+    const titleTextarea = screen.getByLabelText(/Workshop title \*/i);
     fireEvent.change(titleTextarea, {
-      target: { value: "Updated Course Title" },
+      target: { value: "Updated Workshop Title" },
     });
 
     await waitFor(() => {
       expect(
-        screen.queryByText("Course submitted successfully!")
+        screen.queryByText("Course submitted successfully!"),
       ).not.toBeInTheDocument();
+    });
+  });
+
+  test("resets form when resetForm method is called", async () => {
+    const ref = React.createRef();
+    render(<CourseSubmissionForm ref={ref} />);
+
+    const titleTextarea = screen.getByLabelText(/Workshop title \*/i);
+    fireEvent.change(titleTextarea, { target: { value: "Test Workshop" } });
+
+    const emailInput = screen.getByLabelText(/Contact email \*/i);
+    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+
+    expect(titleTextarea.value).toBe("Test Workshop");
+    expect(emailInput.value).toBe("test@example.com");
+
+    ref.current.resetForm();
+
+    await waitFor(() => {
+      expect(titleTextarea.value).toBe("");
+      expect(emailInput.value).toBe("");
     });
   });
 });

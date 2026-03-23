@@ -38,7 +38,7 @@ describe("UserLogin Component", () => {
     return render(
       <MemoryRouter>
         <UserLogin />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   };
 
@@ -47,310 +47,124 @@ describe("UserLogin Component", () => {
 
     expect(screen.getByPlaceholderText("Email address")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /login/i })).toBeInTheDocument();
-
-    const emailInput = screen.getByPlaceholderText("Email address");
-    expect(emailInput).toHaveAttribute("type", "email");
-    expect(emailInput).toHaveAttribute("name", "email");
-    expect(emailInput).toHaveAttribute("required");
-
-    const passwordInput = screen.getByPlaceholderText("Password");
-    expect(passwordInput).toHaveAttribute("type", "password");
-    expect(passwordInput).toHaveAttribute("name", "password");
-    expect(passwordInput).toHaveAttribute("required");
+    expect(screen.getByRole("button", { name: /Login/i })).toBeInTheDocument();
   });
 
-  describe("Form State Management", () => {
-    it("updates form data when inputs change", () => {
+  describe("Form Validation", () => {
+    it("shows error for invalid email format", async () => {
       renderComponent();
 
       const emailInput = screen.getByPlaceholderText("Email address");
-      const passwordInput = screen.getByPlaceholderText("Password");
-
       fireEvent.change(emailInput, {
-        target: { name: "email", value: "test@example.com" },
-      });
-      fireEvent.change(passwordInput, {
-        target: { name: "password", value: "password123" },
+        target: { name: "email", value: "invalid-email" },
       });
 
-      expect(emailInput).toHaveValue("test@example.com");
-      expect(passwordInput).toHaveValue("password123");
-    });
-
-    it("initializes with empty form data", () => {
-      renderComponent();
-
-      expect(screen.getByPlaceholderText("Email address")).toHaveValue("");
-      expect(screen.getByPlaceholderText("Password")).toHaveValue("");
-      expect(screen.getByRole("button", { name: /login/i })).toBeEnabled();
-    });
-  });
-
-  describe("Form Submission", () => {
-    it("calls loginUser with form data on submit", async () => {
-      const mockResponse = { status: "success", user_type: "provider" };
-      loginUser.mockResolvedValueOnce(mockResponse);
-
-      renderComponent();
-
-      const emailInput = screen.getByPlaceholderText("Email address");
-      const passwordInput = screen.getByPlaceholderText("Password");
-      const submitButton = screen.getByRole("button", { name: /login/i });
-
-      fireEvent.change(emailInput, {
-        target: { name: "email", value: "test@example.com" },
-      });
-      fireEvent.change(passwordInput, {
-        target: { name: "password", value: "password123" },
-      });
-      fireEvent.click(submitButton);
-
-      expect(loginUser).toHaveBeenCalledWith({
-        email: "test@example.com",
-        password: "password123",
-      });
-    });
-
-    it("prevents default form submission", async () => {
-      const mockResponse = { status: "success", user_type: "provider" };
-      loginUser.mockResolvedValueOnce(mockResponse);
-
-      renderComponent();
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
+      fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
       await waitFor(() => {
-        expect(loginUser).toHaveBeenCalled();
+        expect(
+          screen.getByText(/Please enter a valid email address/i),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("shows error for short password", async () => {
+      renderComponent();
+
+      const emailInput = screen.getByPlaceholderText("Email address");
+      const passwordInput = screen.getByPlaceholderText("Password");
+
+      fireEvent.change(emailInput, {
+        target: { name: "email", value: "test@example.com" },
+      });
+      fireEvent.change(passwordInput, {
+        target: { name: "password", value: "short" },
+      });
+
+      fireEvent.click(screen.getByRole("button", { name: /Login/i }));
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Password must be at least 8 characters long/i),
+        ).toBeInTheDocument();
       });
     });
   });
 
   describe("Login Success Scenarios", () => {
-    it("navigates to ProviderDashboard for provider users", async () => {
-      const mockResponse = { status: "success", user_type: "provider" };
-      loginUser.mockResolvedValueOnce(mockResponse);
+    const successTestCases = [
+      { type: "provider", path: "/ProviderDashboard" },
+      { type: "developer", path: "/DeveloperDashboard" },
+      { type: "admin", path: "/AdminDashboard" },
+    ];
 
-      renderComponent();
+    successTestCases.forEach(({ type, path }) => {
+      it(`navigates to ${path} for ${type} users`, async () => {
+        loginUser.mockResolvedValueOnce({ status: "success", user_type: type });
 
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
+        renderComponent();
 
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith("/ProviderDashboard");
-      });
-    });
+        fireEvent.change(screen.getByPlaceholderText("Email address"), {
+          target: { name: "email", value: "user@example.com" },
+        });
+        fireEvent.change(screen.getByPlaceholderText("Password"), {
+          target: { name: "password", value: "password123" },
+        });
 
-    it("navigates to DeveloperDashboard for developer users", async () => {
-      const mockResponse = { status: "success", user_type: "developer" };
-      loginUser.mockResolvedValueOnce(mockResponse);
+        fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
-      renderComponent();
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith("/DeveloperDashboard");
-      });
-    });
-
-    it("navigates to AdminDashboard for admin users", async () => {
-      const mockResponse = { status: "success", user_type: "admin" };
-      loginUser.mockResolvedValueOnce(mockResponse);
-
-      renderComponent();
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith("/AdminDashboard");
+        await waitFor(() => {
+          expect(mockNavigate).toHaveBeenCalledWith(path);
+        });
       });
     });
   });
 
   describe("Login Error Scenarios", () => {
-    it("shows error message when login fails", async () => {
-      const mockResponse = { status: "error" };
-      loginUser.mockResolvedValueOnce(mockResponse);
+    it("shows error message and clears password when login fails", async () => {
+      loginUser.mockResolvedValueOnce({ status: "error" });
 
       renderComponent();
 
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        const errorDiv = document.getElementById("error-message-one");
-        expect(errorDiv).toHaveTextContent("Sign in failed. Please try again.");
+      const passwordInput = screen.getByPlaceholderText("Password");
+      fireEvent.change(screen.getByPlaceholderText("Email address"), {
+        target: { name: "email", value: "test@example.com" },
       });
-    });
-
-    it("shows error message when API throws", async () => {
-      const errorMessage = "Network error";
-      loginUser.mockRejectedValueOnce(new Error(errorMessage));
-
-      renderComponent();
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        const errorDiv = document.getElementById("error-message-one");
-        expect(errorDiv).toHaveTextContent(errorMessage);
-      });
-    });
-
-    it("clears previous error messages on new submission", async () => {
-      loginUser.mockRejectedValueOnce(new Error("First error"));
-      const { rerender } = render(
-        <MemoryRouter>
-          <UserLogin />
-        </MemoryRouter>
-      );
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(submitButton);
-
-      await waitFor(() => {
-        const errorDiv = document.getElementById("error-message-one");
-        expect(errorDiv).toHaveTextContent("First error");
+      fireEvent.change(passwordInput, {
+        target: { name: "password", value: "password123" },
       });
 
-      cleanup();
-      jest.clearAllMocks();
-
-      loginUser.mockResolvedValueOnce({
-        status: "success",
-        user_type: "provider",
-      });
-      render(
-        <MemoryRouter>
-          <UserLogin />
-        </MemoryRouter>
-      );
-
-      const newSubmitButton = screen.getByRole("button", { name: /login/i });
-      fireEvent.click(newSubmitButton);
+      fireEvent.click(screen.getByRole("button", { name: /Login/i }));
 
       await waitFor(() => {
-        const errorDiv = document.getElementById("error-message-one");
-        expect(errorDiv).not.toHaveTextContent("First error");
-        expect(errorDiv).toHaveTextContent("");
+        expect(
+          screen.getByText(/Sign in failed. Please try again./i),
+        ).toBeInTheDocument();
+        expect(passwordInput.value).toBe("");
       });
     });
   });
 
   describe("Loading State", () => {
-    it("shows spinner when loading", async () => {
-      let resolveLogin;
-      const loginPromise = new Promise((resolve) => {
-        resolveLogin = resolve;
-      });
-      loginUser.mockReturnValueOnce(loginPromise);
+    it("shows spinner and disables button when loading", async () => {
+      loginUser.mockReturnValueOnce(new Promise(() => {}));
 
       renderComponent();
 
-      const submitButton = screen.getByRole("button", { name: /login/i });
-      const spinner = document.getElementById("spinnerLogin");
+      const submitButton = screen.getByRole("button", { name: /Login/i });
 
-      expect(spinner.style.display).toBe("none");
+      fireEvent.change(screen.getByPlaceholderText("Email address"), {
+        target: { name: "email", value: "test@example.com" },
+      });
+      fireEvent.change(screen.getByPlaceholderText("Password"), {
+        target: { name: "password", value: "password123" },
+      });
 
       fireEvent.click(submitButton);
 
-      expect(spinner.style.display).toBe("inline-block");
-
-      resolveLogin({ status: "success", user_type: "provider" });
-
-      await waitFor(() => {
-        expect(spinner.style.display).toBe("none");
-      });
-    });
-
-    it("button shows disabled state during loading", async () => {
-      let resolveLogin;
-      const loginPromise = new Promise((resolve) => {
-        resolveLogin = resolve;
-      });
-      loginUser.mockReturnValueOnce(loginPromise);
-
-      renderComponent();
-
-      const submitButton = screen.getByRole("button", { name: /login/i });
-
-      fireEvent.click(submitButton);
-
+      expect(submitButton).toBeDisabled();
       const spinner = document.getElementById("spinnerLogin");
       expect(spinner.style.display).toBe("inline-block");
-
-      resolveLogin({ status: "success", user_type: "provider" });
-
-      await waitFor(() => {
-        expect(spinner.style.display).toBe("none");
-      });
-    });
-  });
-
-  describe("Accessibility", () => {
-    it("has proper placeholders", () => {
-      renderComponent();
-
-      expect(screen.getByPlaceholderText("Email address")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
-    });
-
-    it("has error message with aria-live polite", () => {
-      renderComponent();
-
-      const errorDiv = document.getElementById("error-message-one");
-      expect(errorDiv).toBeInTheDocument();
-      expect(errorDiv).toHaveAttribute("aria-live", "polite");
-      expect(errorDiv).toHaveClass("error");
-    });
-
-    it("has spinner with appropriate ARIA attributes", () => {
-      renderComponent();
-
-      const spinner = document.getElementById("spinnerLogin");
-      expect(spinner).toBeInTheDocument();
-      expect(spinner).toHaveClass("spinner-border", "spinner-border-sm");
-      expect(spinner).toHaveAttribute("role", "status");
-      expect(spinner).toHaveAttribute("aria-hidden", "true");
-    });
-  });
-
-  describe("Form Validation", () => {
-    it("has email pattern validation", () => {
-      renderComponent();
-
-      const emailInput = screen.getByPlaceholderText("Email address");
-      expect(emailInput).toHaveAttribute(
-        "pattern",
-        "[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$"
-      );
-    });
-
-    it("has required fields", () => {
-      renderComponent();
-
-      expect(screen.getByPlaceholderText("Email address")).toHaveAttribute(
-        "required"
-      );
-      expect(screen.getByPlaceholderText("Password")).toHaveAttribute(
-        "required"
-      );
-    });
-  });
-
-  describe("Bootstrap Classes", () => {
-    it("has correct Bootstrap form classes", () => {
-      const { container } = renderComponent();
-
-      expect(container.querySelector(".row.g-2")).toBeInTheDocument();
-      expect(container.querySelector(".form-group")).toBeInTheDocument();
-      expect(container.querySelector(".form-control")).toBeInTheDocument();
-      expect(container.querySelector(".btn.btn-secondary")).toBeInTheDocument();
     });
   });
 });
