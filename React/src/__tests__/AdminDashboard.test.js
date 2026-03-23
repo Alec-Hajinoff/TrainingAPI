@@ -5,6 +5,12 @@ import AdminDashboard from "../AdminDashboard";
 jest.mock("../LogoutComponent", () => () => (
   <div data-testid="logout-component">MockLogout</div>
 ));
+jest.mock("../WorkshopsRequested", () => () => (
+  <div data-testid="workshops-requested">MockWorkshopsRequested</div>
+));
+jest.mock("../CoursesAdmin", () => () => (
+  <div data-testid="courses-admin">MockCoursesAdmin</div>
+));
 
 describe("AdminDashboard", () => {
   test("renders welcome text", () => {
@@ -12,38 +18,26 @@ describe("AdminDashboard", () => {
 
     expect(
       screen.getByText(
-        /Welcome to the admin dashboard\. Here you can manage the platform,/i
-      )
+        /Welcome to the admin dashboard\. Here you can manage the platform,/i,
+      ),
     ).toBeInTheDocument();
-  });
-
-  test("renders the main dashboard heading", () => {
-    render(<AdminDashboard />);
-
-    expect(
-      screen.getByRole("heading", { name: /Admin Dashboard/i })
-    ).toBeInTheDocument();
-  });
-
-  test("renders all feature list items", () => {
-    render(<AdminDashboard />);
-
-    const features = [
-      "User & Provider Management",
-      "Platform Analytics & Reports",
-      "System Configuration & Settings",
-      "Content Moderation Tools",
-      "Approval Workflows",
-    ];
-
-    features.forEach((feature) => {
-      expect(screen.getByText(feature)).toBeInTheDocument();
-    });
   });
 
   test("renders the LogoutComponent", () => {
     render(<AdminDashboard />);
 
     expect(screen.getByTestId("logout-component")).toBeInTheDocument();
+  });
+
+  test("renders WorkshopsRequested component", () => {
+    render(<AdminDashboard />);
+
+    expect(screen.getByTestId("workshops-requested")).toBeInTheDocument();
+  });
+
+  test("renders CoursesAdmin component", () => {
+    render(<AdminDashboard />);
+
+    expect(screen.getByTestId("courses-admin")).toBeInTheDocument();
   });
 });
