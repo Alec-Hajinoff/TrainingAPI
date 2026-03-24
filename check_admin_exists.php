@@ -32,9 +32,10 @@ $servername = 'localhost';
 $username = 'TrainingApiUser';
 $passwordServer = 'pCPzbVfGsdK25dY';
 $dbname = 'training_api';
+$port = 3306;
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $passwordServer);
+    $conn = new PDO("mysql:host=$servername;$port = 3306;dbname=$dbname", $username, $passwordServer);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
