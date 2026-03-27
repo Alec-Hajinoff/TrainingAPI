@@ -78,18 +78,6 @@ function CoursesAdmin() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="mt-4">
-        <h2>Available workshops</h2>
-        <div className="alert alert-danger">{error}</div>
-        <button className="btn btn-secondary" onClick={loadCourses}>
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="mt-5 text-start">
       <div className="d-flex justify-content-between align-items-center mb-4">
