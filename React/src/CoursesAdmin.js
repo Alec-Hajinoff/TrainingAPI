@@ -95,7 +95,7 @@ function CoursesAdmin() {
       </div>
 
       {courses.length === 0 ? (
-        <div className="alert alert-info mt-3">
+        <div className="alert alert-light border">
           No workshops are currently available in the directory.
         </div>
       ) : (
