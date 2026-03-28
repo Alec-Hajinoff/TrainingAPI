@@ -242,7 +242,7 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <div className="form-group mb-3">
         <label htmlFor="course_title" className="form-label">
           Workshop title *
@@ -254,7 +254,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="course_title"
           value={formData.course_title}
           onChange={handleChange}
-          required
           placeholder="e.g. Building and Deploying Machine Learning Models with Python"
         />
         {errors.course_title && (
@@ -273,7 +272,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          required
           placeholder="e.g. This hands-on workshop introduces participants to building and deploying machine learning models using Python. Through practical exercises, attendees will work with real datasets, develop models using libraries such as scikit-learn, and learn how to evaluate and deploy models into production environments…"
         />
         {errors.description && (
@@ -294,7 +292,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="learning_outcomes"
           value={formData.learning_outcomes}
           onChange={handleChange}
-          required
           placeholder="e.g. • Build and train machine learning models using Python • Work with real-world datasets and perform data preprocessing • Evaluate model performance using appropriate metrics • Deploy models into production environments • Apply best practices for scalable and maintainable ML workflows"
         />
         {errors.learning_outcomes && (
@@ -312,7 +309,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="subject_area"
           value={formData.subject_area}
           onChange={handleChange}
-          required
         >
           <option value="">Select Subject Area</option>
           {Object.keys(subjectOptions).map((area) => (
@@ -336,7 +332,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="subject"
           value={formData.subject}
           onChange={handleChange}
-          required
           disabled={!formData.subject_area}
         >
           <option value="">
@@ -367,7 +362,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="delivery_type"
           value={formData.delivery_type}
           onChange={handleChange}
-          required
         >
           <option value="">Select Delivery Type</option>
 
@@ -390,7 +384,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="country_of_delivery"
           value={formData.country_of_delivery}
           onChange={handleChange}
-          required
         >
           <option value="">Select Country</option>
           {countryOptions.map((country) => (
@@ -415,7 +408,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="duration"
           value={formData.duration}
           onChange={handleChange}
-          required
           min="0.1"
           max="999.9"
           step="0.1"
@@ -436,7 +428,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="total_price"
           value={formData.total_price}
           onChange={handleChange}
-          required
           min="0.01"
           max="99999999.99"
           step="0.01"
@@ -457,7 +448,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="provider_name"
           value={formData.provider_name}
           onChange={handleChange}
-          required
           maxLength="255"
         />
         {errors.provider_name && (
@@ -476,7 +466,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="contact_email"
           value={formData.contact_email}
           onChange={handleChange}
-          required
           maxLength="255"
         />
         {errors.contact_email && (
@@ -495,7 +484,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="contact_phone"
           value={formData.contact_phone}
           onChange={handleChange}
-          required
           maxLength="50"
         />
         {errors.contact_phone && (
@@ -516,7 +504,6 @@ const CourseSubmissionForm = forwardRef((props, ref) => {
           name="provider_website"
           value={formData.provider_website}
           onChange={handleChange}
-          required
           maxLength="1024"
         />
         {errors.provider_website && (
