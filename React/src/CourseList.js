@@ -141,7 +141,7 @@ function CourseList({ refreshTrigger }) {
       if (data.success) {
         setUpdateMessage({
           type: "success",
-          text: "Course updated successfully!",
+          text: "Workshop updated successfully!",
         });
 
         setCourses(
