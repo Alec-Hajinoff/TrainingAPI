@@ -5,6 +5,13 @@
   padding-left: 10px;
 }
 
+.workshops-requested-container p,
+.workshops-requested-container h5,
+.workshops-requested-container .badge,
+.workshops-requested-container div:not(.d-flex) {
+  font-size: 1rem !important;
+}
+
 .request-list .card {
   border: 1px solid #dee2e6;
   transition: transform 0.2s ease;
@@ -17,6 +24,7 @@
 
 .request-list .card-title {
   margin-bottom: 0.25rem;
+  font-weight: 600;
 }
 
 .italic {
@@ -24,7 +32,6 @@
 }
 
 .badge {
-  font-size: 0.75rem;
   padding: 0.5em 0.8em;
 }
 

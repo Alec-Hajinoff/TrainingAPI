@@ -58,7 +58,8 @@ function WorkshopsRequested() {
                     <h5 className="card-title text-primary">
                       <strong>Organisation:</strong> {request.organisation}
                     </h5>
-                    <p className="mb-0 small">
+
+                    <p className="mb-0">
                       <strong>Name:</strong> {request.name},{" "}
                       <strong>Email:</strong> {request.email}
                     </p>
@@ -79,7 +80,8 @@ function WorkshopsRequested() {
                     <p className="mb-1">
                       <strong>Requirement Description:</strong>
                     </p>
-                    <p className="text-dark border-start ps-3 py-1 bg-light small">
+
+                    <p className="text-dark border-start ps-3 py-1 bg-light">
                       {request.requirement_description}
                     </p>
                     {request.additional_details && (
@@ -87,7 +89,8 @@ function WorkshopsRequested() {
                         <p className="mb-1 mt-2">
                           <strong>Additional Details:</strong>
                         </p>
-                        <p className="text-muted small italic">
+
+                        <p className="text-muted italic">
                           {request.additional_details}
                         </p>
                       </>
@@ -105,7 +108,8 @@ function WorkshopsRequested() {
                       <strong>Preferred Timing:</strong>{" "}
                       {request.preferred_timing}
                     </p>
-                    <p className="mb-1 text-muted small">
+
+                    <p className="mb-1 text-muted">
                       <strong>Created At:</strong>{" "}
                       {new Date(request.created_at).toLocaleString()}
                     </p>
