@@ -64,14 +64,9 @@ function WorkshopsRequested() {
                       <strong>Email:</strong> {request.email}
                     </p>
                   </div>
-                  <span
-                    className={`badge ${
-                      request.status === "pending"
-                        ? "bg-warning text-dark"
-                        : "bg-success"
-                    }`}
-                  >
-                    <strong>Status:</strong> {request.status.toUpperCase()}
+
+                  <span>
+                    <strong>Status:</strong> {request.status}
                   </span>
                 </div>
 

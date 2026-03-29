@@ -7,7 +7,7 @@
 
 .workshops-requested-container p,
 .workshops-requested-container h5,
-.workshops-requested-container .badge,
+.workshops-requested-container span,
 .workshops-requested-container div:not(.d-flex) {
   font-size: 1rem !important;
 }
