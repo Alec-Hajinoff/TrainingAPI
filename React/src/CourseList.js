@@ -11,6 +11,7 @@ function CourseList({ refreshTrigger }) {
   const [updateMessage, setUpdateMessage] = useState({ type: "", text: "" });
   const [deleteMessage, setDeleteMessage] = useState({ type: "", text: "" });
 
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const countryOptions = ["Global"];
 
   const subjectOptions = {
@@ -106,12 +107,15 @@ function CourseList({ refreshTrigger }) {
     setEditFormData({ ...course });
     setUpdateMessage({ type: "", text: "" });
     setDeleteMessage({ type: "", text: "" });
+    setConfirmDeleteId(null);
   };
 
   const handleCancelEdit = () => {
+    // At line 111:
     setEditingCourseId(null);
     setEditFormData({});
     setUpdateMessage({ type: "", text: "" });
+    setConfirmDeleteId(null);
   };
 
   const handleEditChange = (e) => {
@@ -172,7 +176,12 @@ function CourseList({ refreshTrigger }) {
   };
 
   const handleDeleteCourse = async (courseId) => {
-    if (!window.confirm("Are you sure you want to delete this course?")) {
+    if (confirmDeleteId !== courseId) {
+      setConfirmDeleteId(courseId);
+
+      setTimeout(() => {
+        setConfirmDeleteId((prevId) => (prevId === courseId ? null : prevId));
+      }, 5000);
       return;
     }
 
@@ -198,6 +207,8 @@ function CourseList({ refreshTrigger }) {
         type: "error",
         text: "Failed to delete course. Please try again.",
       });
+    } finally {
+      setConfirmDeleteId(null);
     }
   };
 
@@ -496,7 +507,7 @@ function CourseList({ refreshTrigger }) {
                           {course.subject_area} &gt; {course.subject}
                         </h6>
                       </div>
-                      <div className="d-flex gap-2">
+                      <div className="d-flex gap-2 align-items-center">
                         <button
                           className="btn btn-sm btn-outline-primary"
                           onClick={() => handleEditClick(course)}
@@ -509,6 +520,12 @@ function CourseList({ refreshTrigger }) {
                         >
                           Delete
                         </button>
+
+                        {confirmDeleteId === course.id && (
+                          <span className="delete-confirm-text animate-fade-in">
+                            Sure?
+                          </span>
+                        )}
                       </div>
                     </div>
 
