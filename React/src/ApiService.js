@@ -259,3 +259,48 @@ export const workshopsRequested = async () => {
     throw new Error(`Failed to fetch workshop requests: ${error.message}`);
   }
 };
+
+// updateCourseAdmin() allows an administrator to make changes to any workshop.
+
+export const updateCourseAdmin = async (formData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/update_course_admin.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating course by admin:", error);
+    throw new Error("Failed to update course");
+  }
+};
+
+// deleteCourseAdmin() allows an administrator to delete any workshop.
+
+export const deleteCourseAdmin = async (courseId) => {
+  try {
+    const formData = new FormData();
+    formData.append("course_id", courseId);
+
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/delete_course_admin.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error deleting course by admin:", error);
+    throw new Error("Failed to delete course");
+  }
+};
