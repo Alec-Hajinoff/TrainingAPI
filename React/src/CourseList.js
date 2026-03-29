@@ -111,7 +111,6 @@ function CourseList({ refreshTrigger }) {
   };
 
   const handleCancelEdit = () => {
-    // At line 111:
     setEditingCourseId(null);
     setEditFormData({});
     setUpdateMessage({ type: "", text: "" });
