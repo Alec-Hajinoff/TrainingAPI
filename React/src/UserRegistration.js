@@ -12,6 +12,7 @@ function UserRegistration() {
     userType: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // NEW: State for success message
   const [loading, setLoading] = useState(false);
   const [adminExists, setAdminExists] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
@@ -30,6 +31,12 @@ function UserRegistration() {
   const clearErrorMessageAfterDelay = () => {
     setTimeout(() => {
       setErrorMessage("");
+    }, 5000);
+  };
+
+  const clearSuccessMessageAfterDelay = () => {
+    setTimeout(() => {
+      setSuccessMessage("");
     }, 5000);
   };
 
@@ -101,7 +108,12 @@ function UserRegistration() {
     try {
       const data = await registerUser(formData);
       if (data.success) {
-        navigate("/RegisteredPage");
+        setSuccessMessage(
+          "Check your email to sign in. We've sent you a link to confirm your email address.",
+        );
+        clearSuccessMessageAfterDelay();
+        setFormData({ name: "", email: "", password: "", userType: "" });
+        setErrorMessage("");
       } else {
         setErrorMessage(
           data.message || "Registration failed. Please try again.",
@@ -202,6 +214,12 @@ function UserRegistration() {
           placeholder="Choose a strong password"
         />
       </div>
+
+      {successMessage && (
+        <div id="success-message" className="error" aria-live="polite">
+          {successMessage}
+        </div>
+      )}
       <div id="error-message" className="error" aria-live="polite">
         {errorMessage}
       </div>
