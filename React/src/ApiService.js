@@ -304,3 +304,27 @@ export const deleteCourseAdmin = async (courseId) => {
     throw new Error("Failed to delete course");
   }
 };
+
+// verifyEmail() verifies a user's email using the token from the URL sent to the user by email.
+
+export const verifyEmail = async (token) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/verify_email.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token: token }),
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error verifying email:", error);
+    throw new Error("An error occurred during email verification.");
+  }
+};

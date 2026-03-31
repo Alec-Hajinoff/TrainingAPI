@@ -9,6 +9,7 @@ import ProviderDashboard from "./ProviderDashboard";
 import DeveloperDashboard from "./DeveloperDashboard";
 import AdminDashboard from "./AdminDashboard";
 import LogoutComponent from "./LogoutComponent";
+import VerifyEmail from "./VerifyEmail";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/DeveloperDashboard" element={<DeveloperDashboard />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/LogoutComponent" element={<LogoutComponent />} />
+          <Route path="/VerifyEmail" element={<VerifyEmail />} />
         </Routes>
         <Footer />
       </Router>

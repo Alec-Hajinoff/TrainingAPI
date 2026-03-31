@@ -1,0 +1,88 @@
+.verify-email-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 2rem;
+}
+
+.verify-email-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.spinner-container {
+  margin-bottom: 1.5rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid #e0e0e0;
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.verify-message {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background-color: #fff5f5;
+  border-radius: 6px;
+  border: 1px solid #ffcdcd;
+  display: block;
+}
+
+.verify-button {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.verify-button:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  color: #fff;
+}
+
+.verify-button:active {
+  background-color: #21618c;
+  border-color: #21618c;
+}
+
+@media (max-width: 768px) {
+  .verify-email-card {
+    padding: 1.5rem;
+  }
+
+  .verify-button {
+    padding: 0.625rem 0.875rem;
+  }
+}
