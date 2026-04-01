@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UserLogin.css";
-import { loginUser } from "./ApiService";
+import { loginUser, passwordResetLink } from "./ApiService";
 
 function UserLogin() {
   const navigate = useNavigate();
@@ -11,6 +11,15 @@ function UserLogin() {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [resetMessage, setResetMessage] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const clearResetMessageAfterDelay = () => {
+    setTimeout(() => {
+      setResetMessage("");
+    }, 5000);
+  };
 
   const clearErrorMessageAfterDelay = () => {
     setTimeout(() => {
@@ -24,6 +33,55 @@ function UserLogin() {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleForgotPassword = async () => {
+    const email = formData.email;
+
+    if (!email || !email.trim()) {
+      setErrorMessage("Please enter your email address first");
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      setErrorMessage(
+        "Please enter a valid email address (e.g., name@domain.com)",
+      );
+      clearErrorMessageAfterDelay();
+      return;
+    }
+
+    setResetLoading(true);
+    setResetMessage("");
+    setErrorMessage("");
+
+    try {
+      await passwordResetLink(email);
+
+      setResetMessage(
+        "If an account exists for that email, we've sent a password reset link.",
+      );
+      clearResetMessageAfterDelay();
+
+      setFormData({
+        ...formData,
+        password: "",
+      });
+    } catch (error) {
+      setResetMessage(
+        "If an account exists for that email, we've sent a password reset link.",
+      );
+      clearResetMessageAfterDelay();
+
+      setFormData({
+        ...formData,
+        password: "",
+      });
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -115,6 +173,12 @@ function UserLogin() {
       <div id="error-message-one" className="error" aria-live="polite">
         {errorMessage}
       </div>
+
+      {resetMessage && (
+        <div id="reset-message" className="reset-message" aria-live="polite">
+          {resetMessage}
+        </div>
+      )}
       <button
         type="submit"
         className="btn btn-secondary"
@@ -130,6 +194,26 @@ function UserLogin() {
           style={{ display: loading ? "inline-block" : "none" }}
         ></span>
       </button>
+
+      <div className="forgot-password-link-container">
+        <button
+          type="button"
+          className="forgot-password-link"
+          onClick={handleForgotPassword}
+          disabled={resetLoading}
+        >
+          Forgot your password?
+          {resetLoading && (
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+              id="spinnerReset"
+              style={{ marginLeft: "0.5rem" }}
+            ></span>
+          )}
+        </button>
+      </div>
       <div id="liveAlertPlaceholder"></div>
     </form>
   );

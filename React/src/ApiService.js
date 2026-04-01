@@ -44,6 +44,31 @@ export const loginUser = async (formData) => {
   }
 };
 
+// passwordResetLink() sends a user's email address to the backend to email the user a password reset link.
+
+export const passwordResetLink = async (email) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/password_reset_link.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email: email }),
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("passwordResetLink error:", error);
+
+    return { success: true };
+  }
+};
+
 // inputDataFunction() is the API call to send to the backend, data submitted by provider.
 
 export const inputDataFunction = async (formData) => {
