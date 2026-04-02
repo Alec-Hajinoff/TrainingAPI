@@ -245,18 +245,16 @@ describe("CourseList Component", () => {
     await waitFor(() => {
       expect(updateCourse).toHaveBeenCalled();
       expect(
-        screen.getByText("Course updated successfully!"),
+        screen.getByText("Workshop updated successfully!"),
       ).toBeInTheDocument();
     });
   });
 
-  test("shows confirmation dialog when deleting workshop", async () => {
+  test("shows 'Sure?' confirmation text when first clicking Delete", async () => {
     fetchUserCourses.mockResolvedValue({
       success: true,
       courses: [mockCourses[0]],
     });
-
-    const mockConfirm = jest.spyOn(window, "confirm").mockReturnValue(false);
 
     render(<CourseList refreshTrigger={false} />);
 
@@ -266,13 +264,10 @@ describe("CourseList Component", () => {
 
     fireEvent.click(screen.getByText("Delete"));
 
-    expect(mockConfirm).toHaveBeenCalledWith(
-      "Are you sure you want to delete this course?",
-    );
-    mockConfirm.mockRestore();
+    expect(screen.getByText("Sure?")).toBeInTheDocument();
   });
 
-  test("handles successful workshop deletion", async () => {
+  test("handles successful workshop deletion on second click", async () => {
     fetchUserCourses.mockResolvedValue({
       success: true,
       courses: [mockCourses[0]],
@@ -283,15 +278,18 @@ describe("CourseList Component", () => {
       message: "Course deleted successfully",
     });
 
-    jest.spyOn(window, "confirm").mockReturnValue(true);
-
     render(<CourseList refreshTrigger={false} />);
 
     await waitFor(() => {
       expect(screen.getByText("Introduction to AI")).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByText("Delete"));
+    const deleteButton = screen.getByText("Delete");
+
+    fireEvent.click(deleteButton);
+    expect(screen.getByText("Sure?")).toBeInTheDocument();
+
+    fireEvent.click(deleteButton);
 
     await waitFor(() => {
       expect(deleteCourse).toHaveBeenCalledWith(1);
