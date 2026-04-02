@@ -161,11 +161,27 @@ describe("UserRegistration Component", () => {
         ).toBeInTheDocument();
       });
     });
+
+    it("should show error when no user type is selected", async () => {
+      renderComponent();
+
+      await waitFor(() => {
+        fillValidCommonFields();
+        fireEvent.click(screen.getByRole("button", { name: /Register/i }));
+
+        expect(
+          screen.getByText(/Please select a user type/i),
+        ).toBeInTheDocument();
+      });
+    });
   });
 
   describe("Form submission", () => {
-    it("should submit form and navigate on success", async () => {
+    beforeEach(() => {
       checkAdminExists.mockResolvedValue({ success: true, adminExists: true });
+    });
+
+    it("should submit form and show success message on success", async () => {
       registerUser.mockResolvedValue({ success: true });
 
       renderComponent();
@@ -183,12 +199,39 @@ describe("UserRegistration Component", () => {
           password: "password123",
           userType: "provider",
         });
-        expect(mockNavigate).toHaveBeenCalledWith("/RegisteredPage");
+        expect(
+          screen.getByText(/Check your email to sign in/i),
+        ).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(/Full name/i).value).toBe("");
+        expect(screen.getByPlaceholderText(/Email address/i).value).toBe("");
+        expect(
+          screen.getByPlaceholderText(/Choose a strong password/i).value,
+        ).toBe("");
+      });
+    });
+
+    it("should show error message on registration failure", async () => {
+      registerUser.mockResolvedValue({
+        success: false,
+        message: "Registration failed. Please try again.",
+      });
+
+      renderComponent();
+
+      await waitFor(() => {
+        fireEvent.click(getRadioByLabel("Provider"));
+        fillValidCommonFields();
+        fireEvent.click(screen.getByRole("button", { name: /Register/i }));
+      });
+
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Registration failed. Please try again./i),
+        ).toBeInTheDocument();
       });
     });
 
     it("should display loading spinner in button during submission", async () => {
-      checkAdminExists.mockResolvedValue({ success: true, adminExists: true });
       registerUser.mockReturnValue(new Promise(() => {})); // Never resolves
 
       renderComponent();
