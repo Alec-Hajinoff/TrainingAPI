@@ -42,20 +42,21 @@ describe("Courses Component", () => {
     expect(screen.getByText("Loading catalog...")).toBeInTheDocument();
   });
 
-  test("renders error state when API fails", async () => {
+  test("renders empty state when API fails", async () => {
     coursesGet.mockRejectedValue(new Error("Network Error"));
 
     render(<Courses />);
 
     await waitFor(() => {
+      expect(screen.getByText("Available workshops (0)")).toBeInTheDocument();
       expect(
-        screen.getByText("Failed to load courses. Please try again."),
+        screen.getByText(/No workshops available at the moment/i),
       ).toBeInTheDocument();
     });
 
     expect(
-      screen.getByRole("button", { name: /Try Again/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("button", { name: /Download CSV/i }),
+    ).toBeDisabled();
   });
 
   test("renders empty state message when no courses are found", async () => {
@@ -97,11 +98,18 @@ describe("Courses Component", () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByText("Virtual")).toBeInTheDocument();
+    expect(screen.getByText("Global")).toBeInTheDocument();
     expect(screen.getByText("12.0 hours")).toBeInTheDocument();
     expect(screen.getByText("£500.00 (excl. VAT)")).toBeInTheDocument();
-
+    expect(
+      screen.getByText("Learn about modern data platforms."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Design scalable data architectures."),
+    ).toBeInTheDocument();
     expect(screen.getByText("Data Experts")).toBeInTheDocument();
     expect(screen.getByText("info@dataexperts.com")).toBeInTheDocument();
+    expect(screen.getByText("123456789")).toBeInTheDocument();
 
     const websiteLink = screen.getByText("dataexperts.com");
     expect(websiteLink.closest("a")).toHaveAttribute(
