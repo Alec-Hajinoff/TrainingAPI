@@ -353,3 +353,60 @@ export const verifyEmail = async (token) => {
     throw new Error("An error occurred during email verification.");
   }
 };
+
+// passwordResetToken() verifies if a password reset token is valid and not expired.
+
+export const passwordResetToken = async (token) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/password_reset_token.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token: token }),
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("passwordResetToken error:", error);
+    return {
+      valid: false,
+      message: "An error occurred while verifying the token.",
+    };
+  }
+};
+
+// updatePassword() updates the user's password and clears the reset token.
+
+export const updatePassword = async (token, newPassword) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/update_password.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          token: token,
+          password: newPassword,
+        }),
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("updatePassword error:", error);
+    return {
+      success: false,
+      message: "An error occurred while updating the password.",
+    };
+  }
+};
