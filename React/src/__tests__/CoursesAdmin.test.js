@@ -1,10 +1,16 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import CoursesAdmin from "../CoursesAdmin";
-import { coursesGetAdmin } from "../ApiService";
+import {
+  coursesGetAdmin,
+  updateCourseAdmin,
+  deleteCourseAdmin,
+} from "../ApiService";
 
 jest.mock("../ApiService", () => ({
   coursesGetAdmin: jest.fn(),
+  updateCourseAdmin: jest.fn(),
+  deleteCourseAdmin: jest.fn(),
 }));
 
 describe("CoursesAdmin Component", () => {
@@ -42,20 +48,23 @@ describe("CoursesAdmin Component", () => {
     expect(screen.getByText("Loading catalog...")).toBeInTheDocument();
   });
 
-  test("renders error state when API fails", async () => {
+  test("renders empty state when API fails", async () => {
     coursesGetAdmin.mockRejectedValue(new Error("API failure"));
 
     render(<CoursesAdmin />);
 
     await waitFor(() => {
+      expect(screen.getByText("Available workshops (0)")).toBeInTheDocument();
       expect(
-        screen.getByText("Failed to load courses. Please try again."),
+        screen.getByText(
+          "No workshops are currently available in the directory.",
+        ),
       ).toBeInTheDocument();
     });
 
     expect(
-      screen.getByRole("button", { name: /Try Again/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("button", { name: /Download CSV/i }),
+    ).toBeDisabled();
   });
 
   test("renders empty state message when directory is empty", async () => {
@@ -99,17 +108,189 @@ describe("CoursesAdmin Component", () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByText("Virtual")).toBeInTheDocument();
+    expect(screen.getByText("Global")).toBeInTheDocument();
     expect(screen.getByText("20.0 hours")).toBeInTheDocument();
     expect(screen.getByText("£1500.00 (excl. VAT)")).toBeInTheDocument();
-
+    expect(
+      screen.getByText("Deep dive into ML algorithms."),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Build and deploy ML models.")).toBeInTheDocument();
     expect(screen.getByText("AI Academy")).toBeInTheDocument();
     expect(screen.getByText("admin@aiacademy.com")).toBeInTheDocument();
+    expect(screen.getByText("123456789")).toBeInTheDocument();
 
     const websiteLink = screen.getByText("aiacademy.com");
     expect(websiteLink.closest("a")).toHaveAttribute(
       "href",
       "https://aiacademy.com",
     );
+  });
+
+  test("enters edit mode when Edit button is clicked", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Edit/i }));
+
+    expect(screen.getByText("Course Title *")).toBeInTheDocument();
+    expect(screen.getByText("Save Changes")).toBeInTheDocument();
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
+  });
+
+  test("cancels edit mode when Cancel button is clicked", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Edit/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Cancel/i }));
+
+    expect(screen.queryByText("Course Title *")).not.toBeInTheDocument();
+    expect(screen.getByText("Advanced Machine Learning")).toBeInTheDocument();
+  });
+
+  test("updates course successfully", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    updateCourseAdmin.mockResolvedValue({
+      success: true,
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Edit/i }));
+
+    const titleTextarea = screen.getByDisplayValue("Advanced Machine Learning");
+    fireEvent.change(titleTextarea, {
+      target: { value: "Updated Machine Learning" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Save Changes/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Workshop updated successfully!"),
+      ).toBeInTheDocument();
+    });
+
+    expect(updateCourseAdmin).toHaveBeenCalled();
+  });
+
+  test("shows error on update failure", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    updateCourseAdmin.mockResolvedValue({
+      success: false,
+      message: "Update failed",
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Edit/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Save Changes/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Update failed")).toBeInTheDocument();
+    });
+  });
+
+  test("shows delete confirmation on first delete click", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Delete/i }));
+
+    expect(screen.getByText("Sure?")).toBeInTheDocument();
+  });
+
+  test("deletes course on confirmation", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    deleteCourseAdmin.mockResolvedValue({
+      success: true,
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Delete/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Delete/i }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Course deleted successfully!"),
+      ).toBeInTheDocument();
+    });
+
+    expect(deleteCourseAdmin).toHaveBeenCalledWith(1);
+  });
+
+  test("shows error on delete failure", async () => {
+    coursesGetAdmin.mockResolvedValue({
+      success: true,
+      courses: mockCourses,
+    });
+
+    deleteCourseAdmin.mockResolvedValue({
+      success: false,
+      message: "Delete failed",
+    });
+
+    render(<CoursesAdmin />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Available workshops (1)")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /Delete/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Delete/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Delete failed")).toBeInTheDocument();
+    });
   });
 
   test("triggers CSV download flow when clicked", async () => {
