@@ -12,6 +12,8 @@ jest.mock("../DeveloperDashboard", () => () => (
 ));
 jest.mock("../AdminDashboard", () => () => <div>AdminDashboardMock</div>);
 jest.mock("../LogoutComponent", () => () => <div>LogoutComponentMock</div>);
+jest.mock("../VerifyEmail", () => () => <div>VerifyEmailMock</div>);
+jest.mock("../PasswordReset", () => () => <div>PasswordResetMock</div>);
 
 jest.mock("react-router-dom", () => {
   const original = jest.requireActual("react-router-dom");
@@ -74,5 +76,15 @@ describe("App routing", () => {
   test("renders LogoutComponent on '/LogoutComponent' route", () => {
     renderAt("/LogoutComponent");
     expect(screen.getByText("LogoutComponentMock")).toBeInTheDocument();
+  });
+
+  test("renders VerifyEmail on '/VerifyEmail' route", () => {
+    renderAt("/VerifyEmail");
+    expect(screen.getByText("VerifyEmailMock")).toBeInTheDocument();
+  });
+
+  test("renders PasswordReset on '/PasswordReset' route", () => {
+    renderAt("/PasswordReset");
+    expect(screen.getByText("PasswordResetMock")).toBeInTheDocument();
   });
 });

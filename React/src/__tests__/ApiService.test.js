@@ -1,6 +1,7 @@
 import {
   registerUser,
   loginUser,
+  passwordResetLink,
   inputDataFunction,
   logoutUser,
   fetchUserCourses,
@@ -11,6 +12,11 @@ import {
   coursesGetAdmin,
   workshopRequests,
   workshopsRequested,
+  updateCourseAdmin,
+  deleteCourseAdmin,
+  verifyEmail,
+  passwordResetToken,
+  updatePassword,
 } from "../ApiService";
 
 describe("TrainingApiService helpers", () => {
@@ -84,6 +90,35 @@ describe("TrainingApiService helpers", () => {
   test("loginUser throws generic error on failure", async () => {
     global.fetch.mockRejectedValue(new Error("Server offline"));
     await expect(loginUser({})).rejects.toThrow("An error occurred.");
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("passwordResetLink posts email and returns success data", async () => {
+    const email = "test@example.com";
+    const mockBody = { success: true };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await passwordResetLink(email);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/password_reset_link.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email }),
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("passwordResetLink returns success true on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Server fail"));
+    const result = await passwordResetLink("test@example.com");
+    expect(result).toEqual({ success: true });
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
@@ -313,5 +348,153 @@ describe("TrainingApiService helpers", () => {
       },
     );
     expect(result).toEqual(mockBody);
+  });
+
+  test("updateCourseAdmin posts FormData and returns parsed JSON", async () => {
+    const formData = new FormData();
+    formData.append("title", "Updated Admin Course");
+    const mockBody = { success: true };
+
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await updateCourseAdmin(formData);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/update_course_admin.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("updateCourseAdmin throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Update failed"));
+    await expect(updateCourseAdmin(new FormData())).rejects.toThrow(
+      "Failed to update course",
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("deleteCourseAdmin posts courseId and returns parsed JSON", async () => {
+    const mockBody = { deleted: true };
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await deleteCourseAdmin("123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/delete_course_admin.php",
+      expect.objectContaining({
+        method: "POST",
+        credentials: "include",
+        body: expect.any(FormData),
+      }),
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("deleteCourseAdmin throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Delete failed"));
+    await expect(deleteCourseAdmin("123")).rejects.toThrow(
+      "Failed to delete course",
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("verifyEmail posts token and returns parsed JSON", async () => {
+    const mockBody = { success: true };
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await verifyEmail("token123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/verify_email.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ token: "token123" }),
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("verifyEmail throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Verification failed"));
+    await expect(verifyEmail("token123")).rejects.toThrow(
+      "An error occurred during email verification.",
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("passwordResetToken posts token and returns parsed JSON", async () => {
+    const mockBody = { valid: true };
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await passwordResetToken("token123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/password_reset_token.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ token: "token123" }),
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("passwordResetToken returns failure message on rejection", async () => {
+    global.fetch.mockRejectedValue(new Error("Network fail"));
+    const result = await passwordResetToken("token123");
+    expect(result).toEqual({
+      valid: false,
+      message: "An error occurred while verifying the token.",
+    });
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("updatePassword posts token and password and returns parsed JSON", async () => {
+    const mockBody = { success: true };
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await updatePassword("token123", "newPassword123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/update_password.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          token: "token123",
+          password: "newPassword123",
+        }),
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("updatePassword returns failure message on rejection", async () => {
+    global.fetch.mockRejectedValue(new Error("Update fail"));
+    const result = await updatePassword("token123", "newPass");
+    expect(result).toEqual({
+      success: false,
+      message: "An error occurred while updating the password.",
+    });
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
