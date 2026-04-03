@@ -3,7 +3,7 @@
 export const registerUser = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/form_capture.php",
+      "https://trainingapi.com/TrainingAPI/form_capture.php",
       {
         method: "POST",
         headers: {
@@ -25,7 +25,7 @@ export const registerUser = async (formData) => {
 export const loginUser = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/login_capture.php",
+      "https://trainingapi.com/TrainingAPI/login_capture.php",
       {
         method: "POST",
         headers: {
@@ -49,7 +49,7 @@ export const loginUser = async (formData) => {
 export const passwordResetLink = async (email) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/password_reset_link.php",
+      "https://trainingapi.com/TrainingAPI/password_reset_link.php",
       {
         method: "POST",
         headers: {
@@ -74,7 +74,7 @@ export const passwordResetLink = async (email) => {
 export const inputDataFunction = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/course_input.php",
+      "https://trainingapi.com/TrainingAPI/course_input.php",
       {
         method: "POST",
         body: formData,
@@ -93,7 +93,7 @@ export const inputDataFunction = async (formData) => {
 export const logoutUser = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/logout_component.php",
+      "https://trainingapi.com/TrainingAPI/logout_component.php",
       {
         method: "POST",
         credentials: "include",
@@ -114,7 +114,7 @@ export const logoutUser = async () => {
 export const fetchUserCourses = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/fetch_courses.php",
+      "https://trainingapi.com/TrainingAPI/fetch_courses.php",
       {
         method: "GET",
         credentials: "include",
@@ -134,7 +134,7 @@ export const fetchUserCourses = async () => {
 export const updateCourse = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/update_course.php",
+      "https://trainingapi.com/TrainingAPI/update_course.php",
       {
         method: "POST",
         body: formData,
@@ -158,7 +158,7 @@ export const deleteCourse = async (courseId) => {
     formData.append("course_id", courseId);
 
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/delete_course.php",
+      "https://trainingapi.com/TrainingAPI/delete_course.php",
       {
         method: "POST",
         body: formData,
@@ -179,7 +179,7 @@ export const deleteCourse = async (courseId) => {
 export const checkAdminExists = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/check_admin_exists.php",
+      "https://trainingapi.com/TrainingAPI/check_admin_exists.php",
       {
         method: "GET",
         headers: {
@@ -202,7 +202,7 @@ export const checkAdminExists = async () => {
 export const coursesGet = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/courses.php",
+      "https://trainingapi.com/TrainingAPI/courses.php",
       {
         method: "GET",
         headers: {
@@ -224,7 +224,7 @@ export const coursesGet = async () => {
 export const coursesGetAdmin = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/courses_admin.php",
+      "https://trainingapi.com/TrainingAPI/courses_admin.php",
       {
         method: "GET",
         headers: {
@@ -246,7 +246,7 @@ export const coursesGetAdmin = async () => {
 export const workshopRequests = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/workshop_requests.php",
+      "https://trainingapi.com/TrainingAPI/workshop_requests.php",
       {
         method: "POST",
         body: formData,
@@ -267,7 +267,7 @@ export const workshopRequests = async (formData) => {
 export const workshopsRequested = async () => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/workshops_requested.php",
+      "https://trainingapi.com/TrainingAPI/workshops_requested.php",
       {
         method: "GET",
         credentials: "include",
@@ -290,7 +290,7 @@ export const workshopsRequested = async () => {
 export const updateCourseAdmin = async (formData) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/update_course_admin.php",
+      "https://trainingapi.com/TrainingAPI/update_course_admin.php",
       {
         method: "POST",
         body: formData,
@@ -314,7 +314,7 @@ export const deleteCourseAdmin = async (courseId) => {
     formData.append("course_id", courseId);
 
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/delete_course_admin.php",
+      "https://trainingapi.com/TrainingAPI/delete_course_admin.php",
       {
         method: "POST",
         body: formData,
@@ -335,7 +335,7 @@ export const deleteCourseAdmin = async (courseId) => {
 export const verifyEmail = async (token) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/verify_email.php",
+      "https://trainingapi.com/TrainingAPI/verify_email.php",
       {
         method: "POST",
         headers: {
@@ -359,7 +359,7 @@ export const verifyEmail = async (token) => {
 export const passwordResetToken = async (token) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/password_reset_token.php",
+      "https://trainingapi.com/TrainingAPI/password_reset_token.php",
       {
         method: "POST",
         headers: {
@@ -386,7 +386,7 @@ export const passwordResetToken = async (token) => {
 export const updatePassword = async (token, newPassword) => {
   try {
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/update_password.php",
+      "https://trainingapi.com/TrainingAPI/update_password.php",
       {
         method: "POST",
         headers: {
