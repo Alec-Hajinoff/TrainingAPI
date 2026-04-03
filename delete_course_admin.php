@@ -32,7 +32,7 @@ try {
     die(json_encode(['success' => false, 'message' => 'Connection failed']));
 }
 
-$userId = $_SESSION['id'] ?? null;  // Modelled on delete_course.php
+$userId = $_SESSION['id'] ?? null;  
 $courseId = $_POST['course_id'] ?? null;
 
 if (!$userId) {
