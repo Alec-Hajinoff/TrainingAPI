@@ -26,13 +26,16 @@ if (empty($mailUsername) || empty($mailPassword)) {
 }
 
 $allowed_origins = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://trainingapi.com',
+    'https://www.trainingapi.com'
 ];
 
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? null;
 
-if (in_array($origin, $allowed_origins)) {
+if ($origin !== null && in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: $origin");
+} elseif ($origin === null) {
 } else {
     header('HTTP/1.1 403 Forbidden');
     exit;
@@ -47,13 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-$servername = '127.0.0.1';
-$username = 'root';
-$passwordServer = '';
+$servername = 'localhost';
+$username = 'TrainingApiUser';
+$passwordServer = 'pCPzbVfGsdK25dY';
 $dbname = 'training_api';
+$port = 3306;
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $passwordServer);
+    $conn = new PDO("mysql:host=$servername;port=$port;dbname=$dbname", $username, $passwordServer);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
@@ -134,7 +138,7 @@ try {
             error_log("password_reset_link.php: Failed to store token in $userTable for user ID: $userId");
         }
 
-        $resetLink = 'http://localhost:3000/PasswordReset?token=' . urlencode($resetToken);
+        $resetLink = 'https://trainingapi.com/PasswordReset?token=' . urlencode($resetToken);
 
         $mail = new PHPMailer(true);
 
@@ -142,16 +146,14 @@ try {
             error_log("password_reset_link.php: Attempting to send password reset email to: $email");
 
             $mail->SMTPDebug = SMTP::DEBUG_OFF;
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = $mailUsername;
-            $mail->Password = $mailPassword;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
-            $mail->Timeout = 30;
 
-            $mail->setFrom($mailUsername, 'TrainingApi');
+            $mail->isSMTP();
+            $mail->Host = 'localhost';
+            $mail->Port = 25;
+            $mail->SMTPAuth = false;
+            $mail->SMTPSecure = false;
+
+            $mail->setFrom('team@trainingapi.com', 'TrainingApi');
             $mail->addAddress($email, $userName);
 
             $mail->isHTML(false);
