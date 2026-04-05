@@ -209,3 +209,9 @@ a:hover {
 .d-flex.gap-2 {
   display: flex !important;
 }
+
+.preserve-format {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
+}
