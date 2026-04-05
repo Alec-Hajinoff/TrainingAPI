@@ -184,3 +184,9 @@ a:hover {
     font-size: 0.875rem;
   }
 }
+
+.preserve-format {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: inherit;
+}
