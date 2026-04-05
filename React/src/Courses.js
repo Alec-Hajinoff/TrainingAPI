@@ -131,7 +131,9 @@ function Courses() {
                     <p className="mb-1">
                       <strong>Description:</strong>
                     </p>
-                    <p className="text-muted small">{course.description}</p>
+                    <p className="text-muted small preserve-format">
+                      {course.description}
+                    </p>
                   </div>
                 </div>
 
@@ -139,11 +141,12 @@ function Courses() {
                   <p className="mb-1">
                     <strong>Learning Outcomes:</strong>
                   </p>
-                  <p className="text-muted small">{course.learning_outcomes}</p>
+                  <p className="text-muted small preserve-format">
+                    {course.learning_outcomes}
+                  </p>
                 </div>
 
                 <div className="mt-3 pt-3 border-top">
-                  <h6 className="mb-2">Provider Information</h6>
                   <div className="row">
                     <div className="col-md-6">
                       <p className="mb-1">
