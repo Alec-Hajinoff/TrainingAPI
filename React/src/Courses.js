@@ -153,7 +153,14 @@ function Courses() {
                         <strong>Provider:</strong> {course.provider_name}
                       </p>
                       <p className="mb-1">
-                        <strong>Email:</strong> {course.contact_email}
+                        <strong>Email:</strong>{" "}
+                        {course.contact_email ? (
+                          <a href={`mailto:${course.contact_email}`}>
+                            {course.contact_email}
+                          </a>
+                        ) : (
+                          "—"
+                        )}
                       </p>
                     </div>
                     <div className="col-md-6">
