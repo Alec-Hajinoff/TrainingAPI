@@ -419,7 +419,7 @@ export const deleteWorkshopRequested = async (requestId) => {
     formData.append("request_id", requestId);
 
     const response = await fetch(
-      "http://localhost:8001/TrainingAPI/delete_workshop_requested.php",
+      "https://trainingapi.com/TrainingAPI/delete_workshop_requested.php",
       {
         method: "POST",
         body: formData,
