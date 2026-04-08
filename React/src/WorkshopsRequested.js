@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { workshopsRequested } from "./ApiService";
+import { workshopsRequested, deleteWorkshopRequested } from "./ApiService";
 import "./WorkshopsRequested.css";
 
 function WorkshopsRequested() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [deleteMessage, setDeleteMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     loadRequests();
@@ -14,6 +16,7 @@ function WorkshopsRequested() {
   const loadRequests = async () => {
     setLoading(true);
     setError("");
+    setDeleteMessage({ type: "", text: "" });
     try {
       const data = await workshopsRequested();
       if (data.success) {
@@ -25,6 +28,44 @@ function WorkshopsRequested() {
       setError("Failed to load workshop requests. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteRequest = async (requestId) => {
+    if (confirmDeleteId !== requestId) {
+      setConfirmDeleteId(requestId);
+      // Auto-reset confirmation after 5 seconds
+      setTimeout(() => {
+        setConfirmDeleteId((prevId) => (prevId === requestId ? null : prevId));
+      }, 5000);
+      return;
+    }
+
+    setDeleteMessage({ type: "", text: "" });
+
+    try {
+      const data = await deleteWorkshopRequested(requestId);
+      if (data.success) {
+        // Remove from local state
+        setRequests(requests.filter((req) => req.id !== requestId));
+        setDeleteMessage({
+          type: "success",
+          text: "Workshop request deleted successfully!",
+        });
+        setTimeout(() => setDeleteMessage({ type: "", text: "" }), 3000);
+      } else {
+        setDeleteMessage({
+          type: "error",
+          text: data.message || "Failed to delete request",
+        });
+      }
+    } catch (err) {
+      setDeleteMessage({
+        type: "error",
+        text: "Failed to delete request. Please try again.",
+      });
+    } finally {
+      setConfirmDeleteId(null);
     }
   };
 
@@ -58,16 +99,27 @@ function WorkshopsRequested() {
                     <h5 className="card-title text-primary">
                       <strong>Organisation:</strong> {request.organisation}
                     </h5>
-
                     <p className="mb-0">
                       <strong>Name:</strong> {request.name},{" "}
                       <strong>Email:</strong> {request.email}
                     </p>
                   </div>
-
-                  <span>
-                    <strong>Status:</strong> {request.status}
-                  </span>
+                  <div className="d-flex gap-2 align-items-center">
+                    <span>
+                      <strong>Status:</strong> {request.status}
+                    </span>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDeleteRequest(request.id)}
+                    >
+                      Delete
+                    </button>
+                    {confirmDeleteId === request.id && (
+                      <span className="delete-confirm-text animate-fade-in">
+                        Sure?
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="row">
@@ -75,7 +127,6 @@ function WorkshopsRequested() {
                     <p className="mb-1">
                       <strong>Requirement Description:</strong>
                     </p>
-
                     <p className="text-dark border-start ps-3 py-1 bg-light">
                       {request.requirement_description}
                     </p>
@@ -84,7 +135,6 @@ function WorkshopsRequested() {
                         <p className="mb-1 mt-2">
                           <strong>Additional Details:</strong>
                         </p>
-
                         <p className="text-muted italic">
                           {request.additional_details}
                         </p>
@@ -103,7 +153,6 @@ function WorkshopsRequested() {
                       <strong>Preferred Timing:</strong>{" "}
                       {request.preferred_timing}
                     </p>
-
                     <p className="mb-1 text-muted">
                       <strong>Created At:</strong>{" "}
                       {new Date(request.created_at).toLocaleString()}
@@ -113,6 +162,16 @@ function WorkshopsRequested() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {deleteMessage.text && (
+        <div
+          className={`alert ${
+            deleteMessage.type === "success" ? "alert-success" : "alert-danger"
+          } mt-3`}
+        >
+          {deleteMessage.text}
         </div>
       )}
     </div>
