@@ -132,9 +132,9 @@ function DeveloperDashboard() {
               <div className="card-body">
                 <pre className="mb-0">
                   <code>{`{
-                  "success": false,
-                  "message": "No workshops available at the moment. You can request a custom programme."
-                  }`}</code>
+  "success": false,
+  "message": "No workshops available at the moment. You can request a custom programme."
+}`}</code>
                 </pre>
               </div>
             </div>
