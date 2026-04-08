@@ -69,7 +69,7 @@ try {
 
         $course['contact_email'] = 'team@trainingapi.com';
 
-        $course['contact_phone'] = '07549 385 178';
+        $course['contact_phone'] = '+44 7549 385178';
 
         $course['provider_website'] = 'https://trainingapi.com/';
 
