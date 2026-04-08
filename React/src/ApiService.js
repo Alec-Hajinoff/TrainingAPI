@@ -410,3 +410,27 @@ export const updatePassword = async (token, newPassword) => {
     };
   }
 };
+
+// deleteWorkshopRequested() allows an administrator to delete a workshop request.
+
+export const deleteWorkshopRequested = async (requestId) => {
+  try {
+    const formData = new FormData();
+    formData.append("request_id", requestId);
+
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/delete_workshop_requested.php",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error deleting workshop request:", error);
+    throw new Error("Failed to delete workshop request");
+  }
+};
