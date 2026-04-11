@@ -12,6 +12,7 @@ import {
   coursesGetAdmin,
   workshopRequests,
   workshopsRequested,
+  deleteWorkshopRequested,
   updateCourseAdmin,
   deleteCourseAdmin,
   verifyEmail,
@@ -348,6 +349,38 @@ describe("TrainingApiService helpers", () => {
       },
     );
     expect(result).toEqual(mockBody);
+  });
+
+  test("deleteWorkshopRequested posts requestId and returns parsed JSON", async () => {
+    const mockBody = { success: true };
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await deleteWorkshopRequested("123");
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/delete_workshop_requested.php",
+      expect.objectContaining({
+        method: "POST",
+        credentials: "include",
+        body: expect.any(FormData),
+      }),
+    );
+
+    // Verify FormData contents
+    const formData = global.fetch.mock.calls[0][1].body;
+    expect(formData.get("request_id")).toBe("123");
+
+    expect(result).toEqual(mockBody);
+  });
+
+  test("deleteWorkshopRequested throws on failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Network error"));
+    await expect(deleteWorkshopRequested("123")).rejects.toThrow(
+      "Failed to delete workshop request",
+    );
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   test("updateCourseAdmin posts FormData and returns parsed JSON", async () => {

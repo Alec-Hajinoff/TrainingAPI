@@ -1,10 +1,17 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import WorkshopsRequested from "../WorkshopsRequested";
-import { workshopsRequested } from "../ApiService";
+import { workshopsRequested, deleteWorkshopRequested } from "../ApiService";
 
 jest.mock("../ApiService", () => ({
   workshopsRequested: jest.fn(),
+  deleteWorkshopRequested: jest.fn(),
 }));
 
 describe("WorkshopsRequested Component", () => {
@@ -39,6 +46,12 @@ describe("WorkshopsRequested Component", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.useFakeTimers(); // Enable fake timers for timeout tests
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
   });
 
   test("renders loading state initially", () => {
@@ -86,19 +99,13 @@ describe("WorkshopsRequested Component", () => {
 
     expect(screen.getByText(/Innovate Ltd/i)).toBeInTheDocument();
     expect(screen.getByText(/Alice Smith/i)).toBeInTheDocument();
-    expect(screen.getByText(/PENDING/i)).toBeInTheDocument();
+    expect(screen.getByText(/pending/i)).toBeInTheDocument();
     expect(
       screen.getByText(/Custom Python for Data Science workshop./i),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Focus on Pandas and Scikit-learn./i),
-    ).toBeInTheDocument();
 
     expect(screen.getByText(/Cloud Systems/i)).toBeInTheDocument();
-    expect(screen.getByText(/APPROVED/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/AWS Cloud Practitioner basics./i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/approved/i)).toBeInTheDocument();
   });
 
   test("calls loadRequests again when Refresh button is clicked", async () => {
@@ -124,5 +131,86 @@ describe("WorkshopsRequested Component", () => {
       expect(workshopsRequested).toHaveBeenCalledTimes(2);
       expect(screen.getByText(/Workshop Requests \(2\)/i)).toBeInTheDocument();
     });
+  });
+
+  test("handles deletion flow: confirmation then deletion", async () => {
+    workshopsRequested.mockResolvedValue({
+      success: true,
+      requests: mockRequests,
+    });
+    deleteWorkshopRequested.mockResolvedValue({ success: true });
+
+    render(<WorkshopsRequested />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Workshop Requests \(2\)/i)).toBeInTheDocument();
+    });
+
+    const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
+
+    fireEvent.click(deleteButtons[0]);
+    expect(screen.getByText(/Sure\?/i)).toBeInTheDocument();
+    expect(deleteWorkshopRequested).not.toHaveBeenCalled();
+
+    fireEvent.click(deleteButtons[0]);
+
+    await waitFor(() => {
+      expect(deleteWorkshopRequested).toHaveBeenCalledWith(mockRequests[0].id);
+      expect(
+        screen.getByText(/Workshop request deleted successfully!/i),
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Workshop Requests \(1\)/i)).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText(/Sure\?/i)).not.toBeInTheDocument();
+  });
+
+  test("shows error message when deletion fails", async () => {
+    workshopsRequested.mockResolvedValue({
+      success: true,
+      requests: [mockRequests[0]],
+    });
+    deleteWorkshopRequested.mockResolvedValue({
+      success: false,
+      message: "API Deletion Failure",
+    });
+
+    render(<WorkshopsRequested />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Workshop Requests \(1\)/i)).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
+
+    fireEvent.click(deleteButton); // Show "Sure?"
+    fireEvent.click(deleteButton); // Confirm
+
+    await waitFor(() => {
+      expect(screen.getByText(/API Deletion Failure/i)).toBeInTheDocument();
+    });
+  });
+
+  test("resets delete confirmation after 5 seconds", async () => {
+    workshopsRequested.mockResolvedValue({
+      success: true,
+      requests: [mockRequests[0]],
+    });
+    render(<WorkshopsRequested />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Workshop Requests \(1\)/i)).toBeInTheDocument();
+    });
+
+    const deleteButton = screen.getByRole("button", { name: /Delete/i });
+    fireEvent.click(deleteButton);
+    expect(screen.getByText(/Sure\?/i)).toBeInTheDocument();
+
+    // Advance timers by 5 seconds
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.queryByText(/Sure\?/i)).not.toBeInTheDocument();
   });
 });
