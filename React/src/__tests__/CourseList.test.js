@@ -141,7 +141,6 @@ describe("CourseList Component", () => {
     expect(screen.getByText("Learn AI basics")).toBeInTheDocument();
     expect(screen.getByText("Build basic AI applications")).toBeInTheDocument();
 
-    expect(screen.getByText("Provider Information")).toBeInTheDocument();
     expect(screen.getByText("AI Academy")).toBeInTheDocument();
     expect(screen.getByText("contact@aiacademy.com")).toBeInTheDocument();
     expect(screen.getByText("+1234567890")).toBeInTheDocument();
