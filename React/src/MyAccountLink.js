@@ -51,19 +51,6 @@ function MyAccountLink() {
     }
   };
 
-  const formatUserType = (type) => {
-    switch (type) {
-      case "provider":
-        return "Training Provider";
-      case "developer":
-        return "Developer";
-      case "admin":
-        return "Administrator";
-      default:
-        return type;
-    }
-  };
-
   if (loading) {
     return (
       <div className="my-account-loading">
@@ -89,11 +76,11 @@ function MyAccountLink() {
   }
 
   return (
-    <div className="my-account-container">
+    <div className="row g-2">
       <button
-        className="btn-my-account"
+        type="button"
+        className="btn btn-secondary"
         onClick={handleMyAccountClick}
-        aria-label="Go to your dashboard"
       >
         My Account →
       </button>
