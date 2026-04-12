@@ -434,3 +434,30 @@ export const deleteWorkshopRequested = async (requestId) => {
     throw new Error("Failed to delete workshop request");
   }
 };
+
+// myAccountLink() checks if a user has an active session on the backend and if so displays the 'My account' button.
+
+export const myAccountLink = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8001/TrainingAPI/my_account_link.php",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!response.ok && response.status === 401) {
+      return { logged_in: false };
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("myAccountLink error:", error);
+    return { logged_in: false };
+  }
+};
