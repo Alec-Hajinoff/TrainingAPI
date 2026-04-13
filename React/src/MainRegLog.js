@@ -8,6 +8,7 @@ import Courses from "./Courses.js";
 import WorkshopRequests from "./WorkshopRequests.js";
 import MyAccountLink from "./MyAccountLink.js";
 import { myAccountLink } from "./ApiService";
+import ForProvidersButton from "./ForProvidersButton";
 
 function MainRegLog() {
   const location = useLocation();
@@ -72,6 +73,7 @@ function MainRegLog() {
               <UserRegistration />
               <p className="footer">Existing user? Please login:</p>
               <UserLogin />
+              <ForProvidersButton />
             </>
           )}
         </div>

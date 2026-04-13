@@ -10,7 +10,8 @@ import DeveloperDashboard from "./DeveloperDashboard";
 import AdminDashboard from "./AdminDashboard";
 import LogoutComponent from "./LogoutComponent";
 import VerifyEmail from "./VerifyEmail";
-import PasswordReset from "./PasswordReset"; // ADDED: Import PasswordReset component
+import PasswordReset from "./PasswordReset";
+import ForProviders from "./ForProviders";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/LogoutComponent" element={<LogoutComponent />} />
           <Route path="/VerifyEmail" element={<VerifyEmail />} />
           <Route path="/PasswordReset" element={<PasswordReset />} />
+          <Route path="/ForProviders" element={<ForProviders />} />
         </Routes>
         <Footer />
       </Router>
