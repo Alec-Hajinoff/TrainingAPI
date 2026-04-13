@@ -14,6 +14,7 @@ jest.mock("../AdminDashboard", () => () => <div>AdminDashboardMock</div>);
 jest.mock("../LogoutComponent", () => () => <div>LogoutComponentMock</div>);
 jest.mock("../VerifyEmail", () => () => <div>VerifyEmailMock</div>);
 jest.mock("../PasswordReset", () => () => <div>PasswordResetMock</div>);
+jest.mock("../ForProviders", () => () => <div>ForProvidersMock</div>);
 
 jest.mock("react-router-dom", () => {
   const original = jest.requireActual("react-router-dom");
@@ -86,5 +87,10 @@ describe("App routing", () => {
   test("renders PasswordReset on '/PasswordReset' route", () => {
     renderAt("/PasswordReset");
     expect(screen.getByText("PasswordResetMock")).toBeInTheDocument();
+  });
+
+  test("renders ForProviders on '/ForProviders' route", () => {
+    renderAt("/ForProviders");
+    expect(screen.getByText("ForProvidersMock")).toBeInTheDocument();
   });
 });
