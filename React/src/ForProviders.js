@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./ForProviders.css";
 
 function ForProviders() {
-  const currentYear = new Date().getFullYear();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="providers-container">
@@ -142,12 +144,8 @@ function ForProviders() {
                 workshops. You should have:
               </p>
               <ul className="criteria-list">
-                <li>
-                  Experience delivering <strong>instructor-led training</strong>
-                </li>
-                <li>
-                  Ability to run <strong>hands-on, practical sessions</strong>
-                </li>
+                <li>Experience delivering instructor-led training</li>
+                <li>Ability to run hands-on, practical sessions</li>
                 <li>Clearly structured workshops with defined outcomes</li>
                 <li>
                   Strong delivery standards (communication, timing, materials)
@@ -202,15 +200,6 @@ function ForProviders() {
                 Approval and onboarding into the platform
               </p>
             </div>
-          </div>
-        </div>
-
-        <div className="row mb-5">
-          <div className="col-12">
-            <p className="assessment-note">
-              This ensures that all workshops meet a consistent standard before
-              being presented to organisations.
-            </p>
           </div>
         </div>
 

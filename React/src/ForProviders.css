@@ -1,3 +1,9 @@
+.providers-container,
+.providers-container * {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hero Section */
 .providers-hero {
   padding: 2rem 0;
   text-align: center;
@@ -6,7 +12,7 @@
 }
 
 .providers-main-title {
-  font-size: 3rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: #1a5276;
   margin-bottom: 1.5rem;
@@ -14,10 +20,10 @@
 }
 
 .providers-main-description {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 500;
   margin-bottom: 1.5rem;
-  line-height: 1.7;
+  line-height: 1.6;
   color: #1a5276;
 }
 
@@ -39,7 +45,7 @@
 }
 
 .model-text {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: #2c3e50;
   margin-bottom: 1rem;
@@ -55,6 +61,7 @@
   padding: 0.5rem 0 0.5rem 1.75rem;
   position: relative;
   font-size: 1rem;
+  line-height: 1.6;
   color: #5d6d7e;
 }
 
@@ -63,7 +70,7 @@
   position: absolute;
   left: 0;
   color: #3498db;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .providers-benefit-card {
@@ -88,7 +95,7 @@
 }
 
 .providers-benefit-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 1rem;
@@ -97,7 +104,7 @@
 .providers-benefit-description {
   color: #5d6d7e;
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .criteria-content {
@@ -108,10 +115,11 @@
 }
 
 .criteria-intro {
-  font-size: 1.1rem;
+  font-size: 1rem;
+  line-height: 1.6;
   color: #2c3e50;
   margin-bottom: 1rem;
-  font-weight: 500;
+  font-weight: normal;
 }
 
 .criteria-list {
@@ -124,7 +132,9 @@
   padding: 0.5rem 0 0.5rem 1.75rem;
   position: relative;
   font-size: 1rem;
+  line-height: 1.6;
   color: #5d6d7e;
+  font-weight: normal;
 }
 
 .criteria-list li:before {
@@ -132,8 +142,8 @@
   position: absolute;
   left: 0;
   color: #3498db;
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .providers-step-card {
@@ -159,12 +169,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .providers-step-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #2c3e50;
   margin-top: 0.5rem;
@@ -174,15 +184,7 @@
 .providers-step-description {
   color: #5d6d7e;
   font-size: 1rem;
-  line-height: 1.5;
-}
-
-.assessment-note {
-  text-align: center;
-  font-style: italic;
-  color: #5d6d7e;
-  font-size: 1rem;
-  margin-top: 1rem;
+  line-height: 1.6;
 }
 
 .focus-card {
@@ -207,7 +209,7 @@
 }
 
 .focus-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 0.75rem;
@@ -215,8 +217,8 @@
 
 .focus-description {
   color: #5d6d7e;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .interest-content {
@@ -229,6 +231,7 @@
 
 .interest-text {
   font-size: 1rem;
+  line-height: 1.6;
   color: #2c3e50;
   margin-bottom: 1rem;
 }
@@ -245,6 +248,7 @@
   padding: 0.5rem 0 0.5rem 1.75rem;
   position: relative;
   font-size: 1rem;
+  line-height: 1.6;
   color: #5d6d7e;
 }
 
@@ -253,19 +257,20 @@
   position: absolute;
   left: 0;
   color: #3498db;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .interest-email {
   margin-top: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .providers-email-link {
   color: #3498db;
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: normal;
 }
 
 .providers-email-link:hover {
@@ -275,15 +280,15 @@
 
 @media (max-width: 767px) {
   .providers-main-title {
-    font-size: 2rem;
+    font-size: 1.7rem;
   }
 
   .providers-main-description {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .providers-section-title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .providers-benefit-card,
@@ -301,6 +306,6 @@
 
 @media (min-width: 768px) and (max-width: 991px) {
   .providers-main-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 }
