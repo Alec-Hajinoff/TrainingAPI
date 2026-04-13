@@ -1,7 +1,5 @@
 .for-providers-section {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e0e0e0;
+  margin-top: 1rem;
 }
 
 .for-providers-label {
@@ -23,6 +21,8 @@
   cursor: pointer;
   border: none;
   font-size: 1rem;
+  display: inline-block;
+  text-align: center;
 }
 
 .btn-for-providers:hover {

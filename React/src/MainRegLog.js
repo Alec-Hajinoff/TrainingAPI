@@ -73,7 +73,12 @@ function MainRegLog() {
               <UserRegistration />
               <p className="footer">Existing user? Please login:</p>
               <UserLogin />
-              <ForProvidersButton />
+              {/* ForProvidersButton wrapped in same card styling as Login form */}
+              <div className="row g-2" style={{ marginTop: "1rem" }}>
+                <div className="form-group">
+                  <ForProvidersButton />
+                </div>
+              </div>
             </>
           )}
         </div>
