@@ -46,7 +46,7 @@ describe("WorkshopsRequested Component", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers(); // Enable fake timers for timeout tests
+    jest.useFakeTimers();
   });
 
   afterEach(() => {
@@ -99,13 +99,13 @@ describe("WorkshopsRequested Component", () => {
 
     expect(screen.getByText(/Innovate Ltd/i)).toBeInTheDocument();
     expect(screen.getByText(/Alice Smith/i)).toBeInTheDocument();
-    expect(screen.getByText(/pending/i)).toBeInTheDocument();
+
+    // Status (pending/approved) is no longer rendered in the component, so these checks are removed
     expect(
       screen.getByText(/Custom Python for Data Science workshop./i),
     ).toBeInTheDocument();
 
     expect(screen.getByText(/Cloud Systems/i)).toBeInTheDocument();
-    expect(screen.getByText(/approved/i)).toBeInTheDocument();
   });
 
   test("calls loadRequests again when Refresh button is clicked", async () => {
@@ -183,8 +183,8 @@ describe("WorkshopsRequested Component", () => {
 
     const deleteButton = screen.getByRole("button", { name: /Delete/i });
 
-    fireEvent.click(deleteButton); // Show "Sure?"
-    fireEvent.click(deleteButton); // Confirm
+    fireEvent.click(deleteButton); // Show confirmation
+    fireEvent.click(deleteButton); // Confirm deletion
 
     await waitFor(() => {
       expect(screen.getByText(/API Deletion Failure/i)).toBeInTheDocument();
@@ -206,7 +206,6 @@ describe("WorkshopsRequested Component", () => {
     fireEvent.click(deleteButton);
     expect(screen.getByText(/Sure\?/i)).toBeInTheDocument();
 
-    // Advance timers by 5 seconds
     act(() => {
       jest.advanceTimersByTime(5000);
     });

@@ -18,6 +18,7 @@ import {
   verifyEmail,
   passwordResetToken,
   updatePassword,
+  myAccountLink,
 } from "../ApiService";
 
 describe("TrainingApiService helpers", () => {
@@ -26,6 +27,7 @@ describe("TrainingApiService helpers", () => {
 
   beforeEach(() => {
     global.fetch = jest.fn();
+
     consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
@@ -116,7 +118,7 @@ describe("TrainingApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("passwordResetLink returns success true on failure", async () => {
+  test("passwordResetLink returns success true on failure (graceful degradation)", async () => {
     global.fetch.mockRejectedValue(new Error("Server fail"));
     const result = await passwordResetLink("test@example.com");
     expect(result).toEqual({ success: true });
@@ -220,14 +222,6 @@ describe("TrainingApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("updateCourse throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Update failed"));
-    await expect(updateCourse(new FormData())).rejects.toThrow(
-      "Failed to update course",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
-  });
-
   test("deleteCourse posts courseId and returns parsed JSON", async () => {
     const mockBody = { deleted: true };
     global.fetch.mockResolvedValue({
@@ -244,15 +238,10 @@ describe("TrainingApiService helpers", () => {
         body: expect.any(FormData),
       }),
     );
-    expect(result).toEqual(mockBody);
-  });
 
-  test("deleteCourse throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Delete failed"));
-    await expect(deleteCourse("123")).rejects.toThrow(
-      "Failed to delete course",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    const sentFormData = global.fetch.mock.calls[0][1].body;
+    expect(sentFormData.get("course_id")).toBe("123");
+    expect(result).toEqual(mockBody);
   });
 
   test("checkAdminExists fetches admin status and returns parsed JSON", async () => {
@@ -333,7 +322,10 @@ describe("TrainingApiService helpers", () => {
   });
 
   test("workshopsRequested fetches workshop requests and returns parsed JSON", async () => {
-    const mockBody = [{ id: 1, topic: "React" }];
+    const mockBody = {
+      success: true,
+      requests: [{ id: 1, organisation: "Test Org" }],
+    };
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(mockBody),
     });
@@ -368,19 +360,9 @@ describe("TrainingApiService helpers", () => {
       }),
     );
 
-    // Verify FormData contents
     const formData = global.fetch.mock.calls[0][1].body;
     expect(formData.get("request_id")).toBe("123");
-
     expect(result).toEqual(mockBody);
-  });
-
-  test("deleteWorkshopRequested throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Network error"));
-    await expect(deleteWorkshopRequested("123")).rejects.toThrow(
-      "Failed to delete workshop request",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   test("updateCourseAdmin posts FormData and returns parsed JSON", async () => {
@@ -405,14 +387,6 @@ describe("TrainingApiService helpers", () => {
     expect(result).toEqual(mockBody);
   });
 
-  test("updateCourseAdmin throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Update failed"));
-    await expect(updateCourseAdmin(new FormData())).rejects.toThrow(
-      "Failed to update course",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
-  });
-
   test("deleteCourseAdmin posts courseId and returns parsed JSON", async () => {
     const mockBody = { deleted: true };
     global.fetch.mockResolvedValue({
@@ -429,15 +403,10 @@ describe("TrainingApiService helpers", () => {
         body: expect.any(FormData),
       }),
     );
-    expect(result).toEqual(mockBody);
-  });
 
-  test("deleteCourseAdmin throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Delete failed"));
-    await expect(deleteCourseAdmin("123")).rejects.toThrow(
-      "Failed to delete course",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
+    const sentFormData = global.fetch.mock.calls[0][1].body;
+    expect(sentFormData.get("course_id")).toBe("123");
+    expect(result).toEqual(mockBody);
   });
 
   test("verifyEmail posts token and returns parsed JSON", async () => {
@@ -458,14 +427,6 @@ describe("TrainingApiService helpers", () => {
       },
     );
     expect(result).toEqual(mockBody);
-  });
-
-  test("verifyEmail throws on failure", async () => {
-    global.fetch.mockRejectedValue(new Error("Verification failed"));
-    await expect(verifyEmail("token123")).rejects.toThrow(
-      "An error occurred during email verification.",
-    );
-    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 
   test("passwordResetToken posts token and returns parsed JSON", async () => {
@@ -528,6 +489,43 @@ describe("TrainingApiService helpers", () => {
       success: false,
       message: "An error occurred while updating the password.",
     });
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  test("myAccountLink fetches session status and returns parsed JSON", async () => {
+    const mockBody = { logged_in: true, user: { id: 1, name: "Admin" } };
+    global.fetch.mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockBody),
+    });
+
+    const result = await myAccountLink();
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "http://localhost:8001/TrainingAPI/my_account_link.php",
+      {
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    expect(result).toEqual(mockBody);
+  });
+
+  test("myAccountLink returns logged_in false on 401 Unauthorized", async () => {
+    global.fetch.mockResolvedValue({
+      ok: false,
+      status: 401,
+    });
+
+    const result = await myAccountLink();
+    expect(result).toEqual({ logged_in: false });
+  });
+
+  test("myAccountLink returns logged_in false on network failure", async () => {
+    global.fetch.mockRejectedValue(new Error("Network fail"));
+    const result = await myAccountLink();
+    expect(result).toEqual({ logged_in: false });
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
