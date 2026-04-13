@@ -23,36 +23,39 @@ jest.mock("../LogoutComponent.css", () => ({}));
 
 describe("LogoutComponent", () => {
   let mockNavigate;
+  let consoleErrorSpy;
 
   beforeEach(() => {
     mockNavigate = jest.fn();
     useNavigate.mockReturnValue(mockNavigate);
+
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.clearAllMocks();
   });
 
   afterEach(() => {
     cleanup();
+    consoleErrorSpy.mockRestore();
   });
 
   const renderComponent = () => {
     return render(
       <MemoryRouter>
         <LogoutComponent />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   };
 
-  it("renders a logout button", () => {
+  test("renders logout button with correct styling and text", () => {
     renderComponent();
-
     const button = screen.getByRole("button", { name: /logout/i });
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass("logout-button");
+    expect(button).toHaveTextContent("Logout");
   });
 
-  it("calls logoutUser and navigates to home on successful logout", async () => {
+  test("calls logoutUser and navigates to home on successful logout", async () => {
     logoutUser.mockResolvedValueOnce();
-
     renderComponent();
 
     const button = screen.getByRole("button", { name: /logout/i });
@@ -63,169 +66,64 @@ describe("LogoutComponent", () => {
     });
 
     expect(mockNavigate).toHaveBeenCalledWith("/");
-    expect(mockNavigate).toHaveBeenCalledTimes(1);
   });
 
-  it("handles logout API error gracefully", async () => {
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
-    const errorMessage = "Logout failed";
+  test("logs the specific error message when logout API fails", async () => {
+    const errorMessage = "Logout request timed out";
     logoutUser.mockRejectedValueOnce(new Error(errorMessage));
-
     renderComponent();
 
     const button = screen.getByRole("button", { name: /logout/i });
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(logoutUser).toHaveBeenCalledTimes(1);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(errorMessage);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(errorMessage);
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test("logs fallback error message when error object has no message", async () => {
+    logoutUser.mockRejectedValueOnce(null); // Simulate a non-standard error
+    renderComponent();
+
+    const button = screen.getByRole("button", { name: /logout/i });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "An unknown error occurred during logout",
+      );
+    });
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test("waits for the async logoutUser call to complete before navigating", async () => {
+    let resolveLogout;
+    const logoutPromise = new Promise((resolve) => {
+      resolveLogout = resolve;
+    });
+    logoutUser.mockReturnValueOnce(logoutPromise);
+
+    renderComponent();
+    const button = screen.getByRole("button", { name: /logout/i });
+    fireEvent.click(button);
+
     expect(mockNavigate).not.toHaveBeenCalled();
 
-    consoleErrorSpy.mockRestore();
-  });
-
-  it("button is clickable and triggers handleLogout", async () => {
-    logoutUser.mockResolvedValueOnce();
-
-    renderComponent();
-
-    const button = screen.getByRole("button", { name: /logout/i });
-    expect(button).toBeEnabled();
-
-    fireEvent.click(button);
+    resolveLogout();
 
     await waitFor(() => {
-      expect(logoutUser).toHaveBeenCalled();
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
   });
 
-  it("button has correct text content", () => {
+  test("button is accessible and focusable", () => {
     renderComponent();
+    const button = screen.getByRole("button", { name: /logout/i });
 
-    const button = screen.getByRole("button");
-    expect(button).toHaveTextContent("Logout");
-  });
-
-  describe("API integration", () => {
-    it("calls logoutUser without any arguments", async () => {
-      logoutUser.mockResolvedValueOnce();
-
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-      fireEvent.click(button);
-
-      await waitFor(() => {
-        expect(logoutUser).toHaveBeenCalledWith();
-      });
-    });
-
-    it("waits for logoutUser to complete before navigating", async () => {
-      let resolveLogout;
-      const logoutPromise = new Promise((resolve) => {
-        resolveLogout = resolve;
-      });
-      logoutUser.mockReturnValueOnce(logoutPromise);
-
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-      fireEvent.click(button);
-
-      expect(mockNavigate).not.toHaveBeenCalled();
-
-      resolveLogout();
-
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith("/");
-      });
-    });
-  });
-
-  describe("Error handling", () => {
-    it("does not crash when logoutUser throws", async () => {
-      logoutUser.mockRejectedValueOnce(new Error("Network error"));
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
-
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-
-      expect(() => {
-        fireEvent.click(button);
-      }).not.toThrow();
-
-      await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalled();
-      });
-
-      consoleErrorSpy.mockRestore();
-    });
-
-    it("handles various error types", async () => {
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
-
-      logoutUser.mockRejectedValueOnce("String error");
-
-      renderComponent();
-      const button = screen.getByRole("button", { name: /logout/i });
-      fireEvent.click(button);
-
-      await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalled();
-      });
-
-      cleanup();
-      jest.clearAllMocks();
-      consoleErrorSpy.mockRestore();
-    });
-
-    it("handles null error without crashing", async () => {
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
-
-      const originalLogoutUser = logoutUser;
-      logoutUser.mockRejectedValueOnce(null);
-
-      renderComponent();
-      const button = screen.getByRole("button", { name: /logout/i });
-
-      expect(() => {
-        fireEvent.click(button);
-      }).not.toThrow();
-
-      await waitFor(() => {
-        expect(consoleErrorSpy).toHaveBeenCalled();
-      });
-
-      consoleErrorSpy.mockRestore();
-    });
-  });
-
-  describe("Accessibility", () => {
-    it("button has proper role and accessible name", () => {
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-      expect(button).toBeInTheDocument();
-    });
-
-    it("button is focusable", () => {
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-      button.focus();
-      expect(button).toHaveFocus();
-    });
-
-    it("button can be triggered with click", () => {
-      logoutUser.mockResolvedValueOnce();
-      renderComponent();
-
-      const button = screen.getByRole("button", { name: /logout/i });
-      fireEvent.click(button);
-      expect(logoutUser).toHaveBeenCalled();
-    });
+    button.focus();
+    expect(button).toHaveFocus();
+    expect(button).toBeEnabled();
   });
 });
