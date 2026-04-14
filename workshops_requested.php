@@ -54,8 +54,7 @@ try {
                 team_size, 
                 preferred_timing, 
                 additional_details, 
-                created_at, 
-                status 
+                created_at
             FROM workshop_requests 
             ORDER BY created_at DESC';
 
