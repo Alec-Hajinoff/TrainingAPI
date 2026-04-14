@@ -1,0 +1,37 @@
+.for-providers-section {
+  margin-top: 1rem;
+}
+
+.for-providers-label {
+  font-size: 1rem;
+  color: #5d6d7e;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.btn-for-providers {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-for-providers:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  color: #fff;
+}
+
+.btn-for-providers:active {
+  background-color: #21618c;
+  border-color: #21618c;
+}
