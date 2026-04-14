@@ -46,7 +46,6 @@ function WorkshopsRequested() {
     try {
       const data = await deleteWorkshopRequested(requestId);
       if (data.success) {
-        // Remove from local state
         setRequests(requests.filter((req) => req.id !== requestId));
         setDeleteMessage({
           type: "success",
@@ -105,9 +104,6 @@ function WorkshopsRequested() {
                     </p>
                   </div>
                   <div className="d-flex gap-2 align-items-center">
-                    <span>
-                      <strong>Status:</strong> {request.status}
-                    </span>
                     <button
                       className="btn btn-sm btn-outline-danger"
                       onClick={() => handleDeleteRequest(request.id)}
